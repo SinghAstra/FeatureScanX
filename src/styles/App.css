@@ -1,0 +1,11 @@
+:root {
+  --background-color: black;
+  --nav-narrow-width: 72px;
+  --nav-medium-width: 244px;
+  --nav-wide-width: 335px;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+}
