@@ -7,9 +7,37 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 20px;
   background: var(--background-color);
   padding: 8px 12px 20px 12px;
+  color: var(--primary-text);
+}
+
+.sidebar h1 {
+  font-family: "Playwrite IT Moderna", cursive;
+  padding: 12px;
+  margin-bottom: 20px;
+}
+
+.sidebar-links {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.sidebar-link {
+  display: flex;
+  margin: 16px 12px;
+  align-items: center;
+}
+
+.sidebar-link svg {
+  width: 24px;
+  height: 24px;
+}
+
+.sidebar-link p {
+  padding-left: 16px;
+  font-size: 24px;
 }
 
 .placeholder {

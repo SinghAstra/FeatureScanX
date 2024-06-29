@@ -1,16 +1,62 @@
+import {
+  faBell,
+  faCompass,
+  faEllipsisH,
+  faEnvelope,
+  faFilm,
+  faHome,
+  faPlusCircle,
+  faSearch,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import "../styles/Sidebar.css";
 
 const Sidebar = () => {
   return (
     <div className="sidebar">
-      <div className="placeholder"></div>
-      <div className="placeholder"></div>
-      <div className="placeholder"></div>
-      <div className="placeholder"></div>
-      <div className="placeholder"></div>
-      <div className="placeholder"></div>
-      <div className="placeholder"></div>
+      <h1>Social</h1>
+      <div className="sidebar-links">
+        <div className="sidebar-link">
+          <FontAwesomeIcon icon={faHome} />
+          <p>Home</p>
+        </div>
+        <div className="sidebar-link">
+          <FontAwesomeIcon icon={faSearch} />
+          <p>Search</p>
+        </div>
+        <div className="sidebar-link">
+          <FontAwesomeIcon icon={faCompass} />
+          <p>Explore</p>
+        </div>
+        <div className="sidebar-link">
+          <FontAwesomeIcon icon={faFilm} />
+          <p>Reels</p>
+        </div>
+        <div className="sidebar-link">
+          <FontAwesomeIcon icon={faEnvelope} />
+          <p>Messages</p>
+        </div>
+        <div className="sidebar-link">
+          <FontAwesomeIcon icon={faBell} />
+          <p>Notifications</p>
+        </div>
+        <div className="sidebar-link">
+          <FontAwesomeIcon icon={faPlusCircle} />
+          <p>Create</p>
+        </div>
+        <div className="sidebar-link">
+          <FontAwesomeIcon icon={faUser} />
+          <p>Profile</p>
+        </div>
+      </div>
+      <div className="sidebar-bottom">
+        <div className="sidebar-link">
+          <FontAwesomeIcon icon={faEllipsisH} />
+          <p>More</p>
+        </div>
+      </div>
     </div>
   );
 };
