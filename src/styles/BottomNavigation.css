@@ -5,8 +5,9 @@
 @media (max-width: 767px) {
   .bottom-navbar {
     height: 60px;
-    background-color: #f0f0f0;
-    border-top: 1px solid #ccc;
+    color: var(--primary-text);
+    background-color: var(--background-color);
+    border-top: 1px solid var(--separator-color);
     display: flex;
     justify-content: center;
     align-items: center;

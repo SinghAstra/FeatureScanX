@@ -1,0 +1,30 @@
+.content {
+  gap: 40px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 40px;
+  justify-content: space-between;
+  margin-left: var(--nav-narrow-width);
+  background: var(--background-color);
+}
+
+@media (min-width: 1264px) and (max-width: 1919px) {
+  .content {
+    margin-left: var(--nav-medium-width);
+  }
+}
+
+@media (min-width: 1920px) {
+  .content {
+    margin-left: var(--nav-wide-width);
+  }
+}
+
+@media (max-width: 767px) {
+  .content {
+    margin-left: 0;
+    margin-top: 60px;
+    margin-bottom: 60px;
+  }
+}

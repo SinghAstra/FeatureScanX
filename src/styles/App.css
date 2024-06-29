@@ -1,8 +1,10 @@
 :root {
   --background-color: black;
+  --separator-color: rgb(38, 38, 38);
   --nav-narrow-width: 72px;
   --nav-medium-width: 244px;
   --nav-wide-width: 335px;
+  --primary-text: rgb(245, 245, 245);
 }
 
 .app-container {
