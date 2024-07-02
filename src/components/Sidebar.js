@@ -1,5 +1,7 @@
+import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import {
   faBell,
+  faCamera,
   faCompass,
   faEllipsisH,
   faEnvelope,
@@ -17,6 +19,9 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <h1>Social</h1>
+      <div className="sidebar-link sidebar-icon">
+        <FontAwesomeIcon icon={faInstagram} />
+      </div>
       <div className="sidebar-links">
         <div className="sidebar-link">
           <FontAwesomeIcon icon={faHome} />

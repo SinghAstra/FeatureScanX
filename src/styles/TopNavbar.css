@@ -2,6 +2,22 @@
   display: none;
 }
 
+.top-navbar h1 {
+  font-family: "Indie Flower";
+  flex: 1;
+}
+
+.top-navbar-search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.top-navbar-search svg {
+  width: 24px;
+  height: 24px;
+}
+
 @media (max-width: 767px) {
   .top-navbar {
     height: 60px;
