@@ -1,11 +1,11 @@
 import React from "react";
 import "../styles/Content.css";
-import StoryBar from "./StoryBar";
+import Posts from "./Posts";
 
 const Content = () => {
   return (
     <div className="content">
-      <StoryBar />
+      <Posts />
     </div>
   );
 };

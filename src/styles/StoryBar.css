@@ -9,7 +9,7 @@
   height: 85px;
   scrollbar-width: none;
   width: 100%;
-  padding: 0 8px;
+  padding: 0 16px;
 }
 
 .story-bar::-webkit-scrollbar {
@@ -18,6 +18,10 @@
 
 .story-bar {
   -ms-overflow-style: none;
+}
+
+.story {
+  cursor: pointer;
 }
 
 .story-image {

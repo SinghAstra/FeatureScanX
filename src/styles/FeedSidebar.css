@@ -1,0 +1,53 @@
+.feed-sidebar {
+  width: 319px;
+  margin-left: 64px;
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  color: var(--primary-text);
+  gap: 12px;
+}
+
+.feed-sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin: 6px 0px;
+}
+
+.feed-sidebar-profile {
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.feed-sidebar-profile-picture img {
+  height: 44px;
+  width: 44px;
+  border-radius: 50%;
+}
+
+.feed-sidebar-profile-info {
+  flex: 1;
+  font-size: 14px;
+}
+
+.sidebar-action {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--button-color);
+  cursor: pointer;
+}
+
+.sidebar-action:hover {
+  color: var(--button-hover-color);
+}
+
+@media (max-width: 1263px) {
+  .feed-sidebar {
+    display: none;
+  }
+}

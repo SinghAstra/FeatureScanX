@@ -6,6 +6,9 @@
   --nav-medium-width: 244px;
   --nav-wide-width: 335px;
   --primary-text: rgb(245, 245, 245);
+  --secondary-text: rgb(168, 168, 168);
+  --button-color: rgb(0, 149, 246);
+  --button-hover-color: rgb(224, 241, 255);
 }
 
 .app-container {
