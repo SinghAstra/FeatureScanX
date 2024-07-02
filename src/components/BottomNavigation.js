@@ -1,11 +1,8 @@
 import {
-  faBell,
   faCompass,
-  faEnvelope,
   faFilm,
   faHome,
   faPlusCircle,
-  faSearch,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

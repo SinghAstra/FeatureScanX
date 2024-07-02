@@ -1,7 +1,6 @@
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import {
   faBell,
-  faCamera,
   faCompass,
   faEllipsisH,
   faEnvelope,
