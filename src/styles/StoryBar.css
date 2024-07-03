@@ -1,11 +1,10 @@
 .story-bar {
   color: var(--primary-text);
   display: flex;
-  gap: 4px;
+  gap: 6px;
   overflow-x: auto;
   overflow-y: hidden;
-  margin-top: 8px;
-  margin-bottom: 24px;
+  margin: 24px 0px;
   height: 85px;
   scrollbar-width: none;
   width: 100%;
@@ -49,4 +48,5 @@
   max-width: 74px;
   overflow-x: hidden;
   text-overflow: ellipsis;
+  font-size: 12px;
 }

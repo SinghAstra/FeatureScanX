@@ -1,0 +1,96 @@
+.suggestions {
+  color: var(--primary-text);
+  width: 100%;
+  max-width: 470px;
+  margin-top: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--separator-color);
+}
+
+.suggestions-header {
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.suggestions-title {
+  font-size: 16px;
+  font-weight: 600;
+  flex: 1;
+  color: var(--primary-text);
+}
+
+.see-all-link a {
+  font-size: 14px;
+  text-decoration: none;
+  color: var(--button-color);
+  cursor: pointer;
+}
+
+.suggestions-list {
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  gap: 8px;
+  scrollbar-width: none;
+  height: 250px;
+}
+
+.suggestion-item {
+  width: 170px;
+  height: 100%;
+  border: 1px solid var(--elevated-separator-color);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+.suggestion-item-header {
+  padding: 12px 12px 8px 12px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  width: 170px;
+}
+
+.close-icon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  color: var(--secondary-text);
+}
+
+.user-profile-pic img {
+  width: 74px;
+  height: 74px;
+  margin-top: 12px;
+  margin-bottom: 4px;
+  border-radius: 50%;
+}
+
+.username span {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-text);
+  margin-top: 4px;
+}
+
+.suggestion-text span {
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: var(--secondary-text);
+}
+
+.suggestion-item hr {
+  border: 1px solid var(--separator-color);
+}
+
+.suggestion-item .follow-button {
+  padding: 12px;
+  font-size: 14px;
+  color: var(--button-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
