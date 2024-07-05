@@ -1,8 +1,10 @@
 /* global FB*/
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import "../styles/Login.css";
 
 const Login = () => {
+  const statusRef = useRef(null);
+
   useEffect(() => {
     const loadFacebookSDK = () => {
       window.fbAsyncInit = function () {
@@ -40,8 +42,9 @@ const Login = () => {
     if (response.status === "connected") {
       testAPI();
     } else {
-      document.getElementById("status").innerHTML =
-        "Please log into this webpage.";
+      if (statusRef.current) {
+        statusRef.current.innerHTML = "Please log into this webpage.";
+      }
     }
   };
 
@@ -55,8 +58,10 @@ const Login = () => {
     console.log("Welcome! Fetching your information.... ");
     window.FB.api("/me", function (response) {
       console.log("Successful login for: " + response.name);
-      document.getElementById("status").innerHTML =
-        "Thanks for logging in, " + response.name + "!";
+      if (statusRef.current) {
+        statusRef.current.innerHTML =
+          "Thanks for logging in, " + response.name + "!";
+      }
     });
   };
   return (
@@ -65,9 +70,9 @@ const Login = () => {
       <div
         className="fb-login-button"
         data-scope="public_profile,email"
-        data-onlogin={checkLoginState()}
+        data-onlogin="checkLoginState();"
       ></div>
-      <div id="status"></div>
+      <div id="status" ref={statusRef}></div>
     </div>
   );
 };
