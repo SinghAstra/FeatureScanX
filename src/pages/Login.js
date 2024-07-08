@@ -1,78 +1,112 @@
-/* global FB*/
-import React, { useEffect, useRef } from "react";
-import "../styles/Login.css";
+import axios from "axios";
+import React, { useContext, useState } from "react";
+import { toast } from "react-hot-toast";
+import { AuthContext } from "../context/AuthContext";
+import Email from "./Email.js";
+import Password from "./Password.js";
 
 const Login = () => {
-  const statusRef = useRef(null);
+  const [step, setStep] = useState(1);
+  // Make the first step of Login Process Optional Input
+  // Allow the user in the first step of Login Process
+  // to enter either username or email address
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [userInfo, setUserInfo] = useState({});
+  const { saveJWTToken } = useContext(AuthContext);
 
-  useEffect(() => {
-    const loadFacebookSDK = () => {
-      window.fbAsyncInit = function () {
-        window.FB.init({
-          appId: "837937237925260", // Replace with your Facebook app ID
-          cookie: true,
-          xfbml: true,
-          version: "v20.0", // Replace with the correct API version
-        });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-        window.FB.getLoginStatus(function (response) {
-          statusChangeCallback(response);
-        });
-      };
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error("Invalid email address");
+      return false;
+    }
+    return true;
+  };
 
-      (function (d, s, id) {
-        var js,
-          fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {
-          return;
-        }
-        js = d.createElement(s);
-        js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-      })(document, "script", "facebook-jssdk");
-    };
+  const validatePassword = (password) => {
+    const lengthRegex = /.{8,}/;
+    const numberRegex = /\d/;
+    const upperCaseRegex = /[A-Z]/;
+    const lowerCaseRegex = /[a-z]/;
+    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+    if (
+      !lengthRegex.test(password) ||
+      !numberRegex.test(password) ||
+      !upperCaseRegex.test(password) ||
+      !lowerCaseRegex.test(password) ||
+      !specialCharRegex.test(password)
+    ) {
+      toast.error("Incorrect Password");
+      return false;
+    }
+    return true;
+  };
 
-    loadFacebookSDK();
-  }, []);
-
-  const statusChangeCallback = (response) => {
-    console.log("statusChangeCallback");
-    console.log(response);
-    if (response.status === "connected") {
-      testAPI();
-    } else {
-      if (statusRef.current) {
-        statusRef.current.innerHTML = "Please log into this webpage.";
+  const handleEmailSubmit = async (e) => {
+    e.preventDefault();
+    const { email } = formData;
+    if (validateEmail(email)) {
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/auth/fetchUserInfo",
+          {
+            email,
+          }
+        );
+        console.log("response.data.user is ", response.data.user);
+        setUserInfo(response.data.user);
+        setStep(2);
+      } catch (error) {
+        console.log("error is ", error);
+        toast.error(error.response.data.message);
       }
     }
   };
 
-  const checkLoginState = () => {
-    window.FB.getLoginStatus(function (response) {
-      statusChangeCallback(response);
-    });
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+    const { email, password } = formData;
+    if (validatePassword(password)) {
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/auth/login",
+          {
+            email,
+            password,
+          }
+        );
+        saveJWTToken(response.data.token);
+        toast.success(response.data.message);
+      } catch (error) {
+        toast.error(error.response.data.message);
+      }
+    }
   };
 
-  const testAPI = () => {
-    console.log("Welcome! Fetching your information.... ");
-    window.FB.api("/me", function (response) {
-      console.log("Successful login for: " + response.name);
-      if (statusRef.current) {
-        statusRef.current.innerHTML =
-          "Thanks for logging in, " + response.name + "!";
-      }
-    });
-  };
   return (
-    <div className="login-container">
-      <h1>Facebook Login in MERN App</h1>
-      <div
-        className="fb-login-button"
-        data-scope="public_profile,email"
-        data-onlogin="checkLoginState();"
-      ></div>
-      <div id="status" ref={statusRef}></div>
+    <div>
+      {step === 1 ? (
+        <Email
+          email={formData.email}
+          handleChange={handleChange}
+          handleEmailSubmit={handleEmailSubmit}
+        />
+      ) : (
+        <Password
+          userInfo={userInfo}
+          password={formData.password}
+          handleChange={handleChange}
+          handlePasswordSubmit={handlePasswordSubmit}
+        />
+      )}
     </div>
   );
 };

@@ -10,12 +10,11 @@ import "../styles/Register.css";
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
+    username: "user",
+    email: "user@email.com",
+    password: "Abhay@codeman1",
     picture: "",
-    confirmPassword: "",
+    confirmPassword: "Abhay@codeman1",
   });
 
   const [profilePicture, setProfilePicture] = useState(null);
@@ -39,12 +38,6 @@ const Register = () => {
       ...formData,
       [name]: value,
     });
-    const inputContainer = e.target.closest(".input-container");
-    if (value.trim() !== "") {
-      inputContainer.classList.add("has-text");
-    } else {
-      inputContainer.classList.remove("has-text");
-    }
   };
 
   const handlePictureChange = (e) => {
@@ -57,24 +50,6 @@ const Register = () => {
         picture: file,
       });
     }
-  };
-
-  const validateFirstName = (firstName) => {
-    const nameRegex = /^[A-Za-z]{2,}$/;
-    if (!firstName || !nameRegex.test(firstName)) {
-      toast.error("Invalid First Name");
-      return false;
-    }
-    return true;
-  };
-
-  const validateLastName = (lastName) => {
-    const nameRegex = /^[A-Za-z\s]{2,}$/;
-    if (!lastName || !nameRegex.test(lastName)) {
-      toast.error("Invalid Last Name");
-      return false;
-    }
-    return true;
   };
 
   const validateEmail = (email) => {
@@ -115,12 +90,9 @@ const Register = () => {
   };
 
   const validateFormData = () => {
-    const { firstName, lastName, email, password, picture, confirmPassword } =
-      formData;
+    const { username, email, password, picture, confirmPassword } = formData;
 
     return (
-      validateFirstName(firstName) &&
-      validateLastName(lastName) &&
       validateEmail(email) &&
       validatePassword(password) &&
       validateConfirmPassword(password, confirmPassword) &&
@@ -144,12 +116,14 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        `${process.env.REACT_APP_API}/api/user/register`,
         data
       );
+      console.log("response is ", response);
       toast.success(response.data.message);
-      saveJWT(response.data.token);
+      // saveJWT(response.data.token);
     } catch (error) {
+      console.log("error is ", error);
       toast.error(error.response.data.message);
     } finally {
       setLoading(false);
@@ -185,29 +159,16 @@ const Register = () => {
           </div>
         </label>
       </div>
-      <div className="input-row">
-        <div className="input-container">
-          <input
-            type="text"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-            autoComplete="off"
-            id="firstName"
-            placeholder="First Name"
-          />
-        </div>
-        <div className="input-container">
-          <input
-            type="text"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-            autoComplete="off"
-            id="lastName"
-            placeholder="Last Name"
-          />
-        </div>
+      <div className="input-container">
+        <input
+          type="text"
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
+          autoComplete="off"
+          id="username"
+          placeholder="Username"
+        />
       </div>
       <div className="input-container">
         <input
