@@ -10,9 +10,9 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
-import Recovery from "./pages/Recovery";
 import Register from "./pages/Register";
-import Reset from "./pages/Reset";
+import ResetPassword from "./pages/ResetPassword";
+import VerifyOTP from "./pages/VerifyOTP";
 import "./styles/App.css";
 
 function App() {
@@ -21,8 +21,8 @@ function App() {
       <Route element={<PublicRoute />}>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/recovery" element={<Recovery />} />
-        <Route path="/reset" element={<Reset />} />
+        <Route path="/verify" element={<VerifyOTP />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Route>
       <Route element={<PrivateRoute />}>
         <Route path="/" element={<Home />} />

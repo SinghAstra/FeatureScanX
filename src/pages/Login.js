@@ -6,7 +6,7 @@ import Email from "./Email.js";
 import Password from "./Password.js";
 
 const Login = () => {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   // Make the first step of Login Process Optional Input
   // Allow the user in the first step of Login Process
   // to enter either username or email address
