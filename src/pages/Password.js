@@ -29,7 +29,7 @@ const Password = ({
   }, [shouldNavigate, navigate, userInfo]);
 
   const handleResetPasswordClick = () => {
-    handleSendOTP(userInfo.email);
+    // handleSendOTP(userInfo.email);
     setShouldNavigate(true);
   };
 
@@ -37,12 +37,7 @@ const Password = ({
     setShowPassword(!showPassword);
   };
 
-  const avatarSrc = userInfo.picturePath
-    ? `http://localhost:5000/assets/${userInfo.picturePath
-        .replace(/\\/g, "/")
-        .split("/")
-        .pop()}`
-    : user;
+  const avatarSrc = userInfo.profile ? userInfo.profile : user;
 
   return (
     <div className="password-login-container">
@@ -59,8 +54,8 @@ const Password = ({
             onChange={handleChange}
             autoComplete="off"
             id="password"
+            placeholder="Password"
           />
-          <label htmlFor="password">Password</label>
           <FontAwesomeIcon
             icon={showPassword ? faEyeSlash : faEye}
             className="input-icon"

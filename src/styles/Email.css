@@ -58,9 +58,11 @@
   text-align: center;
 }
 
-.bottom-link {
+.bottom-link,
+.bottom-span {
   text-decoration: none;
   color: var(--button-color);
+  cursor: pointer;
 }
 
 @media (min-width: 525px) {
