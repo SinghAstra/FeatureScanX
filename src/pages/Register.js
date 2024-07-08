@@ -10,8 +10,8 @@ import "../styles/Register.css";
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    username: "user",
-    email: "user@email.com",
+    username: "root",
+    email: "singhisabhaypratap@gmail.com",
     password: "Abhay@codeman1",
     picture: "",
     confirmPassword: "Abhay@codeman1",
@@ -119,9 +119,8 @@ const Register = () => {
         `${process.env.REACT_APP_API}/api/user/register`,
         data
       );
-      console.log("response is ", response);
       toast.success(response.data.message);
-      // saveJWT(response.data.token);
+      saveJWT(response.data.token);
     } catch (error) {
       console.log("error is ", error);
       toast.error(error.response.data.message);

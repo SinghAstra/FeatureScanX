@@ -6,16 +6,16 @@ import Email from "./Email.js";
 import Password from "./Password.js";
 
 const Login = () => {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   // Make the first step of Login Process Optional Input
   // Allow the user in the first step of Login Process
   // to enter either username or email address
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: "singhisabhaypratap@gmail.com",
+    password: "Abhay@codeman1",
   });
   const [userInfo, setUserInfo] = useState({});
-  const { saveJWTToken } = useContext(AuthContext);
+  const { saveJWT } = useContext(AuthContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,12 +56,11 @@ const Login = () => {
     if (validateEmail(email)) {
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/auth/fetchUserInfo",
+          "http://localhost:5000/api/user/fetch-user-info",
           {
             email,
           }
         );
-        console.log("response.data.user is ", response.data.user);
         setUserInfo(response.data.user);
         setStep(2);
       } catch (error) {
@@ -77,15 +76,17 @@ const Login = () => {
     if (validatePassword(password)) {
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/auth/login",
+          "http://localhost:5000/api/user/login",
           {
             email,
             password,
           }
         );
-        saveJWTToken(response.data.token);
+        console.log("response is ", response);
+        saveJWT(response.data.token);
         toast.success(response.data.message);
       } catch (error) {
+        console.log("error is ", error);
         toast.error(error.response.data.message);
       }
     }

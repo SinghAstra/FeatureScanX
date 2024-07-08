@@ -17,20 +17,13 @@ const ResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // if (!location.state) {
-  //   return <Navigate to="/login" />;
-  // }
+  if (!location.state) {
+    return <Navigate to="/login" />;
+  }
 
-  // const { userInfo } = location.state;
+  const { userInfo } = location.state;
 
-  // const avatarSrc = userInfo.picturePath
-  //   ? `http://localhost:5000/assets/${userInfo.picturePath
-  //       .replace(/\\/g, "/")
-  //       .split("/")
-  //       .pop()}`
-  //   : user;
-
-  const avatarSrc = user;
+  const avatarSrc = userInfo.profile ? userInfo.profile : user;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -82,16 +75,18 @@ const ResetPassword = () => {
     e.preventDefault();
     if (validatePassword()) {
       try {
-        // const response = await axios.post(
-        //   "http://localhost:5000/api/auth/resetPassword",
-        //   {
-        //     email: userInfo.email,
-        //     newPassword: formData.password,
-        //   }
-        // );
-        // toast.success(response.data.message);
+        const response = await axios.post(
+          "http://localhost:5000/api/user/reset-password",
+          {
+            email: userInfo.email,
+            newPassword: formData.password,
+          }
+        );
+        console.log("response is ", response);
+        toast.success(response.data.message);
         navigate("/login");
       } catch (error) {
+        console.log("error is ", error);
         toast.error(error.response.data.message);
       }
     }

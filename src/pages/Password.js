@@ -29,7 +29,7 @@ const Password = ({
   }, [shouldNavigate, navigate, userInfo]);
 
   const handleResetPasswordClick = () => {
-    // handleSendOTP(userInfo.email);
+    handleSendOTP(userInfo.email);
     setShouldNavigate(true);
   };
 

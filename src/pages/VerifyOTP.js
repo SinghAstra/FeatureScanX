@@ -14,18 +14,12 @@ const VerifyOTP = () => {
     otp: "",
   });
 
-  console.log("location.state is ", location.state);
   if (!location.state) {
     return <Navigate to="/login" />;
   }
   const { userInfo } = location.state;
 
-  const avatarSrc = userInfo.picturePath
-    ? `http://localhost:5000/assets/${userInfo.picturePath
-        .replace(/\\/g, "/")
-        .split("/")
-        .pop()}`
-    : user;
+  const avatarSrc = userInfo.profile ? userInfo.profile : user;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -52,7 +46,7 @@ const VerifyOTP = () => {
     if (validateOTP()) {
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/auth/verifyOTP",
+          "http://localhost:5000/api/user/verifyOTP",
           {
             email: userInfo.email,
             otp,
@@ -92,6 +86,7 @@ const VerifyOTP = () => {
             id="otp"
             value={formData.otp}
             onChange={handleChange}
+            placeholder="OTP"
           />
         </div>
         <button type="submit" className="btn-submit">
