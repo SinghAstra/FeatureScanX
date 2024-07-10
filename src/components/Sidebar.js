@@ -11,10 +11,18 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useState } from "react";
+import CreatePostDialog from "../pages/CreatePostDialog";
 import "../styles/Sidebar.css";
 
 const Sidebar = () => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleCreatePost = (post) => {
+    console.log("New Post:", post);
+    // Here you would typically make an API call to save the post to the backend
+  };
+
   return (
     <div className="sidebar">
       <h1>Social</h1>
@@ -46,7 +54,7 @@ const Sidebar = () => {
           <FontAwesomeIcon icon={faBell} />
           <p>Notifications</p>
         </div>
-        <div className="sidebar-link">
+        <div className="sidebar-link" onClick={() => setIsDialogOpen(true)}>
           <FontAwesomeIcon icon={faPlusCircle} />
           <p>Create</p>
         </div>
@@ -61,6 +69,11 @@ const Sidebar = () => {
           <p>More</p>
         </div>
       </div>
+      <CreatePostDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onCreate={handleCreatePost}
+      />
     </div>
   );
 };

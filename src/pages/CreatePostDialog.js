@@ -1,4 +1,4 @@
-import { faPhotoVideo } from "@fortawesome/free-solid-svg-icons";
+import { faClose, faPhotoVideo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef } from "react";
 import "../styles/CreatePostDialog.css";
@@ -29,6 +29,9 @@ const CreatePostDialog = ({ isOpen, onClose }) => {
 
   return (
     <div className="dialog-overlay">
+      <div className="close-icon">
+        <FontAwesomeIcon icon={faClose} />
+      </div>
       <div className="dialog" ref={dialogRef}>
         <div className="dialog-header">
           <h2>Create New Post</h2>

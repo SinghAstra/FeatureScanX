@@ -6,10 +6,17 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useState } from "react";
+import CreatePostDialog from "../pages/CreatePostDialog";
 import "../styles/BottomNavigation.css";
 
 const BottomNavigation = () => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleCreatePost = (post) => {
+    console.log("New Post:", post);
+    // Here you would typically make an API call to save the post to the backend
+  };
   return (
     <div className="bottom-navbar">
       <div className="bottom-navbar-link">
@@ -21,12 +28,17 @@ const BottomNavigation = () => {
       <div className="bottom-navbar-link">
         <FontAwesomeIcon icon={faFilm} />
       </div>
-      <div className="bottom-navbar-link">
+      <div className="bottom-navbar-link" onClick={() => setIsDialogOpen(true)}>
         <FontAwesomeIcon icon={faPlusCircle} />
       </div>
       <div className="bottom-navbar-link">
         <FontAwesomeIcon icon={faUser} />
       </div>
+      <CreatePostDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onCreate={handleCreatePost}
+      />
     </div>
   );
 };

@@ -52,6 +52,7 @@
   align-items: center;
   flex: 1;
   width: 170px;
+  z-index: 1;
 }
 
 .close-icon {
@@ -59,6 +60,11 @@
   top: 12px;
   right: 12px;
   color: var(--secondary-text);
+}
+
+.close-icon svg {
+  width: 20px;
+  height: 20px;
 }
 
 .user-profile-pic img {

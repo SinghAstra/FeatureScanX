@@ -7,7 +7,20 @@ const Content = () => {
   return (
     <div className="content">
       <Posts />
-      <Suggestions />
+      {/* <Suggestions /> */}
+      <div className="placeholder"></div>
+      <div className="placeholder"></div>
+      <div className="placeholder"></div>
+      <div className="placeholder"></div>
+      <div className="placeholder"></div>
+      <div className="placeholder"></div>
+      <div className="placeholder"></div>
+      <div className="placeholder"></div>
+      <div className="placeholder"></div>
+      <div className="placeholder"></div>
+      <div className="placeholder"></div>
+      <div className="placeholder"></div>
+      <div className="placeholder"></div>
     </div>
   );
 };

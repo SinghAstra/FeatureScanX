@@ -6,7 +6,6 @@ import {
 } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
-import CreateNewPost from "./pages/CreateNewPost";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
@@ -20,7 +19,7 @@ function App() {
   const routes = createRoutesFromChildren(
     <>
       <Route element={<PublicRoute />}>
-        <Route path="/" element={<CreateNewPost />} />
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verify" element={<VerifyOTP />} />

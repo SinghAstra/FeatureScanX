@@ -10,6 +10,14 @@
   max-width: 630px;
 }
 
+.placeholder {
+  width: 100%;
+  height: 200px;
+  background-color: #fff;
+  border-radius: 8px;
+  margin: 8px;
+}
+
 @media (min-width: 1264px) and (max-width: 1919px) {
   .content {
     margin-left: var(--nav-medium-width);
