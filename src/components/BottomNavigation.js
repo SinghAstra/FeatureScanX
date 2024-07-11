@@ -7,8 +7,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import CreatePostDialog from "../pages/CreatePostDialog";
 import "../styles/BottomNavigation.css";
+import CreatePostDialog from "./CreatePostDialog";
 
 const BottomNavigation = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);

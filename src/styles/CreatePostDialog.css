@@ -39,8 +39,8 @@
   font-size: 12px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 8px 0px;
+  justify-content: space-between;
+  padding: 8px 16px;
 }
 
 .dialog-header h2 {
@@ -55,6 +55,7 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
+  overflow: hidden;
 }
 
 .dialog-content button {

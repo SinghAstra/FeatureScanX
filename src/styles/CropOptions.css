@@ -1,0 +1,27 @@
+.crop-options {
+  border-radius: 8px;
+  background-color: rgba(26, 26, 26, 0.8);
+}
+
+.crop-options ul li {
+  margin-left: 12px;
+  display: flex;
+  align-items: center;
+  padding: 0px 4px;
+  font-size: 14px;
+}
+.crop-options ul hr {
+  background-color: rgba(0, 0, 0, 0.4);
+  height: 1px;
+  border: 0;
+}
+
+.crop-options ul li svg {
+  padding: 0px;
+  margin: 0px;
+  background-color: transparent;
+  width: 24px;
+  height: 24px;
+  margin: 12px;
+  fill: transparent;
+}

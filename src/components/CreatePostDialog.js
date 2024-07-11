@@ -1,9 +1,13 @@
-import { faClose, faPhotoVideo } from "@fortawesome/free-solid-svg-icons";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../styles/CreatePostDialog.css";
+import ImagePreviewView from "./ImagePreviewView";
+import InitialView from "./InitialView";
+
 const CreatePostDialog = ({ isOpen, onClose }) => {
   const dialogRef = useRef();
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     let timeoutId;
@@ -25,6 +29,7 @@ const CreatePostDialog = ({ isOpen, onClose }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
@@ -33,14 +38,17 @@ const CreatePostDialog = ({ isOpen, onClose }) => {
         <FontAwesomeIcon icon={faClose} />
       </div>
       <div className="dialog" ref={dialogRef}>
-        <div className="dialog-header">
-          <h2>Create New Post</h2>
-        </div>
-        <div className="dialog-content">
-          <FontAwesomeIcon icon={faPhotoVideo} size="5x" />
-          <p>Drag Photos and Videos here</p>
-          <button>Select From Computer</button>
-        </div>
+        {selectedFile ? (
+          <ImagePreviewView
+            file={selectedFile}
+            onBack={() => setSelectedFile(null)}
+            onNext={() =>
+              console.log("Proceed to next step with file:", selectedFile)
+            }
+          />
+        ) : (
+          <InitialView onSelectFile={(file) => setSelectedFile(file)} />
+        )}
       </div>
     </div>
   );
