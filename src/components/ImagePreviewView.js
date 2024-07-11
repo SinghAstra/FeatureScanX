@@ -54,11 +54,13 @@ const ImagePreviewView = ({ file, onBack, onNext }) => {
           }}
         ></div>
         <div className="crop-button-container">
-          {showCropOptions && (
-            <div ref={cropOptionsRef}>
-              <CropOptions onOptionClick={handleOptionClick} />
-            </div>
-          )}
+          <div ref={cropOptionsRef}>
+            <CropOptions
+              showCropOptions={showCropOptions}
+              onOptionClick={handleOptionClick}
+              selectedOption={cropOption}
+            />
+          </div>
           <div onClick={handleCropButtonClick} className="crop-button">
             <FontAwesomeIcon icon={faCrop} />
           </div>
