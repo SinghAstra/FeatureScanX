@@ -27,11 +27,11 @@
 .dialog {
   background: var(--separator-color);
   border-radius: 12px;
-  min-height: 391px;
-  min-width: 348px;
-  width: 380px;
+  height: fit-content;
+  width: 348px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .dialog-header {
@@ -45,10 +45,10 @@
 
 .dialog-header h2 {
   font-weight: 500;
+  margin: auto;
 }
 
 .dialog-content {
-  flex: 1;
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -56,6 +56,7 @@
   justify-content: center;
   gap: 12px;
   overflow: hidden;
+  height: 348px;
 }
 
 .dialog-content button {

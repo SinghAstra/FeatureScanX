@@ -57,7 +57,7 @@ const CreatePostDialog = ({ isOpen, onClose }) => {
         {selectedFile ? (
           <ImagePreviewView
             file={selectedFile}
-            onBack={() => setSelectedFile(null)}
+            onBack={() => setIsDiscardDialogOpen(true)}
             onNext={() =>
               console.log("Proceed to next step with file:", selectedFile)
             }

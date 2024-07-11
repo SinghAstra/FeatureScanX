@@ -1,26 +1,27 @@
-import { faImage, faSquare } from "@fortawesome/free-solid-svg-icons";
+import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import { IoIosSquareOutline } from "react-icons/io";
 import { LuRectangleHorizontal, LuRectangleVertical } from "react-icons/lu";
 import "../styles/CropOptions.css";
 const CropOptions = ({ onOptionClick }) => {
   return (
     <div className="crop-options">
       <ul>
-        <li onClick={() => onOptionClick("Original")}>
+        <li onClick={() => onOptionClick("original")}>
           Original
           <FontAwesomeIcon icon={faImage} />
         </li>
         <hr />
-        <li onClick={() => onOptionClick("1:1")}>
-          1:1 <FontAwesomeIcon icon={faSquare} />
+        <li onClick={() => onOptionClick("1-1")}>
+          1:1 <IoIosSquareOutline style={{ fill: "white" }} />
         </li>
         <hr />
-        <li onClick={() => onOptionClick("4:5")}>
+        <li onClick={() => onOptionClick("4-5")}>
           4:5 <LuRectangleVertical />
         </li>
         <hr />
-        <li onClick={() => onOptionClick("16:9")}>
+        <li onClick={() => onOptionClick("16-9")}>
           16:9 <LuRectangleHorizontal />
         </li>
       </ul>
