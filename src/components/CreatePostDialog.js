@@ -2,19 +2,25 @@ import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import "../styles/CreatePostDialog.css";
+import DiscardDialog from "./DiscardDialog";
 import ImagePreviewView from "./ImagePreviewView";
 import InitialView from "./InitialView";
 
 const CreatePostDialog = ({ isOpen, onClose }) => {
   const dialogRef = useRef();
   const [selectedFile, setSelectedFile] = useState(null);
+  const [isDiscardDialogOpen, setIsDiscardDialogOpen] = useState(false);
 
   useEffect(() => {
     let timeoutId;
 
     const handleClickOutside = (event) => {
       if (dialogRef.current && !dialogRef.current.contains(event.target)) {
-        onClose();
+        if (selectedFile) {
+          setIsDiscardDialogOpen(true);
+        } else {
+          onClose();
+        }
       }
     };
 
@@ -28,7 +34,17 @@ const CreatePostDialog = ({ isOpen, onClose }) => {
       clearTimeout(timeoutId);
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, selectedFile]);
+
+  const handleDiscard = () => {
+    setIsDiscardDialogOpen(false);
+    onClose();
+    setSelectedFile(null);
+  };
+
+  const handleCancel = () => {
+    setIsDiscardDialogOpen(false);
+  };
 
   if (!isOpen) return null;
 
@@ -50,6 +66,9 @@ const CreatePostDialog = ({ isOpen, onClose }) => {
           <InitialView onSelectFile={(file) => setSelectedFile(file)} />
         )}
       </div>
+      {isDiscardDialogOpen && (
+        <DiscardDialog onDiscard={handleDiscard} onCancel={handleCancel} />
+      )}
     </div>
   );
 };

@@ -1,0 +1,58 @@
+.discard-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.discard-dialog {
+  background: var(--separator-color);
+  border-radius: 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.discard-dialog-header {
+  padding: 16px 48px;
+}
+
+.discard-dialog-header h2 {
+  font-weight: 400;
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.discard-dialog-header p {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.discard-dialog-actions {
+  margin-top: 16px;
+}
+
+.discard-dialog button {
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  background-color: transparent;
+  border-top: 1px solid var(--elevated-separator-color);
+  min-height: 48px;
+  font-size: 14px;
+  padding: 4px 8px;
+}
+
+.discard-dialog button:first-of-type {
+  color: rgb(237, 73, 86);
+}
+
+.discard-dialog button:last-of-type {
+  color: white;
+}
