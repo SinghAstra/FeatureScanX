@@ -12,6 +12,7 @@ const ImagePreviewView = ({ file, onBack, onNext }) => {
   const [zoomValue, setZoomValue] = useState(0);
   const cropOptionsRef = useRef(null);
   const zoomSliderRef = useRef(null);
+  const imageContainerRef = useRef(null);
 
   const handleCropButtonClick = () => {
     setShowCropOptions(!showCropOptions);
@@ -23,12 +24,13 @@ const ImagePreviewView = ({ file, onBack, onNext }) => {
 
   const handleZoomChange = (event) => {
     setZoomValue(event.target.value);
-    console.log("Zoom value:", event.target.value);
     const percentage =
       ((event.target.value - event.target.min) /
         (event.target.max - event.target.min)) *
       100;
     zoomSliderRef.current.style.background = `linear-gradient(to right, white ${percentage}%, black ${percentage}%)`;
+    const scale = 1 + event.target.value / 100;
+    imageContainerRef.current.style.transform = `scale(${scale})`;
   };
 
   const handleOptionClick = (option) => {
@@ -64,13 +66,16 @@ const ImagePreviewView = ({ file, onBack, onNext }) => {
         <h2>Crop</h2>
         <button onClick={onNext}>Next</button>
       </div>
-      <div className={`image-preview-dialog-content crop-${cropOption}`}>
-        <div
-          className="image-container"
-          style={{
-            backgroundImage: `url(${file})`,
-          }}
-        ></div>
+      <div className="image-preview-dialog-content">
+        <div className={`image-wrapper crop-${cropOption}`}>
+          <div
+            className="image-container"
+            ref={imageContainerRef}
+            style={{
+              backgroundImage: `url(${file})`,
+            }}
+          ></div>
+        </div>
 
         <div className="crop-button-container">
           {showCropOptions && (
