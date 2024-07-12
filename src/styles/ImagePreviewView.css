@@ -126,6 +126,15 @@
   justify-content: center;
   align-items: center;
   padding: 8px 12px;
+  transition: opacity 0.18s linear, transform 0.09s ease-out;
+  transition: opacity 0.03s linear, transform 0.09s ease-out;
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.zoom-slider-container.show-zoom-slider {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .zoom-slider {

@@ -1,16 +1,16 @@
 import { faArrowLeft, faCrop } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { RiZoomInLine } from "react-icons/ri";
 import "../styles/ImagePreviewView.css";
 import CropOptions from "./CropOptions";
+import ZoomSlider from "./ZoomSlider";
 
 const ImagePreviewView = ({ file, onBack, onNext }) => {
   const [showCropOptions, setShowCropOptions] = useState(false);
   const [cropOption, setCropOption] = useState("original");
   const [showZoomSlider, setShowZoomSlider] = useState(false);
   const [zoomValue, setZoomValue] = useState(0);
-  const cropOptionsRef = useRef(null);
   const zoomSliderRef = useRef(null);
   const imageContainerRef = useRef(null);
 
@@ -34,30 +34,8 @@ const ImagePreviewView = ({ file, onBack, onNext }) => {
   };
 
   const handleOptionClick = (option) => {
-    console.log("Selected Crop Option:", option);
     setCropOption(option);
   };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        cropOptionsRef.current &&
-        !cropOptionsRef.current.contains(event.target)
-      ) {
-        setShowCropOptions(false);
-      }
-    };
-
-    if (showCropOptions) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showCropOptions]);
 
   return (
     <>
@@ -78,33 +56,24 @@ const ImagePreviewView = ({ file, onBack, onNext }) => {
         </div>
 
         <div className="crop-button-container">
-          {showCropOptions && (
-            <div ref={cropOptionsRef}>
-              <CropOptions
-                showCropOptions={showCropOptions}
-                onOptionClick={handleOptionClick}
-                selectedOption={cropOption}
-              />
-            </div>
-          )}
+          <CropOptions
+            showCropOptions={showCropOptions}
+            onOptionClick={handleOptionClick}
+            selectedOption={cropOption}
+            setShowCropOptions={setShowCropOptions}
+          />
           <div onClick={handleCropButtonClick} className="crop-button">
             <FontAwesomeIcon icon={faCrop} />
           </div>
         </div>
         <div className="zoom-button-container">
-          {showZoomSlider && (
-            <div className="zoom-slider-container">
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={zoomValue}
-                onChange={handleZoomChange}
-                className="zoom-slider"
-                ref={zoomSliderRef}
-              />
-            </div>
-          )}
+          <ZoomSlider
+            showZoomSlider={showZoomSlider}
+            setShowZoomSlider={setShowZoomSlider}
+            zoomValue={zoomValue}
+            handleZoomChange={handleZoomChange}
+            zoomSliderRef={zoomSliderRef}
+          />
           <div onClick={handleZoomButtonClick} className="zoom-button">
             <RiZoomInLine
               style={{
