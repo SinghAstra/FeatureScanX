@@ -1,12 +1,14 @@
 import { faArrowLeft, faCrop } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef, useState } from "react";
+import { GoListOrdered } from "react-icons/go";
 import { RiZoomInLine } from "react-icons/ri";
 import "../styles/ImagePreviewView.css";
+import CreatePostCarousel from "./CreatePostCarousel";
 import CropOptions from "./CropOptions";
 import ZoomSlider from "./ZoomSlider";
 
-const ImagePreviewView = ({ file, onBack, onNext }) => {
+const ImagePreviewView = ({ files, onBack, onNext }) => {
   const [showCropOptions, setShowCropOptions] = useState(false);
   const [cropOption, setCropOption] = useState("original");
   const [showZoomSlider, setShowZoomSlider] = useState(false);
@@ -37,6 +39,8 @@ const ImagePreviewView = ({ file, onBack, onNext }) => {
     setCropOption(option);
   };
 
+  const handleMediaGalleryClick = () => {};
+
   return (
     <>
       <div className="image-preview-dialog-header">
@@ -45,16 +49,7 @@ const ImagePreviewView = ({ file, onBack, onNext }) => {
         <button onClick={onNext}>Next</button>
       </div>
       <div className="image-preview-dialog-content">
-        <div className={`image-wrapper crop-${cropOption}`}>
-          <div
-            className="image-container"
-            ref={imageContainerRef}
-            style={{
-              backgroundImage: `url(${file})`,
-            }}
-          ></div>
-        </div>
-
+        <CreatePostCarousel files={files} cropOption={cropOption} />
         <div className="crop-button-container">
           <CropOptions
             showCropOptions={showCropOptions}
@@ -80,6 +75,18 @@ const ImagePreviewView = ({ file, onBack, onNext }) => {
                 width: "32px",
                 height: "32px",
                 padding: "5px",
+                fill: "white",
+              }}
+            />
+          </div>
+        </div>
+        <div className="media-gallery-container">
+          <div onClick={handleMediaGalleryClick} className="media-gallery">
+            <GoListOrdered
+              style={{
+                width: "36px",
+                height: "36px",
+                padding: "6px",
                 fill: "white",
               }}
             />

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef } from "react";
 import "../styles/CreatePostDialog.css";
 
-const InitialView = ({ onSelectFile }) => {
+const InitialView = ({ onSelectFiles }) => {
   const fileInputRef = useRef();
 
   const handleSelectFromComputer = () => {
@@ -11,9 +11,11 @@ const InitialView = ({ onSelectFile }) => {
   };
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      onSelectFile(URL.createObjectURL(file));
+    const files = Array.from(event.target.files).map((file) =>
+      URL.createObjectURL(file)
+    );
+    if (files.length > 0) {
+      onSelectFiles(files);
     }
   };
 

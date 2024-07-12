@@ -8,7 +8,7 @@ import InitialView from "./InitialView";
 
 const CreatePostDialog = ({ isOpen, onClose }) => {
   const dialogRef = useRef();
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [isDiscardDialogOpen, setIsDiscardDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const CreatePostDialog = ({ isOpen, onClose }) => {
 
     const handleClickOutside = (event) => {
       if (dialogRef.current && !dialogRef.current.contains(event.target)) {
-        if (selectedFile) {
+        if (selectedFiles.length > 0) {
           setIsDiscardDialogOpen(true);
         } else {
           onClose();
@@ -27,19 +27,19 @@ const CreatePostDialog = ({ isOpen, onClose }) => {
     if (isOpen) {
       timeoutId = setTimeout(() => {
         document.addEventListener("mousedown", handleClickOutside);
-      }, 100); // Add a small delay to avoid immediate close
+      }, 100);
     }
 
     return () => {
       clearTimeout(timeoutId);
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isOpen, onClose, selectedFile]);
+  }, [isOpen, onClose, selectedFiles]);
 
   const handleDiscard = () => {
     setIsDiscardDialogOpen(false);
     onClose();
-    setSelectedFile(null);
+    setSelectedFiles([]);
   };
 
   const handleCancel = () => {
@@ -54,16 +54,14 @@ const CreatePostDialog = ({ isOpen, onClose }) => {
         <FontAwesomeIcon icon={faClose} />
       </div>
       <div className="dialog" ref={dialogRef}>
-        {selectedFile ? (
+        {selectedFiles.length > 0 ? (
           <ImagePreviewView
-            file={selectedFile}
+            files={selectedFiles}
             onBack={() => setIsDiscardDialogOpen(true)}
-            onNext={() =>
-              console.log("Proceed to next step with file:", selectedFile)
-            }
+            onNext={() => console.log("Next Button is clicked.")}
           />
         ) : (
-          <InitialView onSelectFile={(file) => setSelectedFile(file)} />
+          <InitialView onSelectFiles={(files) => setSelectedFiles(files)} />
         )}
       </div>
       {isDiscardDialogOpen && (
