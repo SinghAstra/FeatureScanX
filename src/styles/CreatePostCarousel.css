@@ -60,12 +60,20 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(26, 26, 26, 0.8);
+  border-radius: 50%;
+  transition: opacity 0.2s;
   border: none;
   color: white;
-  font-size: 2rem;
+  font-size: 100%;
   cursor: pointer;
   z-index: 1;
+  padding: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .prev-button {
@@ -74,4 +82,27 @@
 
 .next-button {
   right: 10px;
+}
+
+.carousel-indicator {
+  position: absolute;
+  bottom: 29px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel-icon {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--secondary-text);
+  margin: 0 4px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.carousel-icon.active {
+  background-color: var(--button-color);
 }

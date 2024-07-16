@@ -5,9 +5,9 @@ const ZoomSlider = ({
   setShowZoomSlider,
   zoomValue,
   handleZoomChange,
-  zoomSliderRef,
 }) => {
   const zoomSliderContainerRef = useRef(null);
+  const zoomSliderRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -29,6 +29,13 @@ const ZoomSlider = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showZoomSlider, setShowZoomSlider]);
+
+  useEffect(() => {
+    const percentage = zoomValue;
+    if (zoomSliderRef.current) {
+      zoomSliderRef.current.style.background = `linear-gradient(to right, white ${percentage}%, black ${percentage}%)`;
+    }
+  }, [zoomValue, zoomSliderRef]);
 
   return (
     <div

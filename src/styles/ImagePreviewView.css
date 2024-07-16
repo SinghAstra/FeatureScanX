@@ -39,7 +39,6 @@
   margin: 8px;
   display: flex;
   flex-direction: column;
-  /* z-index: 2; */
 }
 
 .crop-button-container svg,
@@ -99,7 +98,7 @@
   -webkit-appearance: none;
   appearance: none;
   background: black;
-  height: 1px;
+  height: 2px;
   width: 100%;
   outline: none;
 }
