@@ -9,6 +9,7 @@ import { GoListOrdered } from "react-icons/go";
 import "../styles/ImagePreviewView.css";
 import CreatePostCarousel from "./CreatePostCarousel";
 import CropOptions from "./CropOptions";
+import MediaGallery from "./MediaGallery";
 import ZoomSlider from "./ZoomSlider";
 
 const ImagePreviewView = ({ files, onBack, onNext }) => {
@@ -17,8 +18,7 @@ const ImagePreviewView = ({ files, onBack, onNext }) => {
   const [showZoomSlider, setShowZoomSlider] = useState(false);
   const [zoomValues, setZoomValues] = useState(Array(files.length).fill(0));
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  console.log("zoomValues is ", zoomValues);
+  const [showMediaGallery, setShowMediaGallery] = useState(false);
 
   const handleCropButtonClick = () => {
     setShowCropOptions(!showCropOptions);
@@ -39,7 +39,10 @@ const ImagePreviewView = ({ files, onBack, onNext }) => {
     setCropOption(option);
   };
 
-  const handleMediaGalleryClick = () => {};
+  const handleMediaGalleryClick = () => {
+    console.log("Inside handle Media Gallery");
+    setShowMediaGallery(!showMediaGallery);
+  };
 
   return (
     <>
@@ -81,8 +84,12 @@ const ImagePreviewView = ({ files, onBack, onNext }) => {
             />
           </div>
         </div>
-        <div className="media-gallery-container">
-          <div onClick={handleMediaGalleryClick} className="media-gallery">
+        <div className="media-gallery-button-container">
+          <MediaGallery showMediaGallery={showMediaGallery} files={files} />
+          <div
+            onClick={handleMediaGalleryClick}
+            className="media-gallery-button"
+          >
             <GoListOrdered
               style={{
                 width: "36px",

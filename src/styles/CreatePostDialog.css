@@ -28,7 +28,7 @@
   background: var(--separator-color);
   border-radius: 12px;
   height: fit-content;
-  width: 348px;
+  width: 380px;
   display: flex;
   flex-direction: column;
   overflow: hidden;

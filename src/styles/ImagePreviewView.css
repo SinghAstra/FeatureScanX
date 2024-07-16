@@ -22,8 +22,8 @@
 }
 
 .image-preview-dialog-content {
-  width: 348px;
-  height: 348px;
+  width: 380px;
+  height: 380px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -65,7 +65,7 @@
 }
 
 .zoom-button-container svg,
-.media-gallery-container svg {
+.media-gallery-button svg {
   border-radius: 50%;
   color: var(--primary-text);
   background-color: rgba(26, 26, 26, 0.8);
@@ -159,11 +159,15 @@
   border-radius: 3px;
 }
 
-.media-gallery-container {
+.media-gallery-button-container {
+  display: flex;
+  flex-direction: column;
   position: absolute;
-  bottom: 0;
   right: 0;
+  bottom: 0;
+  align-items: end;
 }
 
-/* more padding of 8px */
-/* height 118px */
+.media-gallery-button {
+  margin: 8px;
+}
