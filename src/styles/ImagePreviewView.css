@@ -39,9 +39,11 @@
   margin: 8px;
   display: flex;
   flex-direction: column;
+  /* z-index: 2; */
 }
 
-.crop-button-container svg {
+.crop-button-container svg,
+.zoom-button-container svg {
   transition: all 0.3s;
   width: 20px;
   height: 20px;
@@ -83,7 +85,6 @@
   justify-content: center;
   align-items: center;
   padding: 8px 12px;
-  transition: opacity 0.18s linear, transform 0.09s ease-out;
   transition: opacity 0.03s linear, transform 0.09s ease-out;
   opacity: 0;
   transform: translateY(12px);

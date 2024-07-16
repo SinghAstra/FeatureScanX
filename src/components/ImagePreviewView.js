@@ -1,4 +1,8 @@
-import { faArrowLeft, faCrop } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faCrop,
+  faSearchPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef, useState } from "react";
 import { GoListOrdered } from "react-icons/go";
@@ -57,8 +61,8 @@ const ImagePreviewView = ({ files, onBack, onNext }) => {
             selectedOption={cropOption}
             setShowCropOptions={setShowCropOptions}
           />
-          <div onClick={handleCropButtonClick} className="crop-button">
-            <FontAwesomeIcon icon={faCrop} />
+          <div className="crop-button">
+            <FontAwesomeIcon icon={faCrop} onClick={handleCropButtonClick} />
           </div>
         </div>
         <div className="zoom-button-container">
@@ -69,14 +73,10 @@ const ImagePreviewView = ({ files, onBack, onNext }) => {
             handleZoomChange={handleZoomChange}
             zoomSliderRef={zoomSliderRef}
           />
-          <div onClick={handleZoomButtonClick} className="zoom-button">
-            <RiZoomInLine
-              style={{
-                width: "32px",
-                height: "32px",
-                padding: "5px",
-                fill: "white",
-              }}
+          <div className="zoom-button">
+            <FontAwesomeIcon
+              icon={faSearchPlus}
+              onClick={handleZoomButtonClick}
             />
           </div>
         </div>
