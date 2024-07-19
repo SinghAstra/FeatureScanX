@@ -3,8 +3,9 @@ import React, { useEffect, useRef } from "react";
 const ZoomSlider = ({
   showZoomSlider,
   setShowZoomSlider,
-  zoomValue,
-  handleZoomChange,
+  zoomValues,
+  setZoomValues,
+  currentIndex,
 }) => {
   const zoomSliderContainerRef = useRef(null);
   const zoomSliderRef = useRef(null);
@@ -31,11 +32,18 @@ const ZoomSlider = ({
   }, [showZoomSlider, setShowZoomSlider]);
 
   useEffect(() => {
-    const percentage = zoomValue;
+    const percentage = zoomValues[currentIndex];
     if (zoomSliderRef.current) {
       zoomSliderRef.current.style.background = `linear-gradient(to right, white ${percentage}%, black ${percentage}%)`;
     }
-  }, [zoomValue, zoomSliderRef]);
+  }, [currentIndex, zoomSliderRef, zoomValues]);
+
+  const handleZoomChange = (event) => {
+    const newZoomValue = event.target.value;
+    const newZoomValues = [...zoomValues];
+    newZoomValues[currentIndex] = newZoomValue;
+    setZoomValues(newZoomValues);
+  };
 
   return (
     <div
@@ -48,7 +56,7 @@ const ZoomSlider = ({
         type="range"
         min="0"
         max="100"
-        value={zoomValue}
+        value={zoomValues[currentIndex]}
         onChange={handleZoomChange}
         className="zoom-slider"
         ref={zoomSliderRef}

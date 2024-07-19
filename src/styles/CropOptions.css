@@ -1,10 +1,12 @@
 .crop-options {
   border-radius: 8px;
   background-color: rgba(26, 26, 26, 0.8);
-  transition: opacity 0.18s linear, transform 0.09s ease-out;
   opacity: 0;
   transform: translateY(12px);
   transition: opacity 0.18s linear, transform 0.09s ease-out;
+  position: absolute;
+  bottom: 60px;
+  left: 20px;
 }
 
 .crop-options.show {

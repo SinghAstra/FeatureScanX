@@ -6,11 +6,15 @@ import { LuRectangleHorizontal, LuRectangleVertical } from "react-icons/lu";
 import "../styles/CropOptions.css";
 const CropOptions = ({
   showCropOptions,
-  onOptionClick,
+  setCropOption,
   selectedOption,
   setShowCropOptions,
 }) => {
   const cropOptionsRef = useRef(null);
+
+  const handleOptionClick = (option) => {
+    setCropOption(option);
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -40,7 +44,7 @@ const CropOptions = ({
     >
       <ul>
         <li
-          onClick={() => onOptionClick("original")}
+          onClick={() => handleOptionClick("original")}
           className={selectedOption === "original" ? "selected" : ""}
         >
           Original
@@ -48,21 +52,21 @@ const CropOptions = ({
         </li>
         <hr />
         <li
-          onClick={() => onOptionClick("1-1")}
+          onClick={() => handleOptionClick("1-1")}
           className={selectedOption === "1-1" ? "selected" : ""}
         >
           1:1 <IoIosSquareOutline style={{ fill: "white" }} />
         </li>
         <hr />
         <li
-          onClick={() => onOptionClick("4-5")}
+          onClick={() => handleOptionClick("4-5")}
           className={selectedOption === "4-5" ? "selected" : ""}
         >
           4:5 <LuRectangleVertical />
         </li>
         <hr />
         <li
-          onClick={() => onOptionClick("16-9")}
+          onClick={() => handleOptionClick("16-9")}
           className={selectedOption === "16-9" ? "selected" : ""}
         >
           16:9 <LuRectangleHorizontal />

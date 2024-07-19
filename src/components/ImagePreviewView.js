@@ -1,10 +1,13 @@
 import {
+  faAdd,
   faArrowLeft,
+  faArrowsAlt,
   faCrop,
   faSearchPlus,
+  faSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { GoListOrdered } from "react-icons/go";
 import "../styles/ImagePreviewView.css";
 import CreatePostCarousel from "./CreatePostCarousel";
@@ -17,30 +20,19 @@ const ImagePreviewView = ({ files, onBack, onNext }) => {
   const [cropOption, setCropOption] = useState("original");
   const [showZoomSlider, setShowZoomSlider] = useState(false);
   const [zoomValues, setZoomValues] = useState(Array(files.length).fill(0));
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [showMediaGallery, setShowMediaGallery] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const handleCropButtonClick = () => {
+  const toggleCropOptions = () => {
+    console.log("Inside toggleCropOptions");
     setShowCropOptions(!showCropOptions);
   };
 
-  const handleZoomButtonClick = () => {
+  const toggleZoomSlider = () => {
     setShowZoomSlider(!showZoomSlider);
   };
 
-  const handleZoomChange = (event) => {
-    const newZoomValue = event.target.value;
-    const newZoomValues = [...zoomValues];
-    newZoomValues[currentIndex] = newZoomValue;
-    setZoomValues(newZoomValues);
-  };
-
-  const handleOptionClick = (option) => {
-    setCropOption(option);
-  };
-
-  const handleMediaGalleryClick = () => {
-    console.log("Inside handle Media Gallery");
+  const toggleMediaGallery = () => {
     setShowMediaGallery(!showMediaGallery);
   };
 
@@ -59,47 +51,33 @@ const ImagePreviewView = ({ files, onBack, onNext }) => {
           currentIndex={currentIndex}
           setCurrentIndex={setCurrentIndex}
         />
-        <div className="crop-button-container">
-          <CropOptions
-            showCropOptions={showCropOptions}
-            onOptionClick={handleOptionClick}
-            selectedOption={cropOption}
-            setShowCropOptions={setShowCropOptions}
-          />
-          <div className="crop-button">
-            <FontAwesomeIcon icon={faCrop} onClick={handleCropButtonClick} />
-          </div>
-        </div>
-        <div className="zoom-button-container">
-          <ZoomSlider
-            showZoomSlider={showZoomSlider}
-            setShowZoomSlider={setShowZoomSlider}
-            zoomValue={zoomValues[currentIndex]}
-            handleZoomChange={handleZoomChange}
-          />
-          <div className="zoom-button">
-            <FontAwesomeIcon
-              icon={faSearchPlus}
-              onClick={handleZoomButtonClick}
-            />
-          </div>
-        </div>
-        <div className="media-gallery-button-container">
-          <MediaGallery showMediaGallery={showMediaGallery} files={files} />
-          <div
-            onClick={handleMediaGalleryClick}
-            className="media-gallery-button"
-          >
-            <GoListOrdered
-              style={{
-                width: "36px",
-                height: "36px",
-                padding: "6px",
-                fill: "white",
-              }}
-            />
-          </div>
-        </div>
+        <button onClick={toggleCropOptions} className="crop-button">
+          <FontAwesomeIcon icon={faCrop} />
+        </button>
+        <CropOptions
+          showCropOptions={showCropOptions}
+          setShowCropOptions={setShowCropOptions}
+          setCropOption={setCropOption}
+          selectedOption={cropOption}
+        />
+        <button className="zoom-button" onClick={toggleZoomSlider}>
+          <FontAwesomeIcon icon={faSearchPlus} onClick={toggleZoomSlider} />
+        </button>
+        <ZoomSlider
+          showZoomSlider={showZoomSlider}
+          setShowZoomSlider={setShowZoomSlider}
+          zoomValues={zoomValues}
+          setZoomValues={setZoomValues}
+          currentIndex={currentIndex}
+        />
+        <button onClick={toggleMediaGallery} className="media-gallery-button">
+          <FontAwesomeIcon icon={faArrowsAlt} />
+        </button>
+        <MediaGallery
+          showMediaGallery={showMediaGallery}
+          setShowMediaGallery={setShowMediaGallery}
+          files={files}
+        />
       </div>
     </>
   );

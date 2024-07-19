@@ -17,3 +17,11 @@
   min-height: 100vh;
   background-color: var(--background-color);
 }
+
+.main-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background-color);
+}

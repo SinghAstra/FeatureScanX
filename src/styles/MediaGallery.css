@@ -1,5 +1,7 @@
 .media-gallery-container {
-  margin: 8px;
+  position: absolute;
+  right: 10px;
+  bottom: 60px;
   border-radius: 8px;
   background: rgba(26, 26, 26, 0.8);
   padding: 8px;
@@ -28,7 +30,9 @@
   height: 94px;
   overflow: hidden;
   position: relative;
-  box-shadow: rgba(0, 0, 0, 0) 0px 2px 6px 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .media-image-content {
@@ -41,8 +45,8 @@
 
 .delete-icon {
   border: rgba(0, 0, 0, 0.4);
-  width: 28px;
-  height: 28px;
+  width: 20px;
+  height: 20px;
   position: absolute;
   top: 2px;
   right: 2px;
@@ -66,18 +70,17 @@
   opacity: 0.9;
 }
 
-/* ------------------------------------------------------- */
-
 .add-images-container {
   width: 40px;
   height: 40px;
-  border: 1px solid var(--separator-color);
+  border: 2px solid var(--separator-color);
   border-radius: 50%;
   margin-right: 4px;
   margin-left: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .add-images-container svg {

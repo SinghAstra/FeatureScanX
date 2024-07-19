@@ -1,0 +1,66 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+}
+
+.image-wrapper {
+  width: 380px;
+  height: 380px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid white;
+  position: relative;
+}
+
+.image-container {
+  width: 760px;
+  height: 380px;
+  background: url("https://images.unsplash.com/photo-1721043294825-be885cb56a44?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-position: center;
+  background-size: cover;
+}
+
+.horizontal-line,
+.vertical-line {
+  position: absolute;
+  background-color: white;
+  display: none;
+  z-index: 10;
+}
+
+.horizontal-line {
+  height: 1px;
+  width: 100%;
+}
+
+.horizontal-line.line1 {
+  top: 33.33%;
+}
+
+.horizontal-line.line2 {
+  top: 66.66%;
+}
+
+.vertical-line {
+  width: 1px;
+  height: 100%;
+}
+
+.vertical-line.line1 {
+  left: 33.33%;
+}
+
+.vertical-line.line2 {
+  left: 66.66%;
+}
+
+.show-lines .horizontal-line,
+.show-lines .vertical-line {
+  display: block;
+}
