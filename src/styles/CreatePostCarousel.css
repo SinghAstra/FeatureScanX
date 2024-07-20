@@ -7,11 +7,9 @@
   align-items: center;
 }
 
-.carousel-images {
-  display: flex;
-  transition: transform 0.5s ease-in-out;
-  overflow: hidden;
+.carousel-images-container {
   transition: width 0.3s ease, height 0.3s ease, background-size 0.3s ease;
+  overflow: hidden;
 }
 
 .crop-original {
@@ -24,18 +22,18 @@
 }
 
 .crop-1-1 {
-  width: 696px;
-  height: 348px;
+  aspect-ratio: 1/1;
+  height: 380px;
 }
 
 .crop-4-5 {
-  width: 278px;
-  height: 348px;
+  aspect-ratio: 4/5;
+  height: 380px;
 }
 
 .crop-16-9 {
-  width: 348px;
-  height: 195px;
+  aspect-ratio: 16/9;
+  height: 214px;
 }
 
 .crop-1-1 .carousel-image,
@@ -45,7 +43,7 @@
 }
 
 .carousel-image {
-  width: 100%;
+  width: auto;
   height: 100%;
   background-position: center center;
   background-repeat: no-repeat;

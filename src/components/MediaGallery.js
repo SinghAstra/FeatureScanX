@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef } from "react";
 import "../styles/MediaGallery.css";
 
-const MediaGallery = ({ files, showMediaGallery, setShowMediaGallery }) => {
+const MediaGallery = ({ files, setShowMediaGallery }) => {
   const mediaGalleryRef = useRef(null);
 
   useEffect(() => {
@@ -16,22 +16,15 @@ const MediaGallery = ({ files, showMediaGallery, setShowMediaGallery }) => {
       }
     };
 
-    if (showMediaGallery) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [showMediaGallery, setShowMediaGallery]);
+  }, [setShowMediaGallery]);
 
   return (
-    <div
-      ref={mediaGalleryRef}
-      className={`media-gallery-container ${showMediaGallery ? "show" : ""}`}
-    >
+    <div ref={mediaGalleryRef} className="media-gallery-container">
       <div className="media-images-container">
         {files.map((file, index) => (
           <div className="media-image" key={index}>

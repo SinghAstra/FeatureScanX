@@ -4,12 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { IoIosSquareOutline } from "react-icons/io";
 import { LuRectangleHorizontal, LuRectangleVertical } from "react-icons/lu";
 import "../styles/CropOptions.css";
-const CropOptions = ({
-  showCropOptions,
-  setCropOption,
-  selectedOption,
-  setShowCropOptions,
-}) => {
+const CropOptions = ({ setCropOption, selectedOption, setShowCropOptions }) => {
   const cropOptionsRef = useRef(null);
 
   const handleOptionClick = (option) => {
@@ -26,22 +21,15 @@ const CropOptions = ({
       }
     };
 
-    if (showCropOptions) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [showCropOptions, setShowCropOptions]);
+  }, [setShowCropOptions]);
 
   return (
-    <div
-      className={`crop-options ${showCropOptions ? "show" : ""}`}
-      ref={cropOptionsRef}
-    >
+    <div className="crop-options" ref={cropOptionsRef}>
       <ul>
         <li
           onClick={() => handleOptionClick("original")}

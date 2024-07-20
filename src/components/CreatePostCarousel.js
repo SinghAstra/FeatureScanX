@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import "../styles/CreatePostCarousel.css";
 
 const CreatePostCarousel = ({
@@ -8,15 +8,6 @@ const CreatePostCarousel = ({
   currentIndex,
   setCurrentIndex,
 }) => {
-  const [imagePosition, setImagePosition] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [initialMousePosition, setInitialMousePosition] = useState({
-    x: 0,
-    y: 0,
-  });
-  const imageContainerRef = useRef(null);
-  const imageWrapperRef = useRef(null);
-
   const handlePrevClick = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? files.length - 1 : prevIndex - 1
@@ -31,7 +22,7 @@ const CreatePostCarousel = ({
 
   return (
     <div className="carousel">
-      <div className={`carousel-images crop-1-1`}>
+      <div className={`carousel-images-container crop-${cropOption}`}>
         {files.map((file, index) => (
           <div
             key={index}
@@ -47,10 +38,6 @@ const CreatePostCarousel = ({
             }}
           ></div>
         ))}
-        <div className="horizontal-line line1"></div>
-        <div className="horizontal-line line2"></div>
-        <div className="vertical-line line1"></div>
-        <div className="vertical-line line2"></div>
       </div>
       {currentIndex > 0 && (
         <button

@@ -1,14 +1,11 @@
 import {
-  faAdd,
   faArrowLeft,
   faArrowsAlt,
   faCrop,
   faSearchPlus,
-  faSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import { GoListOrdered } from "react-icons/go";
 import "../styles/ImagePreviewView.css";
 import CreatePostCarousel from "./CreatePostCarousel";
 import CropOptions from "./CropOptions";
@@ -54,30 +51,33 @@ const ImagePreviewView = ({ files, onBack, onNext }) => {
         <button onClick={toggleCropOptions} className="crop-button">
           <FontAwesomeIcon icon={faCrop} />
         </button>
-        <CropOptions
-          showCropOptions={showCropOptions}
-          setShowCropOptions={setShowCropOptions}
-          setCropOption={setCropOption}
-          selectedOption={cropOption}
-        />
+        {showCropOptions && (
+          <CropOptions
+            setShowCropOptions={setShowCropOptions}
+            setCropOption={setCropOption}
+            selectedOption={cropOption}
+          />
+        )}
         <button className="zoom-button" onClick={toggleZoomSlider}>
           <FontAwesomeIcon icon={faSearchPlus} onClick={toggleZoomSlider} />
         </button>
-        <ZoomSlider
-          showZoomSlider={showZoomSlider}
-          setShowZoomSlider={setShowZoomSlider}
-          zoomValues={zoomValues}
-          setZoomValues={setZoomValues}
-          currentIndex={currentIndex}
-        />
+        {showZoomSlider && (
+          <ZoomSlider
+            setShowZoomSlider={setShowZoomSlider}
+            zoomValues={zoomValues}
+            setZoomValues={setZoomValues}
+            currentIndex={currentIndex}
+          />
+        )}
         <button onClick={toggleMediaGallery} className="media-gallery-button">
           <FontAwesomeIcon icon={faArrowsAlt} />
         </button>
-        <MediaGallery
-          showMediaGallery={showMediaGallery}
-          setShowMediaGallery={setShowMediaGallery}
-          files={files}
-        />
+        {showMediaGallery && (
+          <MediaGallery
+            setShowMediaGallery={setShowMediaGallery}
+            files={files}
+          />
+        )}
       </div>
     </>
   );

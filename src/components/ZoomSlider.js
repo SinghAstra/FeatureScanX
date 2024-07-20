@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
+import "../styles/ZoomSlider.css";
 
 const ZoomSlider = ({
-  showZoomSlider,
   setShowZoomSlider,
   zoomValues,
   setZoomValues,
@@ -12,24 +12,22 @@ const ZoomSlider = ({
 
   useEffect(() => {
     const handleClickOutside = (event) => {
+      console.log("inside handleClickOutside");
       if (
         zoomSliderContainerRef.current &&
         !zoomSliderContainerRef.current.contains(event.target)
       ) {
+        console.log("object inside handleClickOutside");
         setShowZoomSlider(false);
       }
     };
 
-    if (showZoomSlider) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [showZoomSlider, setShowZoomSlider]);
+  }, [setShowZoomSlider]);
 
   useEffect(() => {
     const percentage = zoomValues[currentIndex];
@@ -40,18 +38,14 @@ const ZoomSlider = ({
 
   const handleZoomChange = (event) => {
     const newZoomValue = event.target.value;
+    console.log("newZoomValue: " + newZoomValue);
     const newZoomValues = [...zoomValues];
     newZoomValues[currentIndex] = newZoomValue;
     setZoomValues(newZoomValues);
   };
 
   return (
-    <div
-      className={`zoom-slider-container ${
-        showZoomSlider ? "show-zoom-slider" : ""
-      }`}
-      ref={zoomSliderContainerRef}
-    >
+    <div className="zoom-slider-container" ref={zoomSliderContainerRef}>
       <input
         type="range"
         min="0"

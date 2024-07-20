@@ -1,20 +1,13 @@
 .media-gallery-container {
   position: absolute;
   right: 10px;
-  bottom: 60px;
+  bottom: 70px;
   border-radius: 8px;
   background: rgba(26, 26, 26, 0.8);
   padding: 8px;
   display: flex;
   height: 118px;
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 0.18s linear, transform 0.09s ease-out;
-}
-
-.media-gallery-container.show {
-  opacity: 1;
-  transform: translateY(0);
+  animation: slideIn 0.3s ease-out;
 }
 
 .media-images-container {
