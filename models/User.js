@@ -29,7 +29,13 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    friends: [
+    followers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    following: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

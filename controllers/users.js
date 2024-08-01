@@ -27,37 +27,46 @@ export const getUserInfo = async (req, res) => {
   }
 };
 
-export const addRemoveFriend = async (req, res) => {
+export const toggleFollow = async (req, res) => {
   try {
-    const { friendId } = req.params;
-    const id = req.user.id;
-    const user = await User.findById(id);
-    const friend = await User.findById(friendId);
+    const { userId } = req.params;
+    const currentUserId = req.user.id;
 
-    if (!user || !friend) {
-      return res.status(404).json({ message: "User Not Found" });
+    if (userId === currentUserId.toString()) {
+      return res.status(400).json({ message: "You cannot follow yourself." });
     }
 
-    if (id === friendId) {
-      return res
-        .status(400)
-        .json({ message: "Cannot add/remove yourself as a friend" });
+    const currentUser = await User.findById(currentUserId);
+    const userToFollow = await User.findById(userId);
+
+    if (!userToFollow) {
+      return res.status(404).json({ message: "User not found." });
     }
 
-    if (user.friends.includes(friendId)) {
-      user.friends = user.friends.filter((id) => id !== friendId);
-      friend.friends = friend.friends.filter((id) => id !== id);
+    // Check if the user is already following the target user
+    const isFollowing = currentUser.following.includes(userId);
+
+    if (isFollowing) {
+      // UnFollow the user
+      currentUser.following.pull(userId);
+      userToFollow.followers.pull(currentUserId);
     } else {
-      user.friends.push(friendId);
-      friend.friends.push(id);
+      // Follow the user
+      currentUser.following.push(userId);
+      userToFollow.followers.push(currentUserId);
     }
-    await user.save();
-    await friend.save();
 
-    const updatedUser = await User.findById(id).populate("friends");
+    await currentUser.save();
+    await userToFollow.save();
 
-    res.status(200).json(updatedUser);
+    res.status(200).json({
+      user: currentUser,
+      message: isFollowing
+        ? "UnFollowed successfully."
+        : "Followed successfully.",
+    });
   } catch (err) {
-    res.status(404).json({ message: err.message });
+    console.error(err);
+    res.status(500).json({ message: "Error toggling follow status." });
   }
 };

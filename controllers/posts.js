@@ -1,12 +1,10 @@
 import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
 import Post from "../models/Post.js";
+import User from "../models/User.js";
 
 export const createPost = async (req, res) => {
   try {
-    console.log("In creating post");
-    console.log("req.body is ", req.body);
-    console.log("req.file is ", req.file);
     const userId = req.user.id;
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
@@ -41,11 +39,29 @@ export const createPost = async (req, res) => {
       description,
       picturePath: picturePath.url,
     });
-    //   await newPost.save();
+
+    await post.save();
 
     res.status(201).json(post);
   } catch (err) {
     console.log("error is ", err);
     res.status(409).json({ message: "Error while Creating Post." });
+  }
+};
+
+export const getFeedPosts = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const user = await User.findById(userId).populate("friends");
+    const friendIds = user.friends.map((friend) => friend._id);
+
+    const posts = await Post.find({ userId: { $in: friendIds } })
+      .populate("userId")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(posts);
+  } catch (err) {
+    console.log("error is ", err);
+    res.status(500).json({ message: "Error while fetching feed posts." });
   }
 };

@@ -1,8 +1,8 @@
 import express from "express";
 import {
-  addRemoveFriend,
   getAllUsers,
   getUserInfo,
+  toggleFollow,
 } from "../controllers/users.js";
 import authMiddleware from "../middleware/auth.js";
 
@@ -14,7 +14,7 @@ router.get("/", authMiddleware, getAllUsers);
 // get user info of any user when you are logged in
 router.get("/:id", authMiddleware, getUserInfo);
 
-// add or remove friend when you are logged in
-router.patch("/friend/:friendId", authMiddleware, addRemoveFriend);
+// toggleFollowing a user
+router.get("/follow/:userId", authMiddleware, toggleFollow);
 
 export default router;

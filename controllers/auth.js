@@ -59,7 +59,7 @@ export const registerUser = async (req, res) => {
       impressions: Math.floor(Math.random() * 10000),
     });
 
-    // await user.save();
+    await user.save();
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
@@ -115,6 +115,8 @@ export const deleteAllUser = async (req, res) => {
 
 export const fetchUserInfoUsingJWTTokenInCookies = async (req, res) => {
   const userId = req.user.id;
+
+  console.log("userId is ", userId);
 
   const user = await User.findById(userId);
   if (!user) {

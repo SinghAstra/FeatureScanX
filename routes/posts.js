@@ -1,6 +1,6 @@
 import express from "express";
 import upload from "../config/multer.js";
-import { createPost } from "../controllers/posts.js";
+import { createPost, getFeedPosts } from "../controllers/posts.js";
 import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
@@ -14,7 +14,7 @@ router.post(
 );
 
 // get the posts for home page
-// router.get("/", verifyToken, getFeedPosts);
+router.get("/", authMiddleware, getFeedPosts);
 
 // get all post of a certain user
 // router.get("/:userId/posts", verifyToken, getUserPosts);

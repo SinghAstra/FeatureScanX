@@ -39,7 +39,7 @@ app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
 app.use("/posts", postsRoutes);
 
-app.get("/", (req, res) => {
+app.get("/clear-cookies", (req, res) => {
   const cookies = req.cookies;
 
   for (const cookieName in cookies) {
@@ -49,6 +49,10 @@ app.get("/", (req, res) => {
   }
 
   res.status(200).json({ message: "All cookies cleared." });
+});
+
+app.get("/view-cookies", (req, res) => {
+  res.json({ cookies: req.cookies });
 });
 
 mongoose
