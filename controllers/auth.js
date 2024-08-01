@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
+import { v2 as cloudinary } from "cloudinary";
 import jwt from "jsonwebtoken";
+import streamifier from "streamifier";
 import User from "../models/User.js";
 
 // Check if fields exists Check if they are valid data
@@ -9,6 +11,8 @@ export const registerUser = async (req, res) => {
   try {
     const { firstName, lastName, email, password, location, occupation } =
       req.body;
+
+    console.log("req.file is ", req.file);
 
     if (!email || !password) {
       res.status(400).json({ message: "Missing Credentials." });
@@ -23,7 +27,27 @@ export const registerUser = async (req, res) => {
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
-    const picturePath = req.file ? `/assets/${req.file.filename}` : "";
+    let picturePath = "";
+
+    const streamUpload = (fileBuffer) => {
+      return new Promise((resolve, reject) => {
+        let stream = cloudinary.uploader.upload_stream(
+          { folder: "user_pictures" },
+          (error, result) => {
+            if (result) {
+              resolve(result);
+            } else {
+              reject(error);
+            }
+          }
+        );
+        streamifier.createReadStream(fileBuffer).pipe(stream);
+      });
+    };
+
+    picturePath = await streamUpload(req.file.buffer);
+
+    console.log("picturePath", picturePath);
 
     const user = new User({
       firstName,
@@ -37,7 +61,7 @@ export const registerUser = async (req, res) => {
       impressions: Math.floor(Math.random() * 10000),
     });
 
-    await user.save();
+    // await user.save();
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
@@ -50,6 +74,7 @@ export const registerUser = async (req, res) => {
 
     res.status(201).json({ message: "Registered successfully." });
   } catch (err) {
+    console.log("error is ", err);
     res.status(500).json({ message: "Internal Server Error - Register User." });
   }
 };
