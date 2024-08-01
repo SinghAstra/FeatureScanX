@@ -11,6 +11,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { deleteAllUser, registerUser } from "./controllers/auth.js";
 import authRoutes from "./routes/auth.js";
+import usersRoutes from "./routes/users.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -39,6 +40,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 app.post("/auth/register", upload.single("picture"), registerUser);
 app.use("/auth", authRoutes);
+app.use("/users", usersRoutes);
 
 app.get("/", (req, res) => {
   res.json({ cookies: req.cookies });
