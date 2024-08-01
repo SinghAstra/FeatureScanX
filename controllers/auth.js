@@ -52,7 +52,7 @@ export const registerUser = async (req, res) => {
       lastName,
       email,
       password: passwordHash,
-      picturePath,
+      picturePath: picturePath.url,
       location,
       occupation,
       viewedProfile: Math.floor(Math.random() * 10000),
