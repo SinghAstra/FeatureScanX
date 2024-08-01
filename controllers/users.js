@@ -17,3 +17,38 @@ export const getUserInfo = async (req, res) => {
       .json({ message: "Internal Server Error - Fetch User Info" });
   }
 };
+
+export const addRemoveFriend = async (req, res) => {
+  try {
+    const { friendId } = req.params;
+    const id = req.user.id;
+    const user = await User.findById(id);
+    const friend = await User.findById(friendId);
+
+    if (!user || !friend) {
+      return res.status(404).json({ message: "User Not Found" });
+    }
+
+    if (id === friendId) {
+      return res
+        .status(400)
+        .json({ message: "Cannot add/remove yourself as a friend" });
+    }
+
+    if (user.friends.includes(friendId)) {
+      user.friends = user.friends.filter((id) => id !== friendId);
+      friend.friends = friend.friends.filter((id) => id !== id);
+    } else {
+      user.friends.push(friendId);
+      friend.friends.push(id);
+    }
+    await user.save();
+    await friend.save();
+
+    const updatedUser = await User.findById(id).populate("friends");
+
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
