@@ -12,8 +12,6 @@ export const registerUser = async (req, res) => {
     const { firstName, lastName, email, password, location, occupation } =
       req.body;
 
-    console.log("req.file is ", req.file);
-
     if (!email || !password) {
       res.status(400).json({ message: "Missing Credentials." });
     }
