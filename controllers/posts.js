@@ -107,3 +107,29 @@ export const deleteAllPosts = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const getUserPosts = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required." });
+    }
+
+    // Fetch posts by the user's ID
+    const posts = await Post.find({ user: userId })
+      .populate({ path: "user", select: "-password" })
+      .sort({ createdAt: -1 });
+
+    // If no posts are found, return a message indicating so
+    if (!posts.length) {
+      return res.status(404).json({ message: "No posts found for this user." });
+    }
+
+    // Return the posts
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error("Error fetching user's posts:", error);
+    res.status(500).json({ message: "Internal Server error - getUserPosts" });
+  }
+};
