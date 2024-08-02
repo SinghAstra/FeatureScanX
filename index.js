@@ -10,6 +10,7 @@ import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
+import commentsRoutes from "./routes/comments.js";
 import postsRoutes from "./routes/posts.js";
 import usersRoutes from "./routes/users.js";
 
@@ -38,6 +39,7 @@ cloudinary.config({
 app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
 app.use("/posts", postsRoutes);
+app.use("/comments", commentsRoutes);
 
 app.get("/clear-cookies", (req, res) => {
   const cookies = req.cookies;

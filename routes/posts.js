@@ -39,4 +39,6 @@ router.get("/:userId", authMiddleware, getUserPosts);
 // toggle like for a post
 router.post("/:postId/like", authMiddleware, likePost);
 
+//
+
 export default router;
