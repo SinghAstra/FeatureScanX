@@ -133,3 +133,41 @@ export const getUserPosts = async (req, res) => {
     res.status(500).json({ message: "Internal Server error - getUserPosts" });
   }
 };
+
+export const likePost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const userId = req.user.id;
+
+    // Find the post by ID
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    // Check if the post is already liked by the user
+    const isLiked = post.likes.includes(userId);
+
+    if (isLiked) {
+      // Unlike the post by removing the user's ID from the likes array
+      post.likes = post.likes.filter(
+        (id) => id.toString() !== userId.toString()
+      );
+    } else {
+      // Like the post by adding the user's ID to the likes array
+      post.likes.push(userId);
+    }
+
+    // Save the updated post
+    const updatedPost = await post.save();
+
+    res.status(200).json({
+      message: isLiked ? "Post unLiked" : "Post liked",
+      post: updatedPost,
+    });
+  } catch (error) {
+    console.log("Error liking post:", error);
+    res.status(500).json({ message: " Internal Server error - Like Post" });
+  }
+};
