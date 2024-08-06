@@ -42,6 +42,8 @@ export const createPost = async (req, res) => {
 
     await post.save();
 
+    await User.findByIdAndUpdate(user, { $push: { posts: post._id } });
+
     res.status(201).json(post);
   } catch (err) {
     console.log("error is ", err);
@@ -66,6 +68,8 @@ export const newPost = async (req, res) => {
 
     await post.save();
 
+    await User.findByIdAndUpdate(user, { $push: { posts: post._id } });
+
     res.status(201).json(post);
   } catch (err) {
     console.log("error is ", err);
@@ -81,6 +85,7 @@ export const getFeedPosts = async (req, res) => {
 
     const posts = await Post.find({ user: { $in: followingIds } })
       .populate("user")
+      .populate("comments")
       .sort({ createdAt: -1 });
 
     res.status(200).json(posts);
@@ -92,7 +97,7 @@ export const getFeedPosts = async (req, res) => {
 
 export const getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find({}).populate("user");
+    const posts = await Post.find({}).populate("user").populate("comments");
     res.status(200).json(posts);
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error - getAllPosts" });
@@ -119,6 +124,7 @@ export const getUserPosts = async (req, res) => {
     // Fetch posts by the user's ID
     const posts = await Post.find({ user: userId })
       .populate({ path: "user", select: "-password" })
+      .populate("comments")
       .sort({ createdAt: -1 });
 
     // If no posts are found, return a message indicating so

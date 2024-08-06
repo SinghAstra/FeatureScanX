@@ -35,6 +35,10 @@ export const addComment = async (req, res) => {
     // Save the comment
     await newComment.save();
 
+    // Add the comment to the post's comments array
+    post.comments.push(newComment._id);
+    await post.save();
+
     // Notify the owner of the post
     res
       .status(201)
@@ -45,5 +49,3 @@ export const addComment = async (req, res) => {
       .json({ message: "Failed to add comment.", error: error.message });
   }
 };
-
-export const getCommentsByPostId = async (req, res) => {};

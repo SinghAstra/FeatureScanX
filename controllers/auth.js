@@ -45,8 +45,6 @@ export const registerUser = async (req, res) => {
 
     picturePath = await streamUpload(req.file.buffer);
 
-    console.log("picturePath", picturePath);
-
     const user = new User({
       firstName,
       lastName,
@@ -62,12 +60,12 @@ export const registerUser = async (req, res) => {
     await user.save();
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "72h",
     });
 
     res.cookie("token", token, {
       httpOnly: true,
-      maxAge: 3600000,
+      maxAge: 72 * 3600 * 1000,
     });
 
     res.status(201).json({ message: "Registered successfully." });
@@ -91,11 +89,13 @@ export const loginUser = async (req, res) => {
     if (!isPasswordValid)
       return res.status(400).json({ msg: "Invalid credentials. " });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "72h",
+    });
 
     res.cookie("token", token, {
       httpOnly: true,
-      maxAge: 3600000,
+      maxAge: 72 * 3600 * 1000,
     });
 
     res.status(200).json({ message: "Logged In Successfully." });
