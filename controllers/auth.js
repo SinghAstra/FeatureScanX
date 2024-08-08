@@ -1,8 +1,14 @@
 import bcrypt from "bcrypt";
 import { v2 as cloudinary } from "cloudinary";
+import fs from "fs";
 import jwt from "jsonwebtoken";
+import path from "path";
 import streamifier from "streamifier";
+import { fileURLToPath } from "url";
 import User from "../models/User.js";
+import sendEmail from "../utils/sendEmail.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Check if email, mobile, or username is taken
 export const checkAvailabilityController = async (req, res) => {
@@ -29,9 +35,42 @@ export const checkAvailabilityController = async (req, res) => {
   }
 };
 
-// Check if fields exists Check if they are valid data
-// Implement forgot password - OTP Handling
-// Send Welcome Email
+export const sendConfirmationCodeController = async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ message: "Email is required" });
+  }
+
+  try {
+    // Generate 6-digit OTP
+    const confirmationCode = Math.floor(
+      100000 + Math.random() * 900000
+    ).toString();
+
+    const templatePath = path.resolve(
+      __dirname,
+      "../email-templates/confirmation-code.html"
+    );
+    let html = fs.readFileSync(templatePath, "utf8");
+
+    html = html.replace(/{{email}}/g, email);
+    html = html.replace(/{{confirmationCode}}/g, confirmationCode);
+
+    // Send email
+    await sendEmail({
+      email: email,
+      subject: `${confirmationCode} is your Social code`,
+      html: html,
+    });
+
+    res.status(200).json({ message: "Email sent" });
+  } catch (error) {
+    console.log("error.message is ", error.message);
+    res.status(500).json({ message: "Error sending email" });
+  }
+};
+
 export const registerUser = async (req, res) => {
   try {
     const { firstName, lastName, email, password, location, occupation } =
