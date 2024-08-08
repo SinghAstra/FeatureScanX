@@ -4,6 +4,31 @@ import jwt from "jsonwebtoken";
 import streamifier from "streamifier";
 import User from "../models/User.js";
 
+// Check if email, mobile, or username is taken
+export const checkAvailabilityController = async (req, res) => {
+  const { mobileOrEmail, username } = req.body;
+
+  try {
+    let user;
+    if (mobileOrEmail) {
+      user = await User.findOne({
+        $or: [{ email: mobileOrEmail }, { mobile: mobileOrEmail }],
+      });
+    }
+    if (username) {
+      user = await User.findOne({ username });
+    }
+
+    if (user) {
+      return res.status(200).json({ isAvailable: false });
+    } else {
+      return res.status(200).json({ isAvailable: true });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: "Server error - checkAvailability" });
+  }
+};
+
 // Check if fields exists Check if they are valid data
 // Implement forgot password - OTP Handling
 // Send Welcome Email

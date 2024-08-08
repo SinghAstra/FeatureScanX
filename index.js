@@ -36,7 +36,7 @@ cloudinary.config({
   secure: true,
 });
 
-app.use("/auth", authRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/users", usersRoutes);
 app.use("/posts", postsRoutes);
 app.use("/comments", commentsRoutes);

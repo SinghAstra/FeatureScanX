@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
@@ -16,9 +16,25 @@ const userSchema = new Schema(
     },
     email: {
       type: String,
-      required: [true, "Email is required"],
       unique: [true, "Email must be unique"],
       match: [/.+\@.+\..+/, "Invalid email address"],
+      validate: {
+        validator: function (value) {
+          return value || this.mobile;
+        },
+        message: "Either email or mobile number is required",
+      },
+    },
+    mobile: {
+      type: String,
+      unique: [true, "Mobile number must be unique"],
+      match: [/^[0-9]{10,15}$/, "Invalid mobile number"],
+      validate: {
+        validator: function (value) {
+          return value || this.email;
+        },
+        message: "Either mobile number or email is required",
+      },
     },
     password: {
       type: String,
@@ -71,6 +87,7 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    isEmailVerified: { type: Boolean, default: false },
     verified: {
       type: Boolean,
       default: false,
@@ -94,4 +111,6 @@ const userSchema = new Schema(
   }
 );
 
-module.exports = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+
+export default User;
