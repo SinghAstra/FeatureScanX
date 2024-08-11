@@ -22,7 +22,7 @@ export const checkAvailabilityController = async (req, res) => {
       });
     }
     if (username) {
-      user = await User.findOne({ username });
+      user = await User.findOne({ userName: username });
     }
 
     if (user) {
@@ -64,78 +64,72 @@ export const sendConfirmationCodeController = async (req, res) => {
       html: html,
     });
 
-    res.status(200).json({ message: "Email sent" });
+    res.status(200).json({ message: "Email sent", confirmationCode });
   } catch (error) {
     console.log("error.message is ", error.message);
     res.status(500).json({ message: "Error sending email" });
   }
 };
 
-export const registerUser = async (req, res) => {
+export const registerUserController = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, location, occupation } =
+    const { fullName, username, mobileOrEmail, password, dateOfBirth } =
       req.body;
 
-    if (!email || !password) {
-      res.status(400).json({ message: "Missing Credentials." });
-    }
+    // Determine if the provided mobileOrEmail is an email or mobile number
+    const isEmail = mobileOrEmail.includes("@");
+    const email = isEmail ? mobileOrEmail : null;
+    const mobile = isEmail ? null : mobileOrEmail;
 
-    const existingUser = await User.findOne({ email: email });
+    // Check if a user with the provided email or mobile already exists
+    const existingUser = await User.findOne({
+      $or: [{ email }, { mobile }],
+    });
 
     if (existingUser) {
-      return res.status(400).json({ message: "Email already taken." });
+      return res.status(400).json({ message: "User already exists" });
     }
 
-    const salt = await bcrypt.genSalt();
-    const passwordHash = await bcrypt.hash(password, salt);
+    // Check if a user with the username already exists
+    const existingUsername = await User.findOne({ userName: username });
 
-    let picturePath = "";
+    if (existingUsername) {
+      return res.status(400).json({ message: "Username already taken" });
+    }
 
-    const streamUpload = (fileBuffer) => {
-      return new Promise((resolve, reject) => {
-        let stream = cloudinary.uploader.upload_stream(
-          { folder: "user_pictures" },
-          (error, result) => {
-            if (result) {
-              resolve(result);
-            } else {
-              reject(error);
-            }
-          }
-        );
-        streamifier.createReadStream(fileBuffer).pipe(stream);
-      });
-    };
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    picturePath = await streamUpload(req.file.buffer);
-
-    const user = new User({
-      firstName,
-      lastName,
+    // Create a new user instance
+    const newUser = new User({
+      fullName,
+      userName: username,
       email,
-      password: passwordHash,
-      picturePath: picturePath.url,
-      location,
-      occupation,
-      viewedProfile: Math.floor(Math.random() * 10000),
-      impressions: Math.floor(Math.random() * 10000),
+      mobile,
+      password: hashedPassword,
+      dateOfBirth: new Date(
+        dateOfBirth.year,
+        dateOfBirth.month - 1,
+        dateOfBirth.day
+      ),
     });
 
-    await user.save();
+    // Save the user to the database
+    await newUser.save();
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "72h",
+    res.status(201).json({
+      message: "User registered successfully",
+      user: {
+        id: newUser._id,
+        username: newUser.userName,
+        email: newUser.email,
+        mobile: newUser.mobile,
+      },
     });
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      maxAge: 72 * 3600 * 1000,
-    });
-
-    res.status(201).json({ message: "Registered successfully." });
-  } catch (err) {
-    console.log("error is ", err);
-    res.status(500).json({ message: "Internal Server Error - Register User." });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal server error --registerUserController" });
   }
 };
 
@@ -189,3 +183,25 @@ export const fetchUserInfoUsingJWTTokenInCookies = async (req, res) => {
   const { password, ...userInfo } = user._doc;
   res.status(200).json({ user: userInfo });
 };
+
+// Uploading Profile Picture to cloudinary
+
+// let picturePath = "";
+
+// const streamUpload = (fileBuffer) => {
+//   return new Promise((resolve, reject) => {
+//     let stream = cloudinary.uploader.upload_stream(
+//       { folder: "user_pictures" },
+//       (error, result) => {
+//         if (result) {
+//           resolve(result);
+//         } else {
+//           reject(error);
+//         }
+//       }
+//     );
+//     streamifier.createReadStream(fileBuffer).pipe(stream);
+//   });
+// };
+
+// picturePath = await streamUpload(req.file.buffer);
