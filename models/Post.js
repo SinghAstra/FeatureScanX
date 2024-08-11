@@ -1,31 +1,23 @@
 import mongoose from "mongoose";
+const { ObjectId } = mongoose.Schema.Types;
 
-const postSchema = mongoose.Schema(
+const mediaSchema = new mongoose.Schema({
+  type: { type: String, enum: ["image", "video"], required: false },
+  url: { type: String, required: true },
+});
+
+const postSchema = new mongoose.Schema(
   {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    location: String,
-    description: String,
-    picturePath: String,
-    likes: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-    comments: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Comment",
-      },
-    ],
+    media: [mediaSchema],
+    caption: { type: String },
+    location: { type: String },
+    userId: { type: ObjectId, required: true, ref: "User" },
+    likes: [{ type: ObjectId, ref: "Like" }],
+    comments: [{ type: ObjectId, ref: "Comment" }],
+    hashtags: [{ type: ObjectId, ref: "Hashtag" }],
   },
   { timestamps: true }
 );
 
 const Post = mongoose.model("Post", postSchema);
-
 export default Post;

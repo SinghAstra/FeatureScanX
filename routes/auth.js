@@ -6,17 +6,21 @@ import {
   fetchUserInfoUsingJWTTokenInCookies,
   loginUser,
   registerUserController,
-  sendConfirmationCodeController,
+  verifyEmailController,
 } from "../controllers/auth.js";
 import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
 
 router.post("/check-availability", checkAvailabilityController);
-router.post("/send-confirmation-code", sendConfirmationCodeController);
+router.post("/verify-email", verifyEmailController);
+// router.post("/verify-phone-number", verifyPhoneNumberController);
 router.post("/register", registerUserController);
 router.post("/login", loginUser);
 router.post("/user", authMiddleware, fetchUserInfoUsingJWTTokenInCookies);
+
+// Testing Purposes
+router.get("/user", authMiddleware, fetchUserInfoUsingJWTTokenInCookies);
 router.get("/delete-all-user", deleteAllUser);
 
 export default router;

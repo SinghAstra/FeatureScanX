@@ -35,7 +35,7 @@ export const checkAvailabilityController = async (req, res) => {
   }
 };
 
-export const sendConfirmationCodeController = async (req, res) => {
+export const verifyEmailController = async (req, res) => {
   const { email } = req.body;
 
   if (!email) {
@@ -116,6 +116,15 @@ export const registerUserController = async (req, res) => {
 
     // Save the user to the database
     await newUser.save();
+
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+      expiresIn: "72h",
+    });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 72 * 3600 * 1000,
+    });
 
     res.status(201).json({
       message: "User registered successfully",
