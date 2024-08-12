@@ -1,7 +1,7 @@
 import express from "express";
 import upload from "../config/multer.js";
 import {
-  createPost,
+  createPostController,
   deleteAllPosts,
   getAllPosts,
   getFeedPosts,
@@ -13,12 +13,12 @@ import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
 
-// create a post when the user is authenticated
+// route to create a post when the user is authenticated
 router.post(
   "/create-post",
   authMiddleware,
-  upload.single("picture"),
-  createPost
+  upload.array("media"),
+  createPostController
 );
 
 // route to create a new post without using multer

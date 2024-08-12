@@ -183,8 +183,6 @@ export const deleteAllUser = async (req, res) => {
 export const fetchUserInfoUsingJWTTokenInCookies = async (req, res) => {
   const userId = req.user.id;
 
-  console.log("userId is ", userId);
-
   const user = await User.findById(userId);
   if (!user) {
     return res.status(404).json({ message: "User Not Found" });

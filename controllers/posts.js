@@ -1,5 +1,5 @@
-import { v2 as cloudinary } from "cloudinary";
-import streamifier from "streamifier";
+import cloudinary from "../config/cloudinaryConfig.js";
+import Hashtag from "../models/Hashtag.js";
 import Post from "../models/Post.js";
 import User from "../models/User.js";
 
@@ -49,6 +49,130 @@ export const createPost = async (req, res) => {
     console.log("error is ", err);
     res.status(409).json({ message: "Error while Creating Post." });
   }
+};
+
+// Route to create a post
+export const createPostController = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { caption, location } = req.body;
+
+    // Initialize array to store media URLs
+    const mediaFiles = [];
+
+    // Process uploaded files
+    for (const file of req.files) {
+      const uploadResult = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          {
+            resource_type: file.mimetype.startsWith("image/")
+              ? "image"
+              : "video",
+            folder: "social-app-posts", // Folder in Cloudinary to store posts
+          },
+          (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          }
+        );
+        stream.end(file.buffer);
+      });
+
+      mediaFiles.push({
+        type: file.mimetype.startsWith("image/") ? "image" : "video",
+        url: uploadResult.secure_url,
+      });
+
+      console.log("uploadResult.secure_url: ", uploadResult.secure_url);
+    }
+
+    // Create and save the post
+    const newPost = new Post({
+      media: mediaFiles,
+      caption,
+      location,
+      userId,
+    });
+
+    await newPost.save();
+
+    // Handle hashtags
+    const hashtags = await processHashtags(caption, newPost._id);
+    newPost.hashtags = hashtags;
+
+    // Handle mentions
+    const mentions = await processMentions(caption);
+    newPost.mentions = mentions;
+
+    await newPost.save();
+
+    console.log("newPost: ", newPost);
+
+    res
+      .status(201)
+      .json({ message: "Post created successfully", post: newPost });
+  } catch (error) {
+    console.log("error is ", error);
+    res.status(500).json({ message: "Error creating post", error });
+  }
+};
+
+const extractHashtags = (caption) => {
+  const hashtagRegex = /#(\w+)/g;
+  const matches = caption.match(hashtagRegex);
+  console.log("matches is ", matches);
+  return matches
+    ? matches.map((tag) => {
+        return tag.slice(1);
+      })
+    : [];
+};
+
+const processHashtags = async (caption, postId) => {
+  const hashtagNames = extractHashtags(caption);
+
+  const hashtags = await Promise.all(
+    hashtagNames.map(async (tag) => {
+      let hashtag = await Hashtag.findOne({ tag });
+      if (!hashtag) {
+        hashtag = new Hashtag({ tag, posts: [postId] });
+        await hashtag.save();
+      } else {
+        // If the hashtag already exists, add the post ID if it's not already there
+        if (!hashtag.posts.includes(postId)) {
+          hashtag.posts.push(postId);
+          await hashtag.save();
+        }
+      }
+      return hashtag._id;
+    })
+  );
+
+  return hashtags;
+};
+
+const extractMentions = (caption) => {
+  const mentionRegex = /@(\w+)/g;
+  const matches = caption.match(mentionRegex);
+  console.log("Mentions:", matches);
+  return matches ? matches.map((mention) => mention.slice(1)) : [];
+};
+
+const processMentions = async (caption) => {
+  const mentionUsernames = extractMentions(caption);
+
+  const mentions = await Promise.all(
+    mentionUsernames.map(async (username) => {
+      const user = await User.findOne({ userName: username });
+      return user ? user._id : null;
+    })
+  );
+
+  // Filter out any null values (in case some mentions did not correspond to valid users)
+  return mentions.filter((mention) => mention !== null);
 };
 
 export const newPost = async (req, res) => {
