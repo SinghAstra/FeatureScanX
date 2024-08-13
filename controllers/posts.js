@@ -3,59 +3,13 @@ import Hashtag from "../models/Hashtag.js";
 import Post from "../models/Post.js";
 import User from "../models/User.js";
 
-export const createPost = async (req, res) => {
-  try {
-    const user = req.user.id;
-    if (!user) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-    const { location, description } = req.body;
-
-    let picturePath = "";
-
-    const streamUpload = (fileBuffer) => {
-      return new Promise((resolve, reject) => {
-        let stream = cloudinary.uploader.upload_stream(
-          { folder: "posts", timeout: 60000 },
-          (error, result) => {
-            if (result) {
-              resolve(result);
-            } else {
-              reject(error);
-            }
-          }
-        );
-        streamifier.createReadStream(fileBuffer).pipe(stream);
-      });
-    };
-
-    picturePath = await streamUpload(req.file.buffer);
-
-    console.log("picturePath", picturePath);
-
-    const post = new Post({
-      user,
-      location,
-      description,
-      picturePath: picturePath.url,
-    });
-
-    await post.save();
-
-    await User.findByIdAndUpdate(user, { $push: { posts: post._id } });
-
-    res.status(201).json(post);
-  } catch (err) {
-    console.log("error is ", err);
-    res.status(409).json({ message: "Error while Creating Post." });
-  }
-};
-
 // Route to create a post
 export const createPostController = async (req, res) => {
   try {
     const userId = req.user.id;
     const { caption, location } = req.body;
+
+    console.log("req.files is ", req.files);
 
     // Initialize array to store media URLs
     const mediaFiles = [];
@@ -109,8 +63,6 @@ export const createPostController = async (req, res) => {
 
     await newPost.save();
 
-    console.log("newPost: ", newPost);
-
     res
       .status(201)
       .json({ message: "Post created successfully", post: newPost });
@@ -123,7 +75,6 @@ export const createPostController = async (req, res) => {
 const extractHashtags = (caption) => {
   const hashtagRegex = /#(\w+)/g;
   const matches = caption.match(hashtagRegex);
-  console.log("matches is ", matches);
   return matches
     ? matches.map((tag) => {
         return tag.slice(1);
@@ -157,7 +108,6 @@ const processHashtags = async (caption, postId) => {
 const extractMentions = (caption) => {
   const mentionRegex = /@(\w+)/g;
   const matches = caption.match(mentionRegex);
-  console.log("Mentions:", matches);
   return matches ? matches.map((mention) => mention.slice(1)) : [];
 };
 
@@ -173,32 +123,6 @@ const processMentions = async (caption) => {
 
   // Filter out any null values (in case some mentions did not correspond to valid users)
   return mentions.filter((mention) => mention !== null);
-};
-
-export const newPost = async (req, res) => {
-  try {
-    // const user = "66ab999508af48389ec5a2df";
-    if (!user) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-    const { picturePath, location, description } = req.body;
-
-    const post = new Post({
-      user,
-      location,
-      description,
-      picturePath,
-    });
-
-    await post.save();
-
-    await User.findByIdAndUpdate(user, { $push: { posts: post._id } });
-
-    res.status(201).json(post);
-  } catch (err) {
-    console.log("error is ", err);
-    res.status(409).json({ message: "Error while Creating Post." });
-  }
 };
 
 export const getFeedPosts = async (req, res) => {

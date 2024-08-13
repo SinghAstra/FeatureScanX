@@ -7,7 +7,6 @@ import {
   getFeedPosts,
   getUserPosts,
   likePost,
-  newPost,
 } from "../controllers/posts.js";
 import authMiddleware from "../middleware/auth.js";
 
@@ -20,9 +19,6 @@ router.post(
   upload.array("media"),
   createPostController
 );
-
-// route to create a new post without using multer
-router.post("/new-post", newPost);
 
 // get the posts for home page
 router.get("/", authMiddleware, getFeedPosts);

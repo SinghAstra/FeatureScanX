@@ -1,37 +1,31 @@
+import Post from "../models/Post.js";
 import User from "../models/User.js";
 
-// Give all the user info except the current User (req.user.id)
-export const getAllUsers = async (req, res) => {
+export const getUserProfile = async (req, res) => {
   try {
-    // Extract the current user's ID from the request object
+    const { username } = req.params;
     const currentUserId = req.user.id;
 
-    // Fetch all users except the current user
-    const users = await User.find({ _id: { $ne: currentUserId } });
-
-    // Respond with the filtered list of users
-    res.status(200).json({ users });
-  } catch (err) {
-    res.status(500).json({ message: "Internal Server Error - Fetch Users" });
-  }
-};
-
-export const getUserInfo = async (req, res) => {
-  try {
-    const userId = req.params.id;
-    const user = await User.findById(userId);
+    // Find the user by username
+    const user = await User.findOne({ userName: username }).select(
+      "-password -dateOfBirth"
+    );
 
     if (!user) {
-      return res.status(404).json({ message: "User Not Found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
-    const { password, ...userInfo } = user._doc;
-    res.status(200).json({ user: userInfo });
-  } catch (err) {
-    console.log("err is ", err);
-    res
-      .status(500)
-      .json({ message: "Internal Server Error - Fetch User Info" });
+    const postCount = await Post.countDocuments({ userId: user._id });
+    const isFollowing = user.followers.includes(currentUserId);
+
+    res.status(200).json({
+      user,
+      postCount,
+      isFollowing,
+    });
+  } catch (error) {
+    console.log("error.message is ", error.message);
+    res.status(500).json({ message: "Server error - getUserProfile" });
   }
 };
 

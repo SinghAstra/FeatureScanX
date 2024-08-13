@@ -1,24 +1,20 @@
 import express from "express";
 import {
   deleteAllUsers,
-  getAllUsers,
   getFollowers,
   getFollowing,
-  getUserInfo,
+  getUserProfile,
   toggleFollow,
 } from "../controllers/users.js";
 import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
 
-// get all users when you are logged in
-router.get("/", authMiddleware, getAllUsers);
+// Fetch User Profile Information using username
+router.get("/:username", authMiddleware, getUserProfile);
 
 //delete all users
 router.get("/delete-all-users", deleteAllUsers);
-
-// get user info of any user when you are logged in
-router.get("/:id", authMiddleware, getUserInfo);
 
 // toggleFollowing a user
 router.post("/follow/:userId", authMiddleware, toggleFollow);
