@@ -20,7 +20,6 @@ router.post("/login", loginUser);
 router.post("/user", authMiddleware, fetchUserInfoUsingJWTTokenInCookies);
 
 // Testing Purposes
-router.get("/user", authMiddleware, fetchUserInfoUsingJWTTokenInCookies);
 router.get("/delete-all-user", deleteAllUser);
 
 export default router;

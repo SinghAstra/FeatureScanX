@@ -1,6 +1,7 @@
 import express from "express";
 import {
   deleteAllUsers,
+  getAllUsers,
   getFollowers,
   getFollowing,
   getUserProfile,
@@ -10,11 +11,12 @@ import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
 
+// Testing Purposes
+router.get("/get-all-users", getAllUsers);
+router.get("/delete-all-users", deleteAllUsers);
+
 // Fetch User Profile Information using username
 router.get("/:username", authMiddleware, getUserProfile);
-
-//delete all users
-router.get("/delete-all-users", deleteAllUsers);
 
 // toggleFollowing a user
 router.post("/follow/:userId", authMiddleware, toggleFollow);

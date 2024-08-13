@@ -27,8 +27,8 @@ const userSchema = new Schema(
     },
     mobile: {
       type: String,
-      unique: [true, "Mobile number must be unique"],
-      match: [/^[0-9]{10,15}$/, "Invalid mobile number"],
+      // unique: [true, "Mobile number must be unique"],
+      // match: [/^[0-9]{10,15}$/, "Invalid mobile number"],
       validate: {
         validator: function (value) {
           return value || this.email;

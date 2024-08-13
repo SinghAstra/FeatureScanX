@@ -6,6 +6,7 @@ import express from "express";
 import helmet from "helmet";
 import mongoose from "mongoose";
 import morgan from "morgan";
+import { generateMultipleUsers } from "./generators/user.js";
 import authRoutes from "./routes/auth.js";
 import commentsRoutes from "./routes/comments.js";
 import postsRoutes from "./routes/posts.js";
@@ -43,6 +44,15 @@ app.get("/clear-cookies", (req, res) => {
 app.get("/view-cookies", (req, res) => {
   res.json({ cookies: req.cookies });
 });
+
+const populateUsers = async () => {
+  try {
+    await generateMultipleUsers(100);
+    console.log("Users generated successfully.");
+  } catch (err) {
+    console.log("Error generating users:", err.message);
+  }
+};
 
 mongoose
   .connect(process.env.MONGODB_URI)

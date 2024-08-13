@@ -19,7 +19,7 @@ export const getUserProfile = async (req, res) => {
     const isFollowing = user.followers.includes(currentUserId);
 
     res.status(200).json({
-      user,
+      ...user.toObject(),
       postCount,
       isFollowing,
     });
@@ -74,18 +74,6 @@ export const toggleFollow = async (req, res) => {
   }
 };
 
-export const deleteAllUsers = async (req, res) => {
-  try {
-    const users = await User.deleteMany({});
-    res.json({ users, message: "Deleted All Users Successfully" });
-  } catch (error) {
-    console.log("Error deleting all users ", error);
-    return res
-      .status(500)
-      .json({ message: "Error deleting all users - Internal Server Error." });
-  }
-};
-
 export const getFollowers = async (req, res) => {
   const { id } = req.params;
 
@@ -127,5 +115,26 @@ export const getFollowing = async (req, res) => {
     res
       .status(500)
       .json({ message: "Internal Server error - fetching following" });
+  }
+};
+
+export const getAllUsers = async (req, res) => {
+  try {
+    console.log("In the getAllUsers.");
+    const users = await User.find({}).select("-password -dateOfBirth");
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server error - getAllUsers" });
+  }
+};
+
+export const deleteAllUsers = async (req, res) => {
+  try {
+    const users = await User.deleteMany({});
+    res.json({ users, message: "Deleted All Users Successfully" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error deleting all users - Internal Server Error." });
   }
 };
