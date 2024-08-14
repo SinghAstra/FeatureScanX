@@ -1,12 +1,11 @@
-import PropTypes from "prop-types";
+import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
+import AuthContext from "../../context/Auth";
 
-const PublicRoute = ({ isAuthenticated }) => {
+const PublicRoute = () => {
+  const { isAuthenticated } = useContext(AuthContext);
+
   return isAuthenticated ? <Navigate to="/" replace /> : <Outlet />;
-};
-
-PublicRoute.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
 };
 
 export default PublicRoute;

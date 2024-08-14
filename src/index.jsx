@@ -8,24 +8,23 @@ import {
 } from "react-router-dom";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
 import PublicRoute from "./components/routes/PublicRoute";
+import { AuthProvider } from "./context/Auth.jsx";
 import "./index.css";
+import LoginPage from "./pages/Auth/LoginPage";
 import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/LoginPage";
 import PageNotFound from "./pages/PageNotFound";
 import ProfilePage from "./pages/ProfilePage";
 import RegisterPage from "./pages/RegisterPage";
 
-const isAuthenticated = true;
-
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route element={<PublicRoute isAuthenticated={isAuthenticated} />}>
-        <Route path="/login" element={<LoginPage />} />
+      <Route element={<PublicRoute />}>
+        <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="*" element={<LoginPage />} />
       </Route>
-      <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
+      <Route element={<ProtectedRoute />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="*" element={<PageNotFound />} />
@@ -36,6 +35,8 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>
 );

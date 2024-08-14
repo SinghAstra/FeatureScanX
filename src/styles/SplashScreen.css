@@ -1,0 +1,35 @@
+.splash-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: var(--color-white);
+}
+
+.logo-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  width: 100px;
+  height: auto;
+}
+
+.footer {
+  padding-bottom: 20px;
+  color: var(--color-gray);
+  font-size: 1.2rem;
+}
+
+.footer strong {
+  font-weight: bold;
+}
+
+.footer a {
+  cursor: pointer;
+  color: var(--color-primary);
+}
