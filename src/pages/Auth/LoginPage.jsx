@@ -2,6 +2,7 @@ import axios from "axios";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/Auth";
+import useTitle from "../../hooks/useTitle";
 import "../../styles/Auth.css";
 
 const LoginPage = () => {
@@ -11,6 +12,7 @@ const LoginPage = () => {
     email: "",
     password: "",
   });
+  const [errors, setErrors] = useState({});
   const apiUrl = import.meta.env.VITE_API_URL;
 
   const handleChange = (e) => {
@@ -19,6 +21,37 @@ const LoginPage = () => {
       ...formData,
       [name]: value,
     });
+  };
+
+  const handleBlur = async (e) => {
+    const { name, value } = e.target;
+    let error = "";
+    if (name === "email") {
+      error = await validateEmail(value);
+    } else if (name === "password") {
+      error = validatePassword(value);
+    }
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
+  };
+
+  const handleFocus = (e) => {
+    const { name } = e.target;
+    setErrors({ ...errors, [name]: "" });
+  };
+
+  const validateEmail = async (value) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (value.trim() === "") {
+      return "Email Address is required.";
+    } else if (!emailRegex.test(value)) {
+      return "Please enter a valid email address.";
+    }
+  };
+
+  const validatePassword = (value) => {
+    if (value.trim() === "") {
+      return "Password is required.";
+    }
   };
 
   const togglePasswordVisibility = () => {
@@ -39,8 +72,19 @@ const LoginPage = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    const emailError = await validateEmail(formData.email);
+    const passwordError = validatePassword(formData.password);
+    if (emailError || passwordError) {
+      setErrors({
+        email: emailError,
+        password: passwordError,
+      });
+      return;
+    }
     handleLogin();
   };
+
+  useTitle("Log In • Social UI");
 
   return (
     <div className="auth-form-wrapper">
@@ -56,70 +100,99 @@ const LoginPage = () => {
           </span>
         </div>
         <div className="input-container">
-          <label className="input-label" htmlFor="email">
+          <label
+            className={`input-label ${errors.email ? "error" : ""}`}
+            htmlFor="email"
+          >
             Email
           </label>
-          {/* <MdOutlineMailOutline className="icon-left" /> */}
+          <i
+            className={`uil uil-envelope-alt icon-left ${
+              errors.email ? "error" : ""
+            }`}
+          ></i>
           <input
             placeholder="name@mail.com"
             id="email"
             type="email"
             name="email"
-            className="input-field-with-icon-left"
+            className={`input-field-with-icon-left ${
+              errors.email ? "error" : ""
+            }`}
             value={formData.email}
             onChange={handleChange}
-            required
+            onBlur={handleBlur}
+            onFocus={handleFocus}
+            autoComplete="off"
           />
+          {errors.email && <p className="error-message">{errors.email}</p>}
         </div>
         <div className="input-container">
-          <label className="input-label" htmlFor="password">
+          <label
+            className={`input-label ${errors.password ? "error" : ""}`}
+            htmlFor="password"
+          >
             Password
           </label>
-          {/* {showPassword ? (
-            <HiOutlineEyeOff
-              className="icon-right"
+          {showPassword ? (
+            <i
+              className={`uil uil-eye icon-right ${
+                errors.password ? "error" : ""
+              }`}
               onClick={togglePasswordVisibility}
-            />
+            ></i>
           ) : (
-            <HiOutlineEye
-              className="icon-right"
+            <i
+              className={`uil uil-eye-slash icon-right ${
+                errors.password ? "error" : ""
+              }`}
               onClick={togglePasswordVisibility}
-            />
-          )} */}
+            ></i>
+          )}
           <input
             placeholder="Password"
             id="password"
             name="password"
             type={showPassword ? "text" : "password"}
-            className="input-field input-field-with-icon-right"
+            className={`input-field input-field-with-icon-right ${
+              errors.password ? "error" : ""
+            }`}
             value={formData.password}
             onChange={handleChange}
-            required
+            onBlur={handleBlur}
+            onFocus={handleFocus}
           />
+          {errors.password && (
+            <p className="error-message">{errors.password}</p>
+          )}
         </div>
-        <button type="submit" className="block-level-button blue-button">
+        <button type="submit" className="sign-in-button">
           <span>Sign In</span>
         </button>
-        <div className="no-account-message">
-          <Link to="/accounts/signup">
-            <span>Don&apos;t have an account? Sign Up</span>
-          </Link>
-        </div>
         <div className="separator">
           <hr className="line" />
           <span>Or</span>
           <hr className="line" />
         </div>
-        <button className="block-level-button button-with-img white-button">
+        <button
+          className="sign-in-with-google"
+          onClick={() => console.log("Hey")}
+        >
           <img src="/google.png" alt="google" />
           <span>Sign In with Google</span>
         </button>
-        <button className="block-level-button button-with-img black-button">
+        <button className="sign-in-with-github">
           <img src="/github.png" alt="github" />
           <span>Sign In with Github</span>
         </button>
         <p className="note">Terms of use &amp; Conditions</p>
       </form>
+      <div className="auth-form-footer-container">
+        <p>
+          Don&#039; t have an account ?{" "}
+          <Link to={"/accounts/signup"}>Sign up</Link>
+        </p>
+      </div>
     </div>
   );
 };

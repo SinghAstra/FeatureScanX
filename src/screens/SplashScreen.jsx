@@ -4,7 +4,9 @@ const SplashScreen = () => {
   return (
     <div className="splash-screen">
       <div className="logo-container">
-        <img src="/social.png" alt="Instagram Logo" className="logo" />
+        <div className="logo">
+          <img src="/social.png" alt="Social Logo" className="logo" />
+        </div>
       </div>
       <div className="footer">
         <p>

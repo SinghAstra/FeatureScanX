@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
 :root {
   --color-white: hsl(0, 0%, 100%);
   --color-very-light-gray: hsl(0, 0%, 95%);
@@ -10,38 +12,130 @@
   --color-black: hsl(0, 0%, 0%);
 
   --color-primary: hsl(252, 75%, 60%);
-  --color-secondary: hsl(252, 100%, 90%);
-  --color-success: hsl(120, 95%, 65%);
   --color-danger: hsl(0, 95%, 65%);
-  --color-dark: hsl(252, 30%, 17%);
-  --color-black: hsl(252, 30%, 10%);
 
   --color-logo-bg-gradient-start: hsla(240, 6%, 97%, 0);
   --color-logo-bg-gradient-end: hsla(240, 6%, 97%, 0.53);
   --color-logo-border: hsl(240, 6%, 96%);
   --color-logo-drop-shadow: hsl(0, 0%, 94%);
   --color-logo-drop-shadow-light: hsla(0, 0%, 94%, 0.5);
-}
-/* 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-white: hsl(252, 30%, 10%);
-    --color-light: hsl(252, 30%, 17%);
-    --color-gray: hsl(252, 15%, 75%);
-    --color-primary: hsl(252, 75%, 80%);
-    --color-secondary: hsl(252, 100%, 70%);
-    --color-success: hsl(120, 95%, 50%);
-    --color-danger: hsl(0, 95%, 50%);
-    --color-dark: hsl(252, 30%, 95%);
-    --color-black: hsl(252, 30%, 100%);
 
-    --color-logo-bg-gradient-start: hsla(240, 6%, 20%, 0);
-    --color-logo-bg-gradient-end: hsla(240, 6%, 20%, 0.53);
-    --color-logo-border: hsl(240, 6%, 25%);
-    --color-logo-drop-shadow: hsl(0, 0%, 30%);
-    --color-logo-drop-shadow-light: hsla(0, 0%, 30%, 0.5);
-  }
-} */
+  --padding-xs: 0.25rem; /* 4px (assuming root font size is 16px) */
+  --padding-sm: 0.5rem; /* 8px */
+  --padding-md: 1rem; /* 16px */
+  --padding-lg: 1.5rem; /* 24px */
+  --padding-xl: 2rem; /* 32px */
+  --padding-xxl: 3rem; /* 48px */
+
+  --margin-xs: 0.25rem; /* Extra Small Margin (e.g., 4px if 1rem = 16px) */
+  --margin-sm: 0.5rem; /* Small Margin (e.g., 8px) */
+  --margin-md: 1rem; /* Medium Margin (e.g., 16px) */
+  --margin-lg: 1.5rem; /* Large Margin (e.g., 24px) */
+  --margin-xl: 2rem; /* Extra Large Margin (e.g., 32px) */
+  --margin-xxl: 3rem; /* Extra Extra Large Margin (e.g., 48px) */
+
+  --gap-xs: 0.25rem; /* Extra Small Gap (e.g., 4px) */
+  --gap-sm: 0.5rem; /* Small Gap (e.g., 8px) */
+  --gap-md: 1rem; /* Medium Gap (e.g., 16px) */
+  --gap-lg: 1.5rem; /* Large Gap (e.g., 24px) */
+  --gap-xl: 2rem; /* Extra Large Gap (e.g., 32px) */
+  --gap-xxl: 3rem; /* Extra Extra Large Gap (e.g., 48px) */
+
+  --border-radius-sm: 0.125rem; /* 2px */
+  --border-radius-md: 0.25rem; /* 4px */
+  --border-radius-lg: 0.5rem; /* 8px */
+  --border-radius-xl: 1rem; /* 16px */
+  --border-radius-full: 50%; /* Fully rounded, for circles or pill shapes */
+
+  --container-width-full: 100%; /* Full width of the parent or viewport */
+  --container-width-xl: 90%; /* Extra Large container, typically used for content that should almost fill the viewport */
+  --container-width-lg: 80%; /* Large container, good for main content areas */
+  --container-width-md: 75%; /* Medium container, often used for sections with some margin on the sides */
+  --container-width-sm: 60%; /* Small container, useful for narrower content areas */
+  --container-width-xs: 40%; /* Extra Small container, typically for sidebars or smaller sections */
+
+  --container-width-xs-fixed: 2rem; /* Extra Small fixed width, equivalent to 32px */
+  --container-width-sm-fixed: 3rem; /* Small fixed width, equivalent to 48px */
+  --container-width-md-fixed: 4rem; /* Medium fixed width, equivalent to 64px */
+  --container-width-lg-fixed: 6rem; /* Large fixed width, equivalent to 96px */
+  --container-width-xl-fixed: 8rem; /* Extra Large fixed width, equivalent to 128px */
+
+  --container-width-full-vw: 100vw; /* Full viewport width */
+  --container-width-90-vw: 90vw; /* 90% of the viewport width */
+  --container-width-75-vw: 75vw; /* 75% of the viewport width */
+  --container-width-half-vw: 50vw; /* Half of the viewport width */
+  --container-width-30-vw: 30vw; /* 30% of the viewport width, often used for sidebars */
+
+  --height-xs: 1.5rem; /* Extra Small height */
+  --height-sm: 2rem; /* Small height */
+  --height-md: 2.5rem; /* Medium height */
+  --height-lg: 3rem; /* Large height */
+  --height-xl: 4rem; /* Extra Large height */
+  --height-xxl: 5rem; /* Extra Extra Large height */
+  --height-full: 100%; /* Full height, useful for full-screen elements */
+  --height-vh: 100vh; /* Full viewport height */
+
+  --shadow-subtle: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow for minimal depth */
+  --shadow-strong: 0 4px 8px rgba(0, 0, 0, 0.2); /* Moderate shadow for more emphasis */
+  --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.15); /* Very light shadow for minor depth */
+  --shadow-deep: 0 6px 12px rgba(0, 0, 0, 0.3); /* Intense shadow for significant elevation */
+  --shadow-inset: inset 0 2px 4px rgba(0, 0, 0, 0.2); /* Shadow that appears inside the element */
+
+  --position-offset-xs: 0.5rem; /* Extra Small offset, e.g., 8px */
+  --position-offset-sm: 1rem; /* Small offset, e.g., 16px */
+  --position-offset-md: 1.5rem; /* Medium offset, e.g., 24px */
+  --position-offset-lg: 2rem; /* Large offset, e.g., 32px */
+  --position-offset-xl: 3rem; /* Extra Large offset, e.g., 48px */
+
+  --font-size-xs: 0.75rem; /* Extra Small font size (e.g., 12px) */
+  --font-size-sm: 0.875rem; /* Small font size (e.g., 14px) */
+  --font-size-md: 1rem; /* Medium font size (e.g., 16px) */
+  --font-size-lg: 1.125rem; /* Large font size (e.g., 18px) */
+  --font-size-xl: 1.25rem; /* Extra Large font size (e.g., 20px) */
+  --font-size-xxl: 1.5rem; /* Extra Extra Large font size (e.g., 24px) */
+  --font-size-xxxl: 2rem; /* Extra Extra Extra Large font size (e.g., 32px) */
+
+  --font-weight-thin: 100; /* Thin font weight */
+  --font-weight-light: 300; /* Light font weight */
+  --font-weight-regular: 400; /* Regular (Normal) font weight */
+  --font-weight-medium: 500; /* Medium font weight */
+  --font-weight-semibold: 600; /* Semi-Bold font weight */
+  --font-weight-bold: 700; /* Bold font weight */
+  --font-weight-extra-bold: 800; /* Extra Bold font weight */
+  --font-weight-black: 900; /* Black (Heavy) font weight */
+
+  --line-height-xs: 1.2; /* Extra Small line height, tight spacing */
+  --line-height-sm: 1.4; /* Small line height, close spacing */
+  --line-height-md: 1.6; /* Medium line height, standard spacing */
+  --line-height-lg: 1.8; /* Large line height, more spacing */
+  --line-height-xl: 2; /* Extra Large line height, spacious */
+  --line-height-xxl: 2.4; /* Extra Extra Large line height, very spacious */
+
+  --transition-duration-ultra-fast: 0.1s; /* Ultra-fast transition, very quick */
+  --transition-duration-fast: 0.2s; /* Fast transition */
+  --transition-duration-normal: 0.3s; /* Normal transition */
+  --transition-duration-slow: 0.5s; /* Slow transition */
+  --transition-duration-ultra-slow: 0.75s; /* Ultra-slow transition, deliberate */
+
+  --transition-timing-bounce: cubic-bezier(
+    0.68,
+    -0.55,
+    0.27,
+    1.55
+  ); /* Bounce effect */
+
+  --button-primary-color: hsl(210, 80%, 50%);
+
+  --button-padding-sm: 0.4rem 0.8rem; /* Small button padding */
+  --button-padding-md: 0.6rem 1.2rem; /* Medium button padding */
+  --button-padding-lg: 0.8rem 1.6rem; /* Large button padding */
+
+  --button-border-radius-sm: 0.2rem; /* Small button border-radius */
+  --button-border-radius-md: 0.4rem; /* Medium button border-radius */
+  --button-border-radius-lg: 0.6rem; /* Large button border-radius */
+
+  --button-active-scale: 0.9;
+}
 
 * {
   padding: 0;
@@ -51,8 +145,7 @@
   border: none;
   outline: 0;
   box-sizing: border-box;
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
+  font-family: "Poppins", "Helvetica Neue", Helvetica, Arial;
 }
 
 body {

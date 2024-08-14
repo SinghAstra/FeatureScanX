@@ -7,7 +7,7 @@
   background-color: var(--color-white);
 }
 
-.logo-container {
+.splash-screen .logo-container {
   flex: 1;
   display: flex;
   align-items: center;
@@ -15,18 +15,18 @@
 }
 
 .logo {
-  width: 100px;
-  height: auto;
+  width: var(--container-width-xl-fixed);
+  object-fit: cover;
 }
 
 .footer {
-  padding-bottom: 20px;
+  padding-bottom: var(--padding-lg);
   color: var(--color-gray);
-  font-size: 1.2rem;
+  font-size: var(--font-size-xxl);
 }
 
 .footer strong {
-  font-weight: bold;
+  font-weight: var(--font-weight-semibold);
 }
 
 .footer a {
