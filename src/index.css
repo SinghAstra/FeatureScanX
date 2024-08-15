@@ -125,6 +125,7 @@
   ); /* Bounce effect */
 
   --button-primary-color: hsl(210, 80%, 50%);
+  --button-primary-color-disabled: hsl(210, 80%, 70%);
 
   --button-padding-sm: 0.4rem 0.8rem; /* Small button padding */
   --button-padding-md: 0.6rem 1.2rem; /* Medium button padding */

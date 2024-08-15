@@ -1,5 +1,7 @@
 import { useState } from "react";
 import RegistrationStage1 from "../../components/Auth/RegistrationStage1";
+import RegistrationStage2 from "../../components/Auth/RegistrationStage2";
+import RegistrationStage3 from "../../components/Auth/RegistrationStage3";
 import useTitle from "../../hooks/useTitle";
 
 const RegisterPage = () => {
@@ -31,13 +33,11 @@ const RegisterPage = () => {
           onNext={handleNext}
         />
       )}
-      {/* {currentStage === 2 && (
+      {currentStage === 2 && (
         <RegistrationStage2
           onNext={handleNext}
           onBack={handleBack}
-          formData={formData}
           setFormData={setFormData}
-          setConfirmationCode={setConfirmationCode}
         />
       )}
       {currentStage === 3 && (
@@ -47,7 +47,7 @@ const RegisterPage = () => {
           formData={formData}
           onBack={handleBack}
         />
-      )} */}
+      )}
     </div>
   );
 };

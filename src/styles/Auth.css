@@ -25,6 +25,16 @@
   position: absolute;
   top: var(--position-offset-md);
   left: var(--position-offset-md);
+  font-size: var(--font-size-xxl);
+  background: transparent;
+  cursor: pointer;
+  transition: all var(--transition-duration-normal)
+    var(--transition-timing-bounce);
+}
+
+.back-button:hover {
+  transform: scale(1.4);
+  color: var(--button-primary-color);
 }
 
 .auth-form-container .logo-container {
@@ -179,6 +189,10 @@
     var(--transition-timing-bounce);
 }
 
+.register-next-button.disabled {
+  background: var(--button-primary-color-disabled);
+}
+
 .sign-in-button:active,
 .sign-in-with-google:active,
 .sign-in-with-github:active,
@@ -253,3 +267,27 @@
 
 /* 1. button disabled */
 /* 2. button loading */
+
+.birthday-icon,
+.mail-icon {
+  width: var(--container-width-sm);
+  object-fit: cover;
+}
+
+.date-picker-container {
+  display: flex;
+  gap: var(--gap-sm);
+}
+
+.date-picker-select {
+  padding: var(--gap-xs);
+  font-size: var(--font-size-md);
+  border: 1px solid var(--color-medium-gray);
+  border-radius: var(--border-radius-lg);
+  cursor: pointer;
+}
+
+.subtitle a {
+  color: #115dfc;
+  text-decoration: none;
+}
