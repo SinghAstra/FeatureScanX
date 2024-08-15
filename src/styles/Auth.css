@@ -165,7 +165,8 @@
 
 .sign-in-button,
 .sign-in-with-google,
-.sign-in-with-github {
+.sign-in-with-github,
+.register-next-button {
   width: var(--container-width-full);
   height: var(--height-md);
   border-radius: var(--border-radius-lg);
@@ -180,11 +181,13 @@
 
 .sign-in-button:active,
 .sign-in-with-google:active,
-.sign-in-with-github:active {
+.sign-in-with-github:active,
+.register-next-button:active {
   transform: scale(var(--button-active-scale));
 }
 
-.sign-in-button {
+.sign-in-button,
+.register-next-button {
   background: var(--button-primary-color);
   margin-top: var(--margin-md);
 }

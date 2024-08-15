@@ -11,10 +11,10 @@ import PublicRoute from "./components/routes/PublicRoute";
 import { AuthProvider } from "./context/Auth.jsx";
 import "./index.css";
 import LoginPage from "./pages/Auth/LoginPage";
+import RegisterPage from "./pages/Auth/RegisterPage";
 import HomePage from "./pages/HomePage";
 import PageNotFound from "./pages/PageNotFound";
 import ProfilePage from "./pages/ProfilePage";
-import RegisterPage from "./pages/RegisterPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
