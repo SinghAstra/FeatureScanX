@@ -1,18 +1,25 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import FollowersFollowingHashTagModal from "../components/FollowersFollowingHashTag/FollowersFollowingHashTagModal";
+import AuthContext from "../context/Auth";
 import SplashScreen from "../screens/SplashScreen";
 import "../styles/ProfilePage.css";
 import PageNotFound from "./PageNotFound";
 
 const ProfilePage = () => {
   const { username } = useParams();
+  const { user: currentUser } = useContext(AuthContext);
+
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [showFFHModal, setShowFFHModal] = useState(false);
   const [initialTab, setInitialTab] = useState("followers");
+  const [isFollowing, setIsFollowing] = useState(false);
   const apiUrl = import.meta.env.VITE_API_URL;
+
+  console.log("currentUser is ", currentUser);
+  console.log("isFollowing is ", isFollowing);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -22,6 +29,7 @@ const ProfilePage = () => {
         });
         console.log("response.data --fetchUserProfile is ", response.data);
         setUser(response.data);
+        setIsFollowing(response.data.followers.includes(currentUser._id));
         setError(null);
       } catch (err) {
         console.log("err.message --fetchUserProfile is ", err.message);
@@ -31,7 +39,7 @@ const ProfilePage = () => {
     };
 
     fetchUserProfile();
-  }, [apiUrl, username]);
+  }, [apiUrl, currentUser._id, username]);
 
   useEffect(() => {
     if (user) {
@@ -54,6 +62,17 @@ const ProfilePage = () => {
     setShowFFHModal(true);
   };
 
+  const handleToggleFollow = async () => {
+    try {
+      setIsFollowing((prev) => !prev);
+      await axios.get(`${apiUrl}/api/users/${username}/toggle-follow`, {
+        withCredentials: true,
+      });
+    } catch (error) {
+      console.error("Failed to toggle follow status", error.message);
+    }
+  };
+
   return (
     <div className="profile-page">
       <div className="profile-header">
@@ -73,7 +92,17 @@ const ProfilePage = () => {
         <div className="profile-info">
           <div className="profile-username">
             <h1>{user.userName}</h1>
-            <button className="edit-profile-button">Edit Profile</button>
+            {currentUser.userName === username ? (
+              <button className="edit-profile-button">Edit Profile</button>
+            ) : isFollowing ? (
+              <button className="following-button" onClick={handleToggleFollow}>
+                Following
+              </button>
+            ) : (
+              <button className="follow-button" onClick={handleToggleFollow}>
+                Follow
+              </button>
+            )}
           </div>
           <div className="profile-stats">
             <span className="posts-count">

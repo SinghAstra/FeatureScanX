@@ -44,7 +44,9 @@
   font-size: var(--font-size-xxl);
 }
 
-.edit-profile-button {
+.edit-profile-button,
+.follow-button,
+.following-button {
   background-color: var(--color-primary);
   padding: var(--padding-sm) var(--padding-md);
   border-radius: var(--border-radius-lg);
