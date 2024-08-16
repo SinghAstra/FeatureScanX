@@ -26,9 +26,9 @@ router.get("/:username/posts", authMiddleware, getUserPosts);
 router.get("/:userId/toggle-follow", authMiddleware, toggleFollow);
 
 // get followers of a user
-router.get("/:id/followers", authMiddleware, getFollowers);
+router.get("/:userId/followers", authMiddleware, getFollowers);
 
 // get following of a user
-router.get("/:id/following", authMiddleware, getFollowing);
+router.get("/:userId/following", authMiddleware, getFollowing);
 
 export default router;

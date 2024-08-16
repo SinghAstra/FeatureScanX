@@ -96,10 +96,10 @@ export const toggleFollow = async (req, res) => {
 };
 
 export const getFollowers = async (req, res) => {
-  const { id } = req.params;
+  const { userId } = req.params;
 
   try {
-    const user = await User.findById(id).populate({
+    const user = await User.findById(userId).populate({
       path: "followers",
       select: "-password",
     });
@@ -110,18 +110,15 @@ export const getFollowers = async (req, res) => {
 
     res.status(200).json({ followers: user.followers });
   } catch (error) {
-    console.log("Error fetching followers:", error);
-    res
-      .status(500)
-      .json({ message: "Internal Server error - fetching followers" });
+    res.status(500).json({ message: "Server error - getFollowers" });
   }
 };
 
 export const getFollowing = async (req, res) => {
-  const { id } = req.params;
+  const { userId } = req.params;
 
   try {
-    const user = await User.findById(id).populate({
+    const user = await User.findById(userId).populate({
       path: "following",
       select: "-password",
     });
@@ -132,10 +129,7 @@ export const getFollowing = async (req, res) => {
 
     res.status(200).json({ following: user.following });
   } catch (error) {
-    console.log("Error fetching following:", error);
-    res
-      .status(500)
-      .json({ message: "Internal Server error - fetching following" });
+    res.status(500).json({ message: "Server error - getFollowing" });
   }
 };
 
