@@ -188,7 +188,7 @@ export const fetchUserInfoUsingJWTTokenInCookies = async (req, res) => {
     return res.status(404).json({ message: "User Not Found" });
   }
   const { password, ...userInfo } = user._doc;
-  res.status(200).json({ user: userInfo });
+  res.status(200).json({ isAuthenticated: true, user: userInfo });
 };
 
 // Uploading Profile Picture to cloudinary

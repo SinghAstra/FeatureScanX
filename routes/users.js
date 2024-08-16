@@ -4,6 +4,7 @@ import {
   getAllUsers,
   getFollowers,
   getFollowing,
+  getUserPosts,
   getUserProfile,
   toggleFollow,
 } from "../controllers/users.js";
@@ -18,8 +19,11 @@ router.get("/delete-all-users", deleteAllUsers);
 // Fetch User Profile Information using username
 router.get("/:username", authMiddleware, getUserProfile);
 
+// Route to fetch user posts
+router.get("/:username/posts", authMiddleware, getUserPosts);
+
 // toggleFollowing a user
-router.post("/follow/:userId", authMiddleware, toggleFollow);
+router.get("/:userId/toggle-follow", authMiddleware, toggleFollow);
 
 // get followers of a user
 router.get("/:id/followers", authMiddleware, getFollowers);

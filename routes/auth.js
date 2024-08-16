@@ -17,7 +17,7 @@ router.post("/verify-email", verifyEmailController);
 // router.post("/verify-phone-number", verifyPhoneNumberController);
 router.post("/register", registerUserController);
 router.post("/login", loginUser);
-router.post("/user", authMiddleware, fetchUserInfoUsingJWTTokenInCookies);
+router.post("/me", authMiddleware, fetchUserInfoUsingJWTTokenInCookies);
 
 // Testing Purposes
 router.get("/delete-all-user", deleteAllUser);

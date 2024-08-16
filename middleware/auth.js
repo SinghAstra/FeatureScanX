@@ -4,7 +4,7 @@ const authMiddleware = (req, res, next) => {
   const token = req.cookies?.token;
 
   if (!token) {
-    return res.status(401).json({ message: "No token, authorization denied" });
+    return res.status(404).json({ message: "No token, authorization denied" });
   }
 
   try {

@@ -14,6 +14,19 @@ import usersRoutes from "./routes/users.js";
 
 dotenv.config();
 
+const allowedOrigins = ["http://localhost:3000", "http://localhost:3001"];
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
+
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
@@ -22,7 +35,7 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors(corsOptions));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", usersRoutes);
