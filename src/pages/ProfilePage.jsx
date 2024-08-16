@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useParams } from "react-router-dom";
+import FollowersFollowingHashTagModal from "../components/FollowersFollowingHashTag/FollowersFollowingHashTagModal";
 import SplashScreen from "../screens/SplashScreen";
 import "../styles/ProfilePage.css";
 import PageNotFound from "./PageNotFound";
@@ -9,6 +10,8 @@ const ProfilePage = () => {
   const { username } = useParams();
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+  const [showFFHModal, setShowFFHModal] = useState(false);
+  const [initialTab, setInitialTab] = useState("followers");
   const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
@@ -46,6 +49,11 @@ const ProfilePage = () => {
     return <SplashScreen />;
   }
 
+  const openModal = (tab) => {
+    setInitialTab(tab);
+    setShowFFHModal(true);
+  };
+
   return (
     <div className="profile-page">
       <div className="profile-header">
@@ -71,10 +79,16 @@ const ProfilePage = () => {
             <span className="posts-count">
               <strong>{user.postCount}</strong> posts
             </span>
-            <span className="followers-count">
+            <span
+              className="followers-count"
+              onClick={() => openModal("followers")}
+            >
               <strong>{user.followers.length}</strong> followers
             </span>
-            <span className="following-count">
+            <span
+              className="following-count"
+              onClick={() => openModal("following")}
+            >
               <strong>{user.following.length}</strong> following
             </span>
           </div>
@@ -111,6 +125,12 @@ const ProfilePage = () => {
       <div className="profile-content">
         <Outlet />
       </div>
+      {showFFHModal && (
+        <FollowersFollowingHashTagModal
+          initialTab={initialTab}
+          setShowFFHModal={setShowFFHModal}
+        />
+      )}
     </div>
   );
 };

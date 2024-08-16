@@ -119,3 +119,14 @@
   transform: translateY(-50%);
   right: 0.5rem;
 }
+
+@media screen and (max-width: 768px) {
+  .add-caption-modal {
+    width: 96%;
+  }
+}
+@media screen and (max-width: 480px) {
+  .select-media-modal {
+    width: 95%;
+  }
+}

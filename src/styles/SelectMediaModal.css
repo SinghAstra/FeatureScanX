@@ -57,3 +57,16 @@
 .select-from-computer:active {
   transform: scale(var(--button-active-scale));
 }
+
+@media screen and (max-width: 1024px) {
+}
+@media screen and (max-width: 768px) {
+  .select-media-modal {
+    width: 400px;
+  }
+}
+@media screen and (max-width: 480px) {
+  .select-media-modal {
+    width: 95%;
+  }
+}
