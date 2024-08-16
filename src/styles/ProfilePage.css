@@ -79,7 +79,7 @@
 .followers-count:hover,
 .following-count:hover {
   color: var(--color-medium-gray);
-  transform: scale(0.9);
+  transform: scale(0.99);
 }
 
 .profile-bio {

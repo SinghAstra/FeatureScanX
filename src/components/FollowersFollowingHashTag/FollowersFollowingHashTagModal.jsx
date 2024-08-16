@@ -6,7 +6,8 @@ import Following from "./Following";
 import Hashtags from "./Hashtags";
 
 const FollowersFollowingHashTagModal = ({
-  initialTab = "followers",
+  username,
+  initialTab,
   setShowFFHModal,
 }) => {
   const [activeTab, setActiveTab] = useState(initialTab);
@@ -14,11 +15,11 @@ const FollowersFollowingHashTagModal = ({
   const renderContent = () => {
     switch (activeTab) {
       case "followers":
-        return <Followers />;
+        return <Followers username={username} />;
       case "following":
-        return <Following />;
+        return <Following username={username} />;
       case "hashtags":
-        return <Hashtags />;
+        return <Hashtags username={username} />;
       default:
         return null;
     }
@@ -56,6 +57,7 @@ const FollowersFollowingHashTagModal = ({
 };
 
 FollowersFollowingHashTagModal.propTypes = {
+  username: PropTypes.string.isRequired,
   initialTab: PropTypes.oneOf(["followers", "following", "hashtags"]),
   setShowFFHModal: PropTypes.func.isRequired,
 };

@@ -127,6 +127,7 @@ const ProfilePage = () => {
       </div>
       {showFFHModal && (
         <FollowersFollowingHashTagModal
+          username={username}
           initialTab={initialTab}
           setShowFFHModal={setShowFFHModal}
         />
