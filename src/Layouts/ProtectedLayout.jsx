@@ -1,12 +1,12 @@
-// ProtectedLayout.js
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
+import "../styles/ProtectedLayout.css";
 
 const ProtectedLayout = () => {
   return (
-    <div style={{ display: "flex" }}>
+    <div className="protected-layout">
       <Sidebar />
-      <main style={{ flexGrow: 1 }}>
+      <main>
         <Outlet />
       </main>
     </div>

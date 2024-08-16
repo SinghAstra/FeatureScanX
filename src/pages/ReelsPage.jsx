@@ -1,5 +1,9 @@
 const ReelsPage = () => {
-  return <div>ReelsPage</div>;
+  return (
+    <div className="placeholder">
+      <h1>Reels</h1>
+    </div>
+  );
 };
 
 export default ReelsPage;

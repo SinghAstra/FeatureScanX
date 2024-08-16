@@ -70,7 +70,7 @@ const Sidebar = () => {
         </NavLink>
       </div>
       <div
-        className="btn btn-primary create-post-button"
+        className="create-post-button"
         onClick={() => setCreatePostModal(true)}
       >
         Create Post

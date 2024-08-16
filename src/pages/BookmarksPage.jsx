@@ -1,5 +1,9 @@
 const BookmarksPage = () => {
-  return <div>BookmarksPage</div>;
+  return (
+    <div className="placeholder">
+      <h1>Bookmarks</h1>
+    </div>
+  );
 };
 
 export default BookmarksPage;

@@ -1,5 +1,9 @@
 const ExplorePage = () => {
-  return <div>ExplorePage</div>;
+  return (
+    <div className="placeholder">
+      <h1>Explore</h1>
+    </div>
+  );
 };
 
 export default ExplorePage;

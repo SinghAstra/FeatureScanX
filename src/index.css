@@ -64,7 +64,8 @@
   --container-width-90-vw: 90vw; /* 90% of the viewport width */
   --container-width-75-vw: 75vw; /* 75% of the viewport width */
   --container-width-half-vw: 50vw; /* Half of the viewport width */
-  --container-width-30-vw: 30vw; /* 30% of the viewport width, often used for sidebars */
+  --container-width-30-vw: 30vw;
+  --container-width-20-vw: 20vw;
 
   --height-xs: 1.5rem; /* Extra Small height */
   --height-sm: 2rem; /* Small height */
@@ -153,4 +154,24 @@ body {
   color: var(--color-black);
   background: var(--color-very-light-gray);
   overflow-x: hidden;
+}
+
+/* Placeholder css */
+.placeholder {
+  font-size: var(--font-size-xxl);
+  color: var(--color-gray);
+  text-align: center;
+  min-height: 100vh;
+  background-color: var(--color-primary);
+  border-left: 2px solid var(--color-white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (max-width: 768px) {
+  .placeholder {
+    border-left: 0;
+  }
 }

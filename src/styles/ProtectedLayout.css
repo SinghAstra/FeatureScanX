@@ -1,0 +1,19 @@
+.protected-layout {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: var(--container-width-20-vw) auto;
+}
+
+@media screen and (max-width: 1024px) {
+  .protected-layout {
+    grid-template-columns: var(--container-width-xl-fixed) auto;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .protected-layout {
+    grid-template-columns: auto;
+  }
+}
