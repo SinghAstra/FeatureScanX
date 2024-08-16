@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import AuthContext from "../context/Auth";
-// import CreatePost from "../CreatePost/CreatePost";
 import "../styles/Sidebar.css";
+import CreatePostModal from "./CreatePost/CreatePostModal";
 
 const Sidebar = () => {
   const { user } = useContext(AuthContext);
@@ -75,10 +75,12 @@ const Sidebar = () => {
       >
         Create Post
       </div>
-      {/* <CreatePost
-        modalShown={createPostModal}
-        setModalShown={setCreatePostModal}
-      /> */}
+      {createPostModal && (
+        <CreatePostModal
+          modalShown={createPostModal}
+          setModalShown={setCreatePostModal}
+        />
+      )}
     </div>
   );
 };

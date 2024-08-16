@@ -158,8 +158,8 @@ body {
 
 /* Placeholder css */
 .placeholder {
-  font-size: var(--font-size-xxl);
-  color: var(--color-gray);
+  /* font-size: var(--font-size-xxl); */
+  /* color: var(--color-gray); */
   text-align: center;
   min-height: 100vh;
   background-color: var(--color-primary);
