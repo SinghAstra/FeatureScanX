@@ -6,6 +6,10 @@
   grid-template-columns: var(--container-width-20-vw) auto;
 }
 
+.protected-layout main {
+  overflow-y: auto;
+}
+
 @media screen and (max-width: 1024px) {
   .protected-layout {
     grid-template-columns: var(--container-width-xl-fixed) auto;

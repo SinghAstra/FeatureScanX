@@ -1,0 +1,26 @@
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap-md);
+  padding: var(--padding-md);
+}
+
+.post-item {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+
+.post-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  border: 1px solid black;
+}
+
+@media screen and (max-width: 768px) {
+  .posts-grid {
+    padding: var(--padding-md) 0 calc(2 * var(--padding-xxl)) 0;
+  }
+}

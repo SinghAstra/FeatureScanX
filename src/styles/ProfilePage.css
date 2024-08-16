@@ -107,22 +107,33 @@
   padding-top: 0;
 }
 
-@media screen and (min-width: 769px) {
-  .profile-page {
-    overflow-y: auto;
-  }
-}
-
 @media screen and (max-width: 768px) {
   .profile-header .profile-picture,
   .profile-header .profile-picture-logo {
-    width: 6rem;
-    height: 6rem;
+    width: 8rem;
+    height: 8rem;
     border-radius: 50%;
   }
 
   .profile-header .profile-picture-logo {
     font-size: 4rem;
+  }
+
+  .profile-info {
+    gap: var(--gap-sm);
+  }
+
+  .profile-username h1 {
+    font-size: var(--font-size-md);
+  }
+
+  .edit-profile-button {
+    font-size: var(--font-size-xs);
+    padding: var(--padding-xs) var(--padding-sm);
+  }
+
+  .profile-navigation .nav-link {
+    font-size: var(--font-size-sm);
   }
 }
 
