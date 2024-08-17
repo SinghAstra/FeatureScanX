@@ -56,10 +56,7 @@ const RegistrationStage1 = ({ formData, setFormData, onNext }) => {
         ? ""
         : "Email or mobile number is already taken.";
     } catch (error) {
-      console.log(
-        "error.response.data.message --checkEmailOrMobileAvailability is :",
-        error.response.data.message
-      );
+      console.log("error --checkEmailOrMobileAvailability is :", error);
       return "Error checking availability.";
     }
   };
@@ -78,10 +75,7 @@ const RegistrationStage1 = ({ formData, setFormData, onNext }) => {
       );
       return response.data.isAvailable ? "" : "Username is already taken.";
     } catch (error) {
-      console.log(
-        "error.response.data.message --checkUsernameAvailability is :",
-        error.response.data.message
-      );
+      console.log("error --checkUsernameAvailability is :", error);
       return "Error checking availability.";
     }
   };

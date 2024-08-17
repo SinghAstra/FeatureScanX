@@ -66,10 +66,7 @@ const LoginPage = () => {
       console.log("response.data --handleLogin is :", response.data);
       fetchCurrentUser();
     } catch (error) {
-      console.log(
-        "error.response.data.message --handleLogin is :",
-        error.response.data.message
-      );
+      console.log("error --handleLogin is :", error);
     }
   };
 

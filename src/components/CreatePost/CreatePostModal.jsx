@@ -9,8 +9,8 @@ import SelectMediaModal from "./SelectMediaModal";
 const CreatePostModal = ({ modalShown, setModalShown }) => {
   const [currentStage, setCurrentStage] = useState(1);
   const [formData, setFormData] = useState({
-    caption: "This is Caption  @mention1 @mention2 #free #solo",
-    location: "Geo Location",
+    caption: "",
+    location: "",
     mediaFiles: [],
   });
   const [mediaPreview, setMediaPreview] = useState([]);
@@ -26,8 +26,6 @@ const CreatePostModal = ({ modalShown, setModalShown }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    console.log("name is ", name);
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
@@ -65,7 +63,7 @@ const CreatePostModal = ({ modalShown, setModalShown }) => {
 
       console.log("response.data --uploadPost is :", response.data);
     } catch (error) {
-      console.log("error.message --uploadPost is :", error.message);
+      console.log("error --uploadPost is :", error);
     }
   };
 

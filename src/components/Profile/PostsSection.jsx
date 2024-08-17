@@ -14,16 +14,17 @@ const PostsSection = () => {
   useEffect(() => {
     const fetchUserPosts = async () => {
       try {
+        // setLoading(true); ????
         const response = await axios.get(
           `${apiUrl}/api/users/${username}/posts`,
           { withCredentials: true }
         );
         console.log("response.data --fetchUserPosts is ", response.data);
         setPosts(response.data);
-        setLoading(false);
       } catch (err) {
-        console.log("error.message --fetchUserPosts is ", err.message);
+        console.log("error --fetchUserPosts is ", err);
         setError("Failed to fetch posts");
+      } finally {
         setLoading(false);
       }
     };

@@ -23,19 +23,18 @@ const RegistrationStage2 = ({ onNext, onBack, setFormData }) => {
   const [selectedDay, setSelectedDay] = useState("");
   const [isValid, setIsValid] = useState(false);
 
+  // Populate days (1-31)
+  // Populate years (from 1919 to current year)
   useEffect(() => {
-    // Populate days (1-31)
     setDays(Array.from({ length: 31 }, (_, i) => i + 1));
-
-    // Populate years (from 1919 to current year)
     const currentYear = new Date().getFullYear();
     setYears(
       Array.from({ length: currentYear - 1918 }, (_, i) => currentYear - i)
     );
   }, []);
 
+  // Update days based on month and year
   useEffect(() => {
-    // Update days based on month and year
     if (selectedMonth && selectedYear) {
       const daysInMonth = new Date(selectedYear, selectedMonth, 0).getDate();
       if (daysInMonth < selectedDay) {
@@ -45,8 +44,8 @@ const RegistrationStage2 = ({ onNext, onBack, setFormData }) => {
     }
   }, [selectedDay, selectedMonth, selectedYear]);
 
+  // Validate if all fields are selected and are not very recent.
   useEffect(() => {
-    // Validate if all fields are selected and are not very recent.
     const today = new Date();
     const fourYearsAgo = new Date(
       today.getFullYear() - 4,

@@ -5,7 +5,7 @@ import "../styles/Sidebar.css";
 import CreatePostModal from "./CreatePost/CreatePostModal";
 
 const Sidebar = () => {
-  const { user } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   const [createPostModal, setCreatePostModal] = useState(false);
 
   return (
@@ -56,14 +56,14 @@ const Sidebar = () => {
           <i className="uil uil-bookmark"></i>
           <h3>Bookmarks</h3>
         </NavLink>
-        <NavLink to={`/${user.userName}`} className="sidebar-item">
-          {user.profilePicture ? (
+        <NavLink to={`/${currentUser.userName}`} className="sidebar-item">
+          {currentUser.profilePicture ? (
             <div className="user-profile-picture">
-              <img src={user.profilePicture} alt="user profile" />
+              <img src={currentUser.profilePicture} alt="user profile" />
             </div>
           ) : (
             <div className="user-profile-logo">
-              <span>{user.fullName[0]}</span>
+              <span>{currentUser.fullName[0]}</span>
             </div>
           )}
           <h3>Profile</h3>

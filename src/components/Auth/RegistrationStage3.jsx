@@ -18,9 +18,9 @@ const RegistrationStage3 = ({
   const apiUrl = import.meta.env.VITE_API_URL;
   //   const [notification, setNotification] = useState("");
 
+  // Validate OTP length and content
   const handleChange = (e) => {
     setOtp(e.target.value);
-    // Validate OTP length and content
     if (e.target.value.length === 6 && /^\d+$/.test(e.target.value)) {
       setIsValid(true);
     } else {
@@ -43,10 +43,7 @@ const RegistrationStage3 = ({
       console.log("response.data --registerUser is :", response.data);
       fetchCurrentUser();
     } catch (error) {
-      console.log(
-        "error.response.data.message --registerUser is :",
-        error.response.data.message
-      );
+      console.log("error --registerUser is :", error);
     }
   };
 
@@ -73,10 +70,7 @@ const RegistrationStage3 = ({
       setConfirmationCode(response.data.confirmationCode);
       console.log("response.data --sendConfirmationCode is : ", response.data);
     } catch (error) {
-      console.log(
-        "error.response.data.message --sendConfirmationCode is :",
-        error.response.data.message
-      );
+      console.log("error --sendConfirmationCode is :", error);
     }
   };
 

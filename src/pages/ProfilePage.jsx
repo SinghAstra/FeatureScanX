@@ -9,15 +9,14 @@ import PageNotFound from "./PageNotFound";
 
 const ProfilePage = () => {
   const { username } = useParams();
-  const { user: currentUser } = useContext(AuthContext);
-
+  const { currentUser } = useContext(AuthContext);
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [showFFHModal, setShowFFHModal] = useState(false);
   const [initialTab, setInitialTab] = useState("followers");
   const [isFollowing, setIsFollowing] = useState(false);
-  const apiUrl = import.meta.env.VITE_API_URL;
   const isCurrentUser = currentUser?.userName === username;
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -30,7 +29,7 @@ const ProfilePage = () => {
         setIsFollowing(response.data.followers.includes(currentUser._id));
         setError(null);
       } catch (err) {
-        console.log("err.message --fetchUserProfile is ", err.message);
+        console.log("err --fetchUserProfile is ", err);
         setError("User not found");
         setUser(null);
       }
@@ -67,7 +66,7 @@ const ProfilePage = () => {
         withCredentials: true,
       });
     } catch (error) {
-      console.log("Failed to toggle follow status", error.message);
+      console.log("error --handleToggleFollow", error);
     }
   };
 
@@ -134,7 +133,6 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-      <div className="separator-line"></div>
       <div className="profile-navigation">
         <NavLink to={`/${user.userName}`} className="nav-link" end>
           <i className="uil uil-table"></i>
