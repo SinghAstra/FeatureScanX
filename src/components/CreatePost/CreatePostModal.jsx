@@ -26,6 +26,8 @@ const CreatePostModal = ({ modalShown, setModalShown }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    console.log("name is ", name);
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 

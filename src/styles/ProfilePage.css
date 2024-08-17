@@ -44,9 +44,9 @@
   font-size: var(--font-size-xxl);
 }
 
-.edit-profile-button,
-.follow-button,
-.following-button {
+.profile-username .edit-profile-button,
+.profile-username .follow-button,
+.profile-username .following-button {
   background-color: var(--color-primary);
   padding: var(--padding-sm) var(--padding-md);
   border-radius: var(--border-radius-lg);
@@ -56,6 +56,14 @@
   box-shadow: var(--shadow-light);
   transition: all var(--transition-duration-normal)
     var(--transition-timing-bounce);
+  border: 2px solid transparent;
+}
+
+.profile-username .following-button {
+  background-color: transparent;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
 }
 
 .edit-profile-button:hover {
@@ -81,7 +89,6 @@
 .followers-count:hover,
 .following-count:hover {
   color: var(--color-medium-gray);
-  transform: scale(0.99);
 }
 
 .profile-bio {
@@ -109,7 +116,6 @@
   color: var(--color-almost-black);
   transition: all var(--transition-duration-normal) ease;
   padding: 2px var(--padding-md);
-  z-index: 10;
 }
 
 .profile-navigation .nav-link:hover {

@@ -71,6 +71,7 @@ const AddCaptionModal = ({
               placeholder="Add a caption..."
               value={formData.caption}
               onChange={handleChange}
+              name="caption"
             />
             <div className="location-input-container">
               <input
@@ -78,6 +79,7 @@ const AddCaptionModal = ({
                 placeholder="Add a location..."
                 value={formData.location}
                 onChange={handleChange}
+                name="location"
               />
               <i className="uil uil-map-marker icon"></i>
             </div>

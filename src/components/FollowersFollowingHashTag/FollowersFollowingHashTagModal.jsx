@@ -15,11 +15,17 @@ const FollowersFollowingHashTagModal = ({
   const renderContent = () => {
     switch (activeTab) {
       case "followers":
-        return <Followers username={username} />;
+        return (
+          <Followers username={username} setShowFFHModal={setShowFFHModal} />
+        );
       case "following":
-        return <Following username={username} />;
+        return (
+          <Following username={username} setShowFFHModal={setShowFFHModal} />
+        );
       case "hashtags":
-        return <Hashtags username={username} />;
+        return (
+          <Hashtags username={username} setShowFFHModal={setShowFFHModal} />
+        );
       default:
         return null;
     }

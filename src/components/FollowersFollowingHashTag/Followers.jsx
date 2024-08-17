@@ -2,8 +2,9 @@ import axios from "axios";
 import propTypes from "prop-types";
 import { useEffect, useState } from "react";
 import "../../styles/Followers.css";
+import UserItem from "./UserItem";
 
-const Followers = ({ username }) => {
+const Followers = ({ username, setShowFFHModal }) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const [followers, setFollowers] = useState([]);
 
@@ -31,14 +32,11 @@ const Followers = ({ username }) => {
   return (
     <div className="followers-container">
       {followers.map((user) => (
-        <div key={user._id} className="user-item">
-          <img
-            src={user.profile_picture}
-            alt={user.username}
-            className="avatar"
-          />
-          <p className="username">{user.username}</p>
-        </div>
+        <UserItem
+          key={user._id}
+          user={user}
+          setShowFFHModal={setShowFFHModal}
+        />
       ))}
       {!followers.length && <p>No Followers.</p>}
     </div>
