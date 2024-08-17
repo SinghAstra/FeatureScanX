@@ -16,6 +16,7 @@
   width: 9.375rem;
   height: 9.375rem;
   border-radius: 50%;
+  box-shadow: var(--shadow-deep);
 }
 
 .profile-header .profile-picture-logo {
@@ -53,7 +54,7 @@
   cursor: pointer;
   font-size: var(--font-size-md);
   color: var(--color-white);
-  box-shadow: var(--shadow-light);
+  box-shadow: var(--shadow-deep);
   transition: all var(--transition-duration-normal)
     var(--transition-timing-bounce);
   border: 2px solid transparent;
@@ -66,11 +67,9 @@
   font-weight: var(--font-weight-semibold);
 }
 
-.edit-profile-button:hover {
-  box-shadow: var(--shadow-deep);
-}
-
-.edit-profile-button:active {
+.profile-username .edit-profile-button:active,
+.profile-username .follow-button:active,
+.profile-username .following-button:active {
   transform: scale(var(--button-active-scale));
 }
 

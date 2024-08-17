@@ -1,7 +1,9 @@
+import EmptyHashtags from "./EmptyHashtags";
+
 const Hashtags = () => {
   return (
     <div className="followers">
-      <h1>HashTags</h1>
+      <EmptyHashtags />
     </div>
   );
 };

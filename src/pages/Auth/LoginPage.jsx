@@ -7,7 +7,7 @@ import "../../styles/Auth.css";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { checkAuth } = useContext(AuthContext);
+  const { fetchCurrentUser } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -63,10 +63,13 @@ const LoginPage = () => {
       const response = await axios.post(`${apiUrl}/api/auth/login`, formData, {
         withCredentials: true,
       });
-      console.log("Logged in successfully --handleLogin :", response.data);
-      checkAuth();
+      console.log("response.data --handleLogin is :", response.data);
+      fetchCurrentUser();
     } catch (error) {
-      console.log("Login failed:", error.response.data.message);
+      console.log(
+        "error.response.data.message --handleLogin is :",
+        error.response.data.message
+      );
     }
   };
 

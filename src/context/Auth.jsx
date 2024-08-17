@@ -6,10 +6,10 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const apiUrl = import.meta.env.VITE_API_URL;
 
-  const checkAuth = async () => {
+  const fetchCurrentUser = async () => {
     try {
       setIsAuthenticating(true);
       const response = await axios.post(
@@ -19,26 +19,34 @@ export const AuthProvider = ({ children }) => {
           withCredentials: true,
         }
       );
-      console.log("data --checkAuth is ", response.data);
+      console.log("data --fetchCurrentUser is ", response.data);
       setIsAuthenticated(response.data.isAuthenticated);
-      setUser(response.data.user);
+      setCurrentUser(response.data.user);
     } catch (error) {
-      console.log("Failed to check authentication status --checkAuth", error);
+      console.log(
+        "Failed to check authentication status --fetchCurrentUser",
+        error
+      );
       setIsAuthenticated(false);
-      setUser(null);
+      setCurrentUser(null);
     } finally {
       setIsAuthenticating(false);
     }
   };
 
   useEffect(() => {
-    checkAuth();
+    fetchCurrentUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [apiUrl]);
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticating, isAuthenticated, user, checkAuth }}
+      value={{
+        isAuthenticating,
+        isAuthenticated,
+        currentUser,
+        fetchCurrentUser,
+      }}
     >
       {children}
     </AuthContext.Provider>

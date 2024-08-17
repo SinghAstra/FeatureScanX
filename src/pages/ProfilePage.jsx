@@ -17,9 +17,7 @@ const ProfilePage = () => {
   const [initialTab, setInitialTab] = useState("followers");
   const [isFollowing, setIsFollowing] = useState(false);
   const apiUrl = import.meta.env.VITE_API_URL;
-
-  console.log("currentUser is ", currentUser);
-  console.log("isFollowing is ", isFollowing);
+  const isCurrentUser = currentUser?.userName === username;
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -69,7 +67,7 @@ const ProfilePage = () => {
         withCredentials: true,
       });
     } catch (error) {
-      console.error("Failed to toggle follow status", error.message);
+      console.log("Failed to toggle follow status", error.message);
     }
   };
 
@@ -92,7 +90,7 @@ const ProfilePage = () => {
         <div className="profile-info">
           <div className="profile-username">
             <h1>{user.userName}</h1>
-            {currentUser.userName === username ? (
+            {isCurrentUser ? (
               <button className="edit-profile-button">Edit Profile</button>
             ) : isFollowing ? (
               <button className="following-button" onClick={handleToggleFollow}>
@@ -110,13 +108,17 @@ const ProfilePage = () => {
             </span>
             <span
               className="followers-count"
-              onClick={() => openModal("followers")}
+              onClick={() => {
+                openModal("followers");
+              }}
             >
               <strong>{user.followers.length}</strong> followers
             </span>
             <span
               className="following-count"
-              onClick={() => openModal("following")}
+              onClick={() => {
+                openModal("following");
+              }}
             >
               <strong>{user.following.length}</strong> following
             </span>

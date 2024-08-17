@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import {
   createBrowserRouter,
   createRoutesFromElements,
+  Navigate,
   Route,
   RouterProvider,
 } from "react-router-dom";
@@ -33,7 +34,7 @@ const router = createBrowserRouter(
       <Route element={<PublicRoute />}>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/accounts/signup" element={<RegisterPage />} />
-        <Route path="*" element={<LoginPage />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Route>
       <Route element={<ProtectedRoute />}>
         <Route element={<ProtectedLayout />}>

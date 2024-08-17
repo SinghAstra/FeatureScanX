@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 const RegistrationStage1 = ({ formData, setFormData, onNext }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,27 +40,59 @@ const RegistrationStage1 = ({ formData, setFormData, onNext }) => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
+  const checkEmailOrMobileAvailability = async (value) => {
+    try {
+      const response = await axios.post(
+        `${apiUrl}/api/auth/check-availability`,
+        {
+          mobileOrEmail: value,
+        }
+      );
+      console.log(
+        "response.data --checkEmailOrMobileAvailability is ",
+        response.data
+      );
+      return response.data.isAvailable
+        ? ""
+        : "Email or mobile number is already taken.";
+    } catch (error) {
+      console.log(
+        "error.response.data.message --checkEmailOrMobileAvailability is :",
+        error.response.data.message
+      );
+      return "Error checking availability.";
+    }
+  };
+
+  const checkUsernameAvailability = async (value) => {
+    try {
+      const response = await axios.post(
+        `${apiUrl}/api/auth/check-availability`,
+        {
+          username: value,
+        }
+      );
+      console.log(
+        "response.data --checkUsernameAvailability is ",
+        response.data
+      );
+      return response.data.isAvailable ? "" : "Username is already taken.";
+    } catch (error) {
+      console.log(
+        "error.response.data.message --checkUsernameAvailability is :",
+        error.response.data.message
+      );
+      return "Error checking availability.";
+    }
+  };
+
   const validateEmailOrMobile = async (value) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const mobileRegex = /^[0-9]{10,15}$/;
     if (value.trim() === "") {
       return "Email or mobile number is required.";
     } else if (emailRegex.test(value) || mobileRegex.test(value)) {
-      try {
-        const response = await axios.post(
-          "http://localhost:5000/api/auth/check-availability",
-          {
-            mobileOrEmail: value,
-          }
-        );
-        console.log("response.data is ", response.data);
-        return response.data.isAvailable
-          ? ""
-          : "Email or mobile number is already taken.";
-      } catch (error) {
-        console.log("Error checking availability:", error);
-        return "Error checking availability.";
-      }
+      return checkEmailOrMobileAvailability(value);
     } else {
       return "Invalid email address or mobile number.";
     }
@@ -81,19 +114,7 @@ const RegistrationStage1 = ({ formData, setFormData, onNext }) => {
     if (value.trim() === "") {
       return "Username is required.";
     } else if (usernameRegex.test(value)) {
-      try {
-        const response = await axios.post(
-          "http://localhost:5000/api/auth/check-availability",
-          {
-            username: value,
-          }
-        );
-        console.log("response.data is ", response.data);
-        return response.data.isAvailable ? "" : "Username is already taken.";
-      } catch (error) {
-        console.error("Error checking availability:", error);
-        return "Error checking availability.";
-      }
+      return checkUsernameAvailability(value);
     } else {
       return "Username must be 3-15 characters long and can only contain letters, numbers, and underscores.";
     }

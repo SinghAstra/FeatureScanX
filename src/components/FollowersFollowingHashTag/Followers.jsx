@@ -1,7 +1,8 @@
 import axios from "axios";
-import propTypes from "prop-types";
+import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import "../../styles/Followers.css";
+import EmptyFollowers from "./EmptyFollowers";
 import UserItem from "./UserItem";
 
 const Followers = ({ username, setShowFFHModal }) => {
@@ -38,13 +39,14 @@ const Followers = ({ username, setShowFFHModal }) => {
           setShowFFHModal={setShowFFHModal}
         />
       ))}
-      {!followers.length && <p>No Followers.</p>}
+      {!followers.length && <EmptyFollowers username={username} />}
     </div>
   );
 };
 
 Followers.propTypes = {
-  username: propTypes.string.isRequired,
+  username: PropTypes.string.isRequired,
+  setShowFFHModal: PropTypes.func.isRequired,
 };
 
 export default Followers;

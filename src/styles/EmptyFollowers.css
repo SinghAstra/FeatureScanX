@@ -1,0 +1,36 @@
+.empty-followers,
+.empty-following,
+.empty-hashtag {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.empty-followers .icon,
+.empty-following .icon,
+.empty-hashtag .icon {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 2px solid var(--color-primary);
+  padding: 20px;
+  background: var(--color-primary);
+  box-shadow: var(--shadow-strong);
+  margin: var(--margin-lg) 0;
+}
+
+.empty-followers .icon img,
+.empty-following .icon img,
+.empty-hashtag .icon img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.empty-followers p,
+.empty-following p,
+.empty-hashtag p {
+  font-size: var(--font-size-lg);
+}

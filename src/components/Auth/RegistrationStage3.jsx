@@ -14,13 +14,12 @@ const RegistrationStage3 = ({
   const [otp, setOtp] = useState("");
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
+  const { fetchCurrentUser } = useContext(AuthContext);
+  const apiUrl = import.meta.env.VITE_API_URL;
   //   const [notification, setNotification] = useState("");
-
-  const { checkAuth } = useContext(AuthContext);
 
   const handleChange = (e) => {
     setOtp(e.target.value);
-
     // Validate OTP length and content
     if (e.target.value.length === 6 && /^\d+$/.test(e.target.value)) {
       setIsValid(true);
@@ -36,19 +35,18 @@ const RegistrationStage3 = ({
 
   const registerUser = async () => {
     try {
-      // Proceed to register user
       const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        `${apiUrl}/api/auth/register`,
         formData,
         { withCredentials: true }
       );
-      console.log(
-        "User registered successfully --registerUser :",
-        response.data
-      );
-      checkAuth();
+      console.log("response.data --registerUser is :", response.data);
+      fetchCurrentUser();
     } catch (error) {
-      console.log("Error registering user:", error);
+      console.log(
+        "error.response.data.message --registerUser is :",
+        error.response.data.message
+      );
     }
   };
 
@@ -69,21 +67,15 @@ const RegistrationStage3 = ({
 
   const sendConfirmationCode = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/verify-email",
-        {
-          email: formData.mobileOrEmail,
-        }
-      );
+      const response = await axios.post(`${apiUrl}/api/auth/verify-email`, {
+        email: formData.mobileOrEmail,
+      });
       setConfirmationCode(response.data.confirmationCode);
-      console.log(
-        "Sent confirmation code --sendConfirmationCode:",
-        response.data.confirmationCode
-      );
+      console.log("response.data --sendConfirmationCode is : ", response.data);
     } catch (error) {
       console.log(
-        "Error sending confirmation code --sendConfirmationCode:",
-        error
+        "error.response.data.message --sendConfirmationCode is :",
+        error.response.data.message
       );
     }
   };
@@ -98,6 +90,7 @@ const RegistrationStage3 = ({
 
   useEffect(() => {
     sendConfirmationCode();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.mobileOrEmail]);
 
   return (

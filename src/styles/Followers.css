@@ -8,6 +8,7 @@
   text-align: center;
   gap: var(--gap-xs);
   overflow-y: auto;
+  padding-bottom: var(--padding-xxl);
   &::-webkit-scrollbar {
     display: none;
   }
