@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import SplashScreen from "../../skeleton/SplashScreen";
+import PostsSectionSkeleton from "../../skeleton/PostsSectionSkeleton";
 import "../../styles/PostsSection.css";
 
 const PostsSection = () => {
@@ -32,8 +32,9 @@ const PostsSection = () => {
     fetchUserPosts();
   }, [apiUrl, username]);
 
-  if (loading) {
-    return <SplashScreen />;
+  let check = null;
+  if (!check) {
+    return <PostsSectionSkeleton />;
   }
 
   if (error) {

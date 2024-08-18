@@ -13,6 +13,14 @@
   --color-black: hsl(0, 0%, 0%);
 
   --color-charcoal: hsl(234, 11%, 15%);
+  --card-bg-color: hsl(225, 13%, 17.5%);
+  --skeleton-bg-color: hsl(225, 13%, 22.5%);
+  --skeleton-gradient: linear-gradient(
+    90deg,
+    hsl(225, 13%, 24%) 0,
+    hsl(225, 13%, 24.5%) 4rem,
+    hsl(225, 13%, 25%) 8rem
+  );
   --text-color: #ececec;
 
   --color-primary: hsl(252, 75%, 60%);

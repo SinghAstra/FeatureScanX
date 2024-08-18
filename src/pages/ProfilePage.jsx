@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import FollowersFollowingHashTagModal from "../components/FollowersFollowingHashTag/FollowersFollowingHashTagModal";
 import AuthContext from "../context/AuthContext";
-import ProfilePageSkelton from "../skeleton/ProfilePageSkeleton";
+import ProfilePageSkeleton from "../skeleton/ProfilePageSkeleton";
 import "../styles/ProfilePage.css";
 import PageNotFound from "./PageNotFound";
 
@@ -51,7 +51,7 @@ const ProfilePage = () => {
   }
 
   if (!user) {
-    return <ProfilePageSkelton />;
+    return <ProfilePageSkeleton />;
   }
 
   const openModal = (tab) => {
