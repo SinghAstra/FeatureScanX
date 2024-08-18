@@ -50,8 +50,7 @@ const ProfilePage = () => {
     return <PageNotFound />;
   }
 
-  let check = null;
-  if (!check) {
+  if (!user) {
     return <ProfilePageSkelton />;
   }
 
