@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import FollowersFollowingHashTagModal from "../components/FollowersFollowingHashTag/FollowersFollowingHashTagModal";
 import AuthContext from "../context/AuthContext";
-import SplashScreen from "../skeleton/SplashScreen";
+import ProfilePageSkelton from "../skeleton/ProfilePageSkeleton";
 import "../styles/ProfilePage.css";
 import PageNotFound from "./PageNotFound";
 
@@ -50,8 +50,9 @@ const ProfilePage = () => {
     return <PageNotFound />;
   }
 
-  if (!user) {
-    return <SplashScreen />;
+  let check = null;
+  if (!check) {
+    return <ProfilePageSkelton />;
   }
 
   const openModal = (tab) => {

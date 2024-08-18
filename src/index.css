@@ -152,6 +152,10 @@ body {
   overflow-x: hidden;
 }
 
+.dark {
+  background: var(--color-charcoal);
+}
+
 /* Placeholder css */
 .placeholder {
   /* font-size: var(--font-size-xxl); */
@@ -159,7 +163,6 @@ body {
   text-align: center;
   min-height: 100vh;
   background-color: var(--color-primary);
-  border-left: 2px solid var(--color-white);
   display: flex;
   flex-direction: column;
   align-items: center;

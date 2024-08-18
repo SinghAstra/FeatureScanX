@@ -2,6 +2,13 @@
   padding: 0 var(--padding-lg);
   margin: 0 auto;
   width: 100%;
+  background: var(--color-white);
+  min-height: 100vh;
+}
+
+.dark .profile-page {
+  background: var(--color-charcoal);
+  color: var(--color-white);
 }
 
 .profile-header {
@@ -118,6 +125,10 @@
   transition: all var(--transition-duration-normal) ease;
   padding: 6px var(--padding-lg);
   border-top: 2px solid transparent;
+}
+
+.dark .profile-navigation .nav-link {
+  color: var(--color-white);
 }
 
 .profile-navigation .nav-link:hover {
