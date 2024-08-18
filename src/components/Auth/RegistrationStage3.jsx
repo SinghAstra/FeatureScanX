@@ -2,7 +2,7 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import AuthContext from "../../context/Auth";
+import AuthContext from "../../context/AuthContext";
 // import Notification from "../Notification";
 
 const RegistrationStage3 = ({

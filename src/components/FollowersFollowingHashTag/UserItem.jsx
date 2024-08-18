@@ -2,11 +2,11 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import AuthContext from "../../context/Auth";
+import AuthContext from "../../context/AuthContext";
 import "../../styles/UserItem.css";
 
 const UserItem = ({ user, setShowFFHModal }) => {
-  const { user: currentUser } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   const [isFollowing, setIsFollowing] = useState(
     currentUser.following.includes(user._id)
   );
@@ -16,11 +16,15 @@ const UserItem = ({ user, setShowFFHModal }) => {
   const handleToggleFollow = async () => {
     try {
       setIsFollowing((prev) => !prev);
-      await axios.get(`${apiUrl}/api/users/${user.userName}/toggle-follow`, {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${apiUrl}/api/users/${user.userName}/toggle-follow`,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("response.data --handleToggleFollow is ", response.data);
     } catch (error) {
-      console.error("Failed to toggle follow status", error.message);
+      console.log("error --handleToggleFollow is ", error);
     }
   };
 

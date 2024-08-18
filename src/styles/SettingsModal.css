@@ -1,0 +1,105 @@
+.settings-modal {
+  background: var(--color-white);
+  border-radius: var(--border-radius-lg);
+  width: 450px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: var(--shadow-deep);
+}
+
+.settings-modal .modal-header {
+  display: flex;
+  justify-content: center;
+  padding: var(--padding-sm) var(--padding-md);
+  width: 100%;
+  box-shadow: var(--shadow-light);
+}
+
+.settings-modal .modal-header h2 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-medium);
+}
+
+.settings-modal .settings-item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--padding-sm) var(--padding-md);
+}
+
+.settings-modal .settings-item h3 {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+}
+
+.settings-modal .settings-item .switch-theme-button {
+  width: var(--container-width-xl-fixed);
+  min-height: var(--height-lg);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px inset,
+    rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+  position: relative;
+  cursor: pointer;
+  border-radius: calc(3 * var(--border-radius-lg));
+}
+
+/* .settings-modal .settings-item .switch-theme-button::after {
+  content: "";
+  min-height: 40px;
+  width: 45px;
+  display: block;
+  border-radius: 50px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translate(0, -50%);
+  transition: transform 1s;
+} */
+
+/* .switch-theme-button:before {
+  content: "Off";
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 60px;
+  transform: translateY(-50%);
+  color: #ccc;
+  text-transform: uppercase;
+  transition: content 1s;
+}
+
+.switch-theme-button:before {
+  content: "ON";
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  color: #ccc;
+  text-transform: uppercase;
+  transition: content 1s;
+} */
+
+.turn-on .primary--button::after {
+  content: "";
+  min-height: 40px;
+  width: 45px;
+  display: block;
+  border-radius: 50px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  transform: translate(90px, -50%);
+  transition: transform 1s;
+}
+
+@media screen and (max-width: 480px) {
+  .settings-modal {
+    width: 95%;
+  }
+}

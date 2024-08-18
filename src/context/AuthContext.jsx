@@ -1,6 +1,7 @@
 import axios from "axios";
 import PropTypes from "prop-types";
 import { createContext, useEffect, useState } from "react";
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {

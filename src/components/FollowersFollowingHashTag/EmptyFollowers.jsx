@@ -1,11 +1,12 @@
 import PropTypes from "prop-types";
 import { useContext } from "react";
-import AuthContext from "../../context/Auth";
+import AuthContext from "../../context/AuthContext";
 import "../../styles/EmptyFollowers.css";
 
 const EmptyFollowers = ({ username }) => {
-  const { user: currentUser } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   const isCurrentUser = currentUser.userName === username;
+
   return (
     <div className="empty-followers">
       <div className="icon">

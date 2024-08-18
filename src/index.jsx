@@ -13,7 +13,7 @@ import SavedSection from "./components/Profile/SavedSection.jsx";
 import TaggedSection from "./components/Profile/TaggedSection.jsx";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
 import PublicRoute from "./components/routes/PublicRoute";
-import { AuthProvider } from "./context/Auth.jsx";
+import AppProvider from "./context/AppProvider.jsx";
 import "./index.css";
 import ProtectedLayout from "./Layouts/ProtectedLayout.jsx";
 import LoginPage from "./pages/Auth/LoginPage";
@@ -60,8 +60,8 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <AuthProvider>
+    <AppProvider>
       <RouterProvider router={router} />
-    </AuthProvider>
+    </AppProvider>
   </StrictMode>
 );

@@ -14,13 +14,10 @@ const Following = ({ username, setShowFFHModal }) => {
         `${apiUrl}/api/users/${username}/following`,
         { withCredentials: true }
       );
-      console.log(
-        "response.data.following --fetchFollowing is ",
-        response.data.following
-      );
+      console.log("response.data --fetchFollowing is ", response.data);
       setFollowing(response.data.following);
     } catch (error) {
-      console.log("error.message --fetchFollowing is ", error.message);
+      console.log("error --fetchFollowing is ", error);
       setFollowing([]);
     }
   };
@@ -29,6 +26,7 @@ const Following = ({ username, setShowFFHModal }) => {
     fetchFollowing();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [username]);
+
   return (
     <div className="following-container">
       {following.map((user) => (

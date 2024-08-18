@@ -1,13 +1,14 @@
 import { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
-import AuthContext from "../context/Auth";
+import AuthContext from "../context/AuthContext";
 import "../styles/Sidebar.css";
 import CreatePostModal from "./CreatePost/CreatePostModal";
+import SettingsModal from "./SettingsModal";
 
 const Sidebar = () => {
   const { currentUser } = useContext(AuthContext);
   const [createPostModal, setCreatePostModal] = useState(false);
-
+  const [settingsModal, setSettingsModal] = useState(false);
   return (
     <div className="sidebar-container">
       <div className="sidebar-item-container">
@@ -42,13 +43,6 @@ const Sidebar = () => {
           </i>
           <h3>Notifications</h3>
         </NavLink>
-        <div
-          className="sidebar-item sidebar-item-create-post"
-          onClick={() => setCreatePostModal(true)}
-        >
-          <i className="uil uil-plus-circle"></i>
-          <h3>Create Post</h3>
-        </div>
         <NavLink
           to="/bookmarks"
           className="sidebar-item sidebar-item-bookmarks"
@@ -56,6 +50,17 @@ const Sidebar = () => {
           <i className="uil uil-bookmark"></i>
           <h3>Bookmarks</h3>
         </NavLink>
+        <div
+          className="sidebar-item sidebar-item-create-post"
+          onClick={() => setCreatePostModal(true)}
+        >
+          <i className="uil uil-plus-circle"></i>
+          <h3>Create Post</h3>
+        </div>
+        <div className="sidebar-item" onClick={() => setSettingsModal(true)}>
+          <i className="uil uil-setting"></i>
+          <h3>Settings</h3>
+        </div>
         <NavLink to={`/${currentUser.userName}`} className="sidebar-item">
           {currentUser.profilePicture ? (
             <div className="user-profile-picture">
@@ -79,6 +84,12 @@ const Sidebar = () => {
         <CreatePostModal
           modalShown={createPostModal}
           setModalShown={setCreatePostModal}
+        />
+      )}
+      {settingsModal && (
+        <SettingsModal
+          modalShown={settingsModal}
+          setModalShown={setSettingsModal}
         />
       )}
     </div>

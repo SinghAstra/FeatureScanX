@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import { useContext } from "react";
-import AuthContext from "../../context/Auth";
+import AuthContext from "../../context/AuthContext";
 
 const EmptyFollowing = ({ username }) => {
-  const { user: currentUser } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   const isCurrentUser = currentUser.userName === username;
 
   return (

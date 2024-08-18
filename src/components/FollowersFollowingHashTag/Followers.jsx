@@ -15,13 +15,10 @@ const Followers = ({ username, setShowFFHModal }) => {
         `${apiUrl}/api/users/${username}/followers`,
         { withCredentials: true }
       );
-      console.log(
-        "response.data.followers --fetchFollowers is ",
-        response.data.followers
-      );
+      console.log("response.data --fetchFollowers is ", response.data);
       setFollowers(response.data.followers);
     } catch (error) {
-      console.log("error.message --fetchFollowers is ", error.message);
+      console.log("error --fetchFollowers is ", error);
       setFollowers([]);
     }
   };
@@ -30,6 +27,7 @@ const Followers = ({ username, setShowFFHModal }) => {
     fetchFollowers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [username]);
+
   return (
     <div className="followers-container">
       {followers.map((user) => (

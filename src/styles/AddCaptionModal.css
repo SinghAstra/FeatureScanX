@@ -1,5 +1,4 @@
 .add-caption-modal {
-  margin: 10% auto;
   border-radius: var(--border-radius-lg);
   width: 60%;
   min-height: 400px;
@@ -17,7 +16,7 @@
   align-items: center;
   padding: var(--padding-sm) var(--padding-md);
   width: 100%;
-  border-bottom: 1px solid var(--color-medium-gray);
+  box-shadow: var(--shadow-light);
 }
 
 .add-caption-modal .modal-header h2 {
@@ -126,7 +125,7 @@
   }
 }
 @media screen and (max-width: 480px) {
-  .select-media-modal {
+  .add-caption-modal {
     width: 95%;
   }
 }

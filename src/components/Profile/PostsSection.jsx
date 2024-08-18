@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import SplashScreen from "../../screens/SplashScreen";
+import SplashScreen from "../../skeleton/SplashScreen";
 import "../../styles/PostsSection.css";
 
 const PostsSection = () => {

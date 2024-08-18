@@ -1,5 +1,6 @@
 const EmptyHashtags = () => {
   const isCurrentUser = true;
+
   return (
     <div className="empty-hashtag">
       <div className="icon">
