@@ -4,7 +4,9 @@ import { ThemeContext } from "../context/ThemeContext";
 import "../styles/SettingsModal.css";
 
 const SettingsModal = ({ setModalShown }) => {
-  const { toggleTheme } = useContext(ThemeContext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
+  console.log("theme is ", theme);
   return (
     <div className="modal-backdrop" onClick={() => setModalShown(false)}>
       <div className="settings-modal" onClick={(e) => e.stopPropagation()}>
@@ -13,8 +15,10 @@ const SettingsModal = ({ setModalShown }) => {
         </div>
         <div className="settings-item">
           <h3>Switch Appearance</h3>
-          <input type="checkbox" id="switch-theme" />
-          <label htmlFor="switch-theme">Toggle</label>
+          <input type="checkbox" id="switch-theme" onClick={toggleTheme} />
+          <label htmlFor="switch-theme" className="switch-theme-label">
+            Toggle
+          </label>
         </div>
       </div>
     </div>

@@ -9,10 +9,6 @@
   box-shadow: var(--shadow-deep);
 }
 
-.dark .settings-modal {
-  background: var(--charcoal-color);
-}
-
 .settings-modal .modal-header {
   display: flex;
   justify-content: center;
@@ -39,46 +35,50 @@
   font-weight: var(--font-weight-medium);
 }
 
-input[type="checkbox"] {
+.settings-item input[type="checkbox"] {
   height: 0;
   width: 0;
   visibility: hidden;
 }
 
-label {
+.switch-theme-label {
   cursor: pointer;
-  /* text-indent: -9999px; */
-  width: 200px;
-  height: 100px;
-  background: grey;
+  text-indent: -9999px;
+  width: 100px;
+  height: 40px;
   display: block;
   border-radius: 100px;
   position: relative;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1) inset,
+    0px 18px 36px -18px rgba(0, 0, 0, 0.3) inset;
+  background-color: transparent;
+  transition: all 0.3s;
 }
 
-label:after {
+.switch-theme-label:after {
   content: "";
   position: absolute;
-  top: 5px;
+  top: 50%;
   left: 5px;
-  width: 90px;
-  height: 90px;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
   background: #fff;
-  border-radius: 90px;
+  border-radius: 44%;
   transition: 0.3s;
 }
 
-input:checked + label {
-  background: #bada55;
+.settings-item input:checked + .switch-theme-label {
+  background: black;
 }
 
-input:checked + label:after {
+.settings-item input:checked + .switch-theme-label:after {
   left: calc(100% - 5px);
-  transform: translateX(-100%);
+  transform: translate(-100%, -50%);
 }
 
-label:active:after {
-  width: 130px;
+.switch-theme-label:active:after {
+  width: 48px;
 }
 
 @media screen and (max-width: 480px) {
