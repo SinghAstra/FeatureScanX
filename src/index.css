@@ -132,12 +132,6 @@
   --button-primary-color: hsl(210, 80%, 50%);
   --button-primary-color-disabled: hsl(210, 80%, 70%);
   --button-active-scale: 0.9;
-
-  --bg-color: var(--color-white);
-}
-
-.dark {
-  --bg-color: var(--charcoal-color);
 }
 
 * {
@@ -154,7 +148,7 @@
 
 body {
   color: var(--color-black);
-  background: var(--bg-color);
+  background: var(--color-white);
   overflow-x: hidden;
 }
 

@@ -1,7 +1,10 @@
 import PropTypes from "prop-types";
+import { useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
 import "../styles/SettingsModal.css";
 
 const SettingsModal = ({ setModalShown }) => {
+  const { toggleTheme } = useContext(ThemeContext);
   return (
     <div className="modal-backdrop" onClick={() => setModalShown(false)}>
       <div className="settings-modal" onClick={(e) => e.stopPropagation()}>
@@ -10,7 +13,8 @@ const SettingsModal = ({ setModalShown }) => {
         </div>
         <div className="settings-item">
           <h3>Switch Appearance</h3>
-          <button className="switch-theme-button"></button>
+          <input type="checkbox" id="switch-theme" />
+          <label htmlFor="switch-theme">Toggle</label>
         </div>
       </div>
     </div>
