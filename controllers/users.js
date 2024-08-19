@@ -51,32 +51,34 @@ export const getUserPosts = async (req, res) => {
 
 export const toggleFollow = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { username } = req.params;
     const currentUserId = req.user.id;
 
-    if (userId === currentUserId.toString()) {
-      return res
-        .status(400)
-        .json({ message: "You cannot follow or unFollow yourself." });
-    }
-
     const currentUser = await User.findById(currentUserId);
-    const userToFollowOrUnFollow = await User.findById(userId);
+    const userToFollowOrUnFollow = await User.findOne({ userName: username });
 
     if (!userToFollowOrUnFollow) {
       return res.status(404).json({ message: "User not found." });
     }
 
+    if (userToFollowOrUnFollow._id.toString() === currentUser._id.toString()) {
+      return res
+        .status(400)
+        .json({ message: "You cannot follow or unFollow yourself." });
+    }
+
     // Check if the user is already following the target user
-    const isFollowing = currentUser.following.includes(userId);
+    const isFollowing = currentUser.following.includes(
+      userToFollowOrUnFollow._id
+    );
 
     if (isFollowing) {
       // UnFollow the user
-      currentUser.following.pull(userId);
+      currentUser.following.pull(userToFollowOrUnFollow._id);
       userToFollowOrUnFollow.followers.pull(currentUserId);
     } else {
       // Follow the user
-      currentUser.following.push(userId);
+      currentUser.following.push(userToFollowOrUnFollow._id);
       userToFollowOrUnFollow.followers.push(currentUserId);
     }
 
@@ -96,10 +98,10 @@ export const toggleFollow = async (req, res) => {
 };
 
 export const getFollowers = async (req, res) => {
-  const { userId } = req.params;
+  const { username } = req.params;
 
   try {
-    const user = await User.findById(userId).populate({
+    const user = await User.findOne({ userName: username }).populate({
       path: "followers",
       select: "-password",
     });
@@ -115,10 +117,10 @@ export const getFollowers = async (req, res) => {
 };
 
 export const getFollowing = async (req, res) => {
-  const { userId } = req.params;
+  const { username } = req.params;
 
   try {
-    const user = await User.findById(userId).populate({
+    const user = await User.findOne({ userName: username }).populate({
       path: "following",
       select: "-password",
     });
@@ -135,7 +137,6 @@ export const getFollowing = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
   try {
-    console.log("In the getAllUsers.");
     const users = await User.find({}).select("-password -dateOfBirth");
     res.status(200).json(users);
   } catch (error) {

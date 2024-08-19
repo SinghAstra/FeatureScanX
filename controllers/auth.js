@@ -1,9 +1,7 @@
 import bcrypt from "bcrypt";
-import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
 import jwt from "jsonwebtoken";
 import path from "path";
-import streamifier from "streamifier";
 import { fileURLToPath } from "url";
 import User from "../models/User.js";
 import sendEmail from "../utils/sendEmail.js";
@@ -12,13 +10,13 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Check if email, mobile, or username is taken
 export const checkAvailabilityController = async (req, res) => {
-  const { mobileOrEmail, username } = req.body;
+  const { email, username } = req.body;
 
   try {
     let user;
-    if (mobileOrEmail) {
+    if (email) {
       user = await User.findOne({
-        $or: [{ email: mobileOrEmail }, { mobile: mobileOrEmail }],
+        email,
       });
     }
     if (username) {
@@ -73,18 +71,10 @@ export const verifyEmailController = async (req, res) => {
 
 export const registerUserController = async (req, res) => {
   try {
-    const { fullName, username, mobileOrEmail, password, dateOfBirth } =
-      req.body;
-
-    // Determine if the provided mobileOrEmail is an email or mobile number
-    const isEmail = mobileOrEmail.includes("@");
-    const email = isEmail ? mobileOrEmail : null;
-    const mobile = isEmail ? null : mobileOrEmail;
+    const { fullName, username, email, password, dateOfBirth } = req.body;
 
     // Check if a user with the provided email or mobile already exists
-    const existingUser = await User.findOne({
-      $or: [{ email }, { mobile }],
-    });
+    const existingUser = await User.findOne({ email });
 
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
@@ -104,8 +94,7 @@ export const registerUserController = async (req, res) => {
     const newUser = new User({
       fullName,
       userName: username,
-      email,
-      mobile,
+      email: email,
       password: hashedPassword,
       dateOfBirth: new Date(
         dateOfBirth.year,
@@ -113,6 +102,8 @@ export const registerUserController = async (req, res) => {
         dateOfBirth.day
       ),
     });
+
+    console.log("newUser is ", newUser);
 
     // Save the user to the database
     await newUser.save();
@@ -136,6 +127,7 @@ export const registerUserController = async (req, res) => {
       },
     });
   } catch (error) {
+    console.log("error is ", error);
     res
       .status(500)
       .json({ message: "Internal server error --registerUserController" });

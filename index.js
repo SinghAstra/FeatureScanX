@@ -4,7 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import helmet from "helmet";
-import mongoose from "mongoose";
+import { default as mongoose } from "mongoose";
 import morgan from "morgan";
 import { generateMultipleUsers } from "./generators/user.js";
 import authRoutes from "./routes/auth.js";
@@ -53,9 +53,16 @@ app.get("/clear-cookies", (req, res) => {
 
   res.status(200).json({ message: "All cookies cleared." });
 });
-
 app.get("/view-cookies", (req, res) => {
   res.json({ cookies: req.cookies });
+});
+app.get("/drop-database", async (req, res) => {
+  try {
+    await mongoose.connection.dropDatabase();
+    res.json({ message: "Database dropped successfully" });
+  } catch (error) {
+    res.json({ message: "Database dropped successfully" });
+  }
 });
 
 const populateUsers = async () => {

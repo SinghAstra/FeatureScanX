@@ -1,9 +1,8 @@
-import cloudinary from "../config/cloudinaryConfig.js";
+import cloudinary from "../config/cloudinary.js";
 import Hashtag from "../models/Hashtag.js";
 import Post from "../models/Post.js";
 import User from "../models/User.js";
 
-// Route to create a post
 export const createPostController = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -22,7 +21,7 @@ export const createPostController = async (req, res) => {
             resource_type: file.mimetype.startsWith("image/")
               ? "image"
               : "video",
-            folder: "social-app-posts", // Folder in Cloudinary to store posts
+            folder: "social-app-posts",
           },
           (error, result) => {
             if (error) {
