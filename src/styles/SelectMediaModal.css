@@ -9,6 +9,10 @@
   box-shadow: var(--shadow-deep);
 }
 
+.dark .select-media-modal {
+  background: var(--card-bg-color);
+}
+
 .select-media-modal .modal-header {
   display: flex;
   justify-content: center;

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import PostsSectionSkeleton from "../../skeleton/PostsSectionSkeleton";
 import "../../styles/PostsSection.css";
+import EmptySectionPosts from "./EmptySectionPosts";
 
 const PostsSection = () => {
   const { username } = useParams();
@@ -32,8 +33,7 @@ const PostsSection = () => {
     fetchUserPosts();
   }, [apiUrl, username]);
 
-  let check = null;
-  if (!check) {
+  if (loading) {
     return <PostsSectionSkeleton />;
   }
 
@@ -41,30 +41,30 @@ const PostsSection = () => {
     return <div>{error}</div>;
   }
 
+  if (posts.length === 0) {
+    return <EmptySectionPosts username={username} />;
+  }
+
   return (
     <div className="posts-grid">
-      {posts.length === 0 ? (
-        <p>No posts available</p>
-      ) : (
-        posts.map((post) => (
-          <div key={post._id} className="post-item">
-            {post.media[0].type === "image" ? (
-              <img
-                src={post.media[0].url}
-                alt="Post media"
-                className="post-thumbnail"
-              />
-            ) : (
-              <video
-                src={post.media[0].url}
-                className="post-thumbnail"
-                muted
-                loop
-              />
-            )}
-          </div>
-        ))
-      )}
+      {posts.map((post) => (
+        <div key={post._id} className="post-item">
+          {post.media[0].type === "image" ? (
+            <img
+              src={post.media[0].url}
+              alt="Post media"
+              className="post-thumbnail"
+            />
+          ) : (
+            <video
+              src={post.media[0].url}
+              className="post-thumbnail"
+              muted
+              loop
+            />
+          )}
+        </div>
+      ))}
     </div>
   );
 };

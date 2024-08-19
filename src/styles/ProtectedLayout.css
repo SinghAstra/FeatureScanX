@@ -20,4 +20,14 @@
   .protected-layout {
     grid-template-columns: auto;
   }
+
+  .protected-layout main {
+    padding-bottom: calc(2 * var(--padding-lg));
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .protected-layout main {
+    padding-bottom: calc(2 * var(--padding-xxl));
+  }
 }

@@ -156,11 +156,12 @@
 
 body {
   color: var(--color-black);
-  background: var(--color-white);
+  background: var(--color-very-light-gray);
   overflow-x: hidden;
 }
 
 .dark {
+  color: var(--color-white);
   background: var(--color-charcoal);
 }
 

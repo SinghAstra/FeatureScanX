@@ -65,7 +65,7 @@ const RegistrationStage3 = ({
   const sendConfirmationCode = async () => {
     try {
       const response = await axios.post(`${apiUrl}/api/auth/verify-email`, {
-        email: formData.mobileOrEmail,
+        email: formData.email,
       });
       setConfirmationCode(response.data.confirmationCode);
       console.log("response.data --sendConfirmationCode is : ", response.data);
@@ -85,7 +85,7 @@ const RegistrationStage3 = ({
   useEffect(() => {
     sendConfirmationCode();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData.mobileOrEmail]);
+  }, [formData.email]);
 
   return (
     <form className="auth-form-container" onSubmit={handleSubmit}>
@@ -94,7 +94,7 @@ const RegistrationStage3 = ({
       <div className="title-container">
         <span className="title">Enter confirmation code</span>
         <span className="subtitle">
-          Enter the confirmation code that we sent to {formData.mobileOrEmail}.
+          Enter the confirmation code that we sent to {formData.email}.
           <br />
           <Link onClick={handleResendConfirmationCode}>Resend Code</Link>
         </span>
@@ -128,7 +128,7 @@ const RegistrationStage3 = ({
 
 RegistrationStage3.propTypes = {
   formData: PropTypes.shape({
-    mobileOrEmail: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
   }).isRequired,
   confirmationCode: PropTypes.string.isRequired,
   setConfirmationCode: PropTypes.func.isRequired,

@@ -19,8 +19,8 @@ const RegistrationStage1 = ({ formData, setFormData, onNext }) => {
   const handleBlur = async (e) => {
     const { name, value } = e.target;
     let error = "";
-    if (name === "mobileOrEmail") {
-      error = await validateEmailOrMobile(value);
+    if (name === "email") {
+      error = await validateEmail(value);
     } else if (name === "fullName") {
       error = validateFullName(value);
     } else if (name === "username") {
@@ -40,24 +40,18 @@ const RegistrationStage1 = ({ formData, setFormData, onNext }) => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
-  const checkEmailOrMobileAvailability = async (value) => {
+  const checkEmailAvailability = async (value) => {
     try {
       const response = await axios.post(
         `${apiUrl}/api/auth/check-availability`,
         {
-          mobileOrEmail: value,
+          email: value,
         }
       );
-      console.log(
-        "response.data --checkEmailOrMobileAvailability is ",
-        response.data
-      );
-      return response.data.isAvailable
-        ? ""
-        : "Email or mobile number is already taken.";
+      console.log("response.data --checkEmailAvailability is ", response.data);
+      return response.data.isAvailable ? "" : "Email is already taken.";
     } catch (error) {
-      console.log("error --checkEmailOrMobileAvailability is :", error);
-      return "Error checking availability.";
+      console.log("error --checkEmailAvailability is :", error);
     }
   };
 
@@ -76,19 +70,17 @@ const RegistrationStage1 = ({ formData, setFormData, onNext }) => {
       return response.data.isAvailable ? "" : "Username is already taken.";
     } catch (error) {
       console.log("error --checkUsernameAvailability is :", error);
-      return "Error checking availability.";
     }
   };
 
-  const validateEmailOrMobile = async (value) => {
+  const validateEmail = async (value) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const mobileRegex = /^[0-9]{10,15}$/;
     if (value.trim() === "") {
-      return "Email or mobile number is required.";
-    } else if (emailRegex.test(value) || mobileRegex.test(value)) {
-      return checkEmailOrMobileAvailability(value);
+      return "Email is required.";
+    } else if (emailRegex.test(value)) {
+      return checkEmailAvailability(value);
     } else {
-      return "Invalid email address or mobile number.";
+      return "Invalid Email address.";
     }
   };
 
@@ -128,13 +120,13 @@ const RegistrationStage1 = ({ formData, setFormData, onNext }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const emailError = await validateEmailOrMobile(formData.mobileOrEmail);
+    const emailError = await validateEmail(formData.email);
     const nameError = validateFullName(formData.fullName);
     const usernameError = await validateUsername(formData.username);
     const passwordError = validatePassword(formData.password);
     if (emailError || nameError || usernameError || passwordError) {
       setErrors({
-        mobileOrEmail: emailError,
+        email: emailError,
         fullName: nameError,
         username: usernameError,
         password: passwordError,
@@ -158,33 +150,31 @@ const RegistrationStage1 = ({ formData, setFormData, onNext }) => {
         </div>
         <div className="input-container">
           <label
-            className={`input-label ${errors.mobileOrEmail ? "error" : ""}`}
-            htmlFor="mobileOrEmail"
+            className={`input-label ${errors.email ? "error" : ""}`}
+            htmlFor="email"
           >
-            Mobile Number or Email Address
+            Email
           </label>
           <i
             className={`uil uil-envelope-alt icon-left ${
-              errors.mobileOrEmail ? "error" : ""
+              errors.email ? "error" : ""
             }`}
           ></i>
           <input
             className={`input-field-with-icon-left ${
-              errors.mobileOrEmail ? "error" : ""
+              errors.email ? "error" : ""
             }`}
-            id="mobileOrEmail"
-            name="mobileOrEmail"
+            id="email"
+            name="email"
             onChange={handleChange}
             onBlur={handleBlur}
             onFocus={handleFocus}
-            placeholder="Mobile Number or Email Address"
+            placeholder="Email"
             type="text"
-            value={formData.mobileOrEmail}
+            value={formData.email}
             autoComplete="off"
           />
-          {errors.mobileOrEmail && (
-            <p className="error-message">{errors.mobileOrEmail}</p>
-          )}
+          {errors.email && <p className="error-message">{errors.email}</p>}
         </div>
         <div className="input-container">
           <label
@@ -294,7 +284,7 @@ const RegistrationStage1 = ({ formData, setFormData, onNext }) => {
 
 RegistrationStage1.propTypes = {
   formData: PropTypes.shape({
-    mobileOrEmail: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
     fullName: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     password: PropTypes.string.isRequired,

@@ -10,6 +10,10 @@
   box-shadow: var(--shadow-deep);
 }
 
+.dark .add-caption-modal {
+  background: var(--card-bg-color);
+}
+
 .add-caption-modal .modal-header {
   display: flex;
   justify-content: space-between;
@@ -70,17 +74,18 @@
   border-radius: 50%;
   user-select: none;
   z-index: 1000;
+  padding: 1.3rem;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .prev {
-  left: 0.5rem;
+  left: 1rem;
 }
 
 .next {
-  right: 0.5rem;
+  right: 1rem;
 }
 
 .add-caption-modal .modal-body .add-caption-location-section {
@@ -94,6 +99,7 @@
   resize: none;
   padding: 0.5rem 1rem;
   background: transparent;
+  color: inherit;
 }
 
 .location-input-container {
@@ -110,6 +116,8 @@
   border-radius: 0px;
   outline: none;
   padding-right: 1rem;
+  background: inherit;
+  color: inherit;
 }
 
 .location-input-container .icon {
