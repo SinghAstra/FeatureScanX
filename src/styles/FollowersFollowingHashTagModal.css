@@ -1,5 +1,4 @@
 .followers-following-modal {
-  background: var(--color-white);
   border-radius: var(--border-radius-lg);
   width: 450px;
   height: 400px;
@@ -8,6 +7,14 @@
   align-items: center;
   box-shadow: var(--shadow-strong);
   overflow: hidden;
+}
+
+.light .followers-following-modal {
+  background: var(--color-white);
+}
+
+.dark .followers-following-modal {
+  background: var(--card-bg-color);
 }
 
 .followers-following-modal .modal-header {
@@ -21,11 +28,18 @@
   padding: var(--padding-sm) 0;
   width: 100%;
   text-align: center;
-  color: var(--color-dark-gray);
   transition: all var(--transition-duration-normal)
     var(--transition-timing-bounce);
   cursor: pointer;
-  border-bottom: 2px solid var(--color-light-gray);
+  border-bottom: 2px solid transparent;
+}
+
+.light .followers-following-modal .modal-header .nav-link {
+  color: var(--color-dark-gray);
+}
+
+.dark .followers-following-modal .modal-header .nav-link {
+  color: var(--color-light-gray);
 }
 
 .followers-following-modal .modal-header .nav-link.active {

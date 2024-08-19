@@ -4,9 +4,8 @@ import { ThemeContext } from "../context/ThemeContext";
 import "../styles/SettingsModal.css";
 
 const SettingsModal = ({ setModalShown }) => {
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { toggleTheme } = useContext(ThemeContext);
 
-  console.log("theme is ", theme);
   return (
     <div className="modal-backdrop" onClick={() => setModalShown(false)}>
       <div className="settings-modal" onClick={(e) => e.stopPropagation()}>

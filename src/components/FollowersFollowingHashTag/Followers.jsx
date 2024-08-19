@@ -1,16 +1,19 @@
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
+import FollowersFollowingSkeleton from "../../Loaders/FollowersFollowingSkeleton";
 import EmptyFollowers from "../../placeholders/FollowersFollowingHashtag/EmptyFollowers";
 import "../../styles/Followers.css";
 import UserItem from "./UserItem";
 
 const Followers = ({ username, setShowFFHModal }) => {
   const apiUrl = import.meta.env.VITE_API_URL;
+  const [loadingFollowers, setLoadingFollowers] = useState(true);
   const [followers, setFollowers] = useState([]);
 
   const fetchFollowers = async () => {
     try {
+      setLoadingFollowers(true);
       const response = await axios.get(
         `${apiUrl}/api/users/${username}/followers`,
         { withCredentials: true }
@@ -20,6 +23,8 @@ const Followers = ({ username, setShowFFHModal }) => {
     } catch (error) {
       console.log("error --fetchFollowers is ", error);
       setFollowers([]);
+    } finally {
+      setLoadingFollowers(false);
     }
   };
 
@@ -27,6 +32,10 @@ const Followers = ({ username, setShowFFHModal }) => {
     fetchFollowers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [username]);
+
+  if (loadingFollowers) {
+    return <FollowersFollowingSkeleton />;
+  }
 
   return (
     <div className="followers-container">

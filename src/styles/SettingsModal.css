@@ -9,6 +9,10 @@
   box-shadow: var(--shadow-deep);
 }
 
+.dark .settings-modal {
+  background: var(--card-bg-color);
+}
+
 .settings-modal .modal-header {
   display: flex;
   justify-content: center;
@@ -44,8 +48,8 @@
 .switch-theme-label {
   cursor: pointer;
   text-indent: -9999px;
-  width: 100px;
-  height: 40px;
+  width: 90px;
+  height: 35px;
   display: block;
   border-radius: 100px;
   position: relative;
@@ -61,15 +65,15 @@
   top: 50%;
   left: 5px;
   transform: translateY(-50%);
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
   background: #fff;
-  border-radius: 44%;
+  border-radius: 30px;
   transition: 0.3s;
 }
 
 .settings-item input:checked + .switch-theme-label {
-  background: black;
+  background: transparent;
 }
 
 .settings-item input:checked + .switch-theme-label:after {

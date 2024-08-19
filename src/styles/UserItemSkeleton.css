@@ -1,0 +1,44 @@
+.followers-following-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding-bottom: 40px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.user-item-skeleton {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding: var(--padding-sm) var(--padding-md);
+  gap: var(--gap-md);
+}
+
+.user-avatar-skeleton {
+  width: var(--container-width-sm-fixed);
+  aspect-ratio: 1/1;
+  border-radius: var(--border-radius-full);
+  box-shadow: var(--shadow-strong);
+}
+
+.user-info-skeleton {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+}
+
+.username-skeleton {
+  width: 80%;
+  height: 20px;
+}
+
+.user-fullName-skeleton {
+  width: 60%;
+  height: 12px;
+}
