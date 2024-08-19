@@ -16,6 +16,7 @@ import PublicRoute from "./components/routes/PublicRoute";
 import AppProvider from "./context/AppProvider.jsx";
 import "./index.css";
 import ProtectedLayout from "./Layouts/ProtectedLayout.jsx";
+import PublicLayout from "./Layouts/PublicLayout.jsx";
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
 import BookmarksPage from "./pages/BookmarksPage.jsx";
@@ -32,9 +33,11 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route element={<PublicRoute />}>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/accounts/signup" element={<RegisterPage />} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        <Route element={<PublicLayout />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/accounts/signup" element={<RegisterPage />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Route>
       </Route>
       <Route element={<ProtectedRoute />}>
         <Route element={<ProtectedLayout />}>

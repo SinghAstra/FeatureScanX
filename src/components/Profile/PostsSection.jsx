@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import PostsSectionSkeleton from "../../skeleton/PostsSectionSkeleton";
+import PostsSectionSkeleton from "../../Loaders/PostsSectionSkeleton";
+import EmptyPostsSection from "../../placeholders/Profile/EmptyPostsSection";
 import "../../styles/PostsSection.css";
-import EmptySectionPosts from "./EmptySectionPosts";
 
 const PostsSection = () => {
   const { username } = useParams();
@@ -42,7 +42,7 @@ const PostsSection = () => {
   }
 
   if (posts.length === 0) {
-    return <EmptySectionPosts username={username} />;
+    return <EmptyPostsSection username={username} />;
   }
 
   return (

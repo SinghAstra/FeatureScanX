@@ -1,7 +1,7 @@
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-import EmptyFollowing from "./EmptyFollowing";
+import EmptyFollowing from "../../placeholders/FollowersFollowingHashtag/EmptyFollowing";
 import UserItem from "./UserItem";
 
 const Following = ({ username, setShowFFHModal }) => {

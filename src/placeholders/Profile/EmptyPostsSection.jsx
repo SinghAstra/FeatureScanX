@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
+import CreatePostModal from "../../components/CreatePost/CreatePostModal";
 import AuthContext from "../../context/AuthContext";
 import "../../styles/EmptySectionPosts.css";
-import CreatePostModal from "../CreatePost/CreatePostModal";
-const EmptySectionPosts = ({ username }) => {
+const EmptyPostsSection = ({ username }) => {
   const { currentUser } = useContext(AuthContext);
   const isCurrentUser = currentUser.userName === username;
 
@@ -36,4 +36,4 @@ const EmptySectionPosts = ({ username }) => {
   );
 };
 
-export default EmptySectionPosts;
+export default EmptyPostsSection;

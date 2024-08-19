@@ -1,8 +1,8 @@
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
+import EmptyFollowers from "../../placeholders/FollowersFollowingHashtag/EmptyFollowers";
 import "../../styles/Followers.css";
-import EmptyFollowers from "./EmptyFollowers";
 import UserItem from "./UserItem";
 
 const Followers = ({ username, setShowFFHModal }) => {

@@ -9,6 +9,7 @@
   position: relative;
   overflow: hidden;
   aspect-ratio: 1 / 1;
+  box-shadow: var(--shadow-deep);
 }
 
 .post-thumbnail {
@@ -16,7 +17,6 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
-  border: 1px solid black;
 }
 
 @media screen and (max-width: 768px) {

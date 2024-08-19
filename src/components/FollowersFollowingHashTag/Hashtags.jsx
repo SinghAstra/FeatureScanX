@@ -1,4 +1,4 @@
-import EmptyHashtags from "./EmptyHashtags";
+import EmptyHashtags from "../../placeholders/FollowersFollowingHashtag/EmptyHashtags";
 
 const Hashtags = () => {
   return (

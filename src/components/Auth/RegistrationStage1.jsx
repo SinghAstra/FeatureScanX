@@ -169,7 +169,7 @@ const RegistrationStage1 = ({ formData, setFormData, onNext }) => {
             onChange={handleChange}
             onBlur={handleBlur}
             onFocus={handleFocus}
-            placeholder="Email"
+            placeholder="name@email.com"
             type="text"
             value={formData.email}
             autoComplete="off"
