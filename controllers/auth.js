@@ -156,7 +156,7 @@ export const loginUser = async (req, res) => {
       httpOnly: true,
       maxAge: 72 * 3600 * 1000,
     });
-
+    console.log("Logged in successfully");
     res.status(200).json({ message: "Logged In Successfully." });
   } catch (err) {
     res.status(500).json({ message: "Internal Server Error - LogIn User." });

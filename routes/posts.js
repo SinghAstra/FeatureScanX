@@ -12,6 +12,9 @@ import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
 
+// Testing Purposes
+router.get("/delete-all-posts", deleteAllPosts);
+
 // route to create a post when the user is authenticated
 router.post(
   "/create-post",

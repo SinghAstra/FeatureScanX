@@ -1,20 +1,39 @@
+import ffmpegPath from "ffmpeg-static";
+import ffmpeg from "fluent-ffmpeg";
+import sharp from "sharp";
+import { PassThrough } from "stream";
 import cloudinary from "../config/cloudinary.js";
 import Hashtag from "../models/Hashtag.js";
 import Post from "../models/Post.js";
 import User from "../models/User.js";
+
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 export const createPostController = async (req, res) => {
   try {
     const userId = req.user.id;
     const { caption, location } = req.body;
 
-    console.log("req.files is ", req.files);
-
     // Initialize array to store media URLs
     const mediaFiles = [];
 
     // Process uploaded files
     for (const file of req.files) {
+      let buffer;
+
+      // Compress image if it's an image
+      if (file.mimetype.startsWith("image/")) {
+        buffer = await sharp(file.buffer)
+          .resize(1024, 1024, { fit: "inside" })
+          .jpeg({ quality: 80 })
+          .toBuffer();
+      } else if (file.mimetype.startsWith("video/")) {
+        // Compress video using FFmpeg
+        buffer = await compressVideoWithFFmpeg(file.buffer);
+      } else {
+        buffer = file.buffer;
+      }
+
       const uploadResult = await new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
           {
@@ -31,7 +50,7 @@ export const createPostController = async (req, res) => {
             }
           }
         );
-        stream.end(file.buffer);
+        stream.end(buffer);
       });
 
       mediaFiles.push({
@@ -42,6 +61,7 @@ export const createPostController = async (req, res) => {
       console.log("uploadResult.secure_url: ", uploadResult.secure_url);
     }
 
+    console.log("mediaFiles is ", mediaFiles);
     // Create and save the post
     const newPost = new Post({
       media: mediaFiles,
@@ -49,8 +69,6 @@ export const createPostController = async (req, res) => {
       location,
       userId,
     });
-
-    await newPost.save();
 
     // Handle hashtags
     const hashtags = await processHashtags(caption, newPost._id);
@@ -62,6 +80,8 @@ export const createPostController = async (req, res) => {
 
     await newPost.save();
 
+    console.log("newPost is ", newPost);
+
     res
       .status(201)
       .json({ message: "Post created successfully", post: newPost });
@@ -69,6 +89,36 @@ export const createPostController = async (req, res) => {
     console.log("error is ", error);
     res.status(500).json({ message: "Error creating post", error });
   }
+};
+
+const compressVideoWithFFmpeg = (inputBuffer) => {
+  return new Promise((resolve, reject) => {
+    const passThroughStream = new PassThrough();
+    const outputBuffers = [];
+
+    // Use FFmpeg to process the video
+    ffmpeg()
+      .input(passThroughStream)
+      .outputOptions([
+        "-vf scale=640:-1", // Scale the video to a width of 640 pixels, maintaining aspect ratio
+        "-c:v libx264", // Encode the video with H.264 codec
+        "-preset slow", // Use a slower compression preset (better compression)
+        "-crf 28", // Set the quality level (lower CRF means better quality, but larger files)
+        "-movflags +faststart", // Optimize video for web streaming
+      ])
+      .on("end", () => {
+        resolve(Buffer.concat(outputBuffers)); // Resolve with the compressed video buffer
+      })
+      .on("error", (err) => {
+        reject(err);
+      })
+      .pipe(new PassThrough())
+      .on("data", (chunk) => {
+        outputBuffers.push(chunk); // Collect output chunks
+      });
+
+    passThroughStream.end(inputBuffer); // Write the input buffer to the stream
+  });
 };
 
 const extractHashtags = (caption) => {
@@ -153,8 +203,8 @@ export const getAllPosts = async (req, res) => {
 
 export const deleteAllPosts = async (req, res) => {
   try {
-    await Post.deleteMany({});
-    res.status(200).json({ message: "All Posts Deleted" });
+    const posts = await Post.deleteMany({});
+    res.status(200).json({ message: "All Posts Deleted", posts });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
