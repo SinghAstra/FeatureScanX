@@ -554,7 +554,7 @@ async function automatePostCreation() {
     const numberOfPosts = getRandomNumber(1, maxPostsPerUser);
     for (let i = 0; i < numberOfPosts; i++) {
       try {
-        const isSingleImagePost = Math.random() < 0.5;
+        const isSingleImagePost = Math.random() < 0.7;
         let imagePaths = [];
 
         if (isSingleImagePost) {

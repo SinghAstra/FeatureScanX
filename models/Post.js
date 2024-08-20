@@ -3,7 +3,8 @@ const { ObjectId } = mongoose.Schema.Types;
 
 const mediaSchema = new mongoose.Schema({
   type: { type: String, enum: ["image", "video"], required: false },
-  url: { type: String, required: true },
+  highResUrl: { type: String, required: true },
+  lowResUrl: { type: String, required: true },
 });
 
 const postSchema = new mongoose.Schema(

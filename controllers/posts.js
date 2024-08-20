@@ -19,46 +19,50 @@ export const createPostController = async (req, res) => {
 
     // Process uploaded files
     for (const file of req.files) {
-      let buffer;
+      let highResBuffer, lowResBuffer;
 
       // Compress image if it's an image
       if (file.mimetype.startsWith("image/")) {
-        buffer = await sharp(file.buffer)
+        highResBuffer = await sharp(file.buffer)
           .resize(1024, 1024, { fit: "inside" })
           .jpeg({ quality: 80 })
           .toBuffer();
+
+        // Low-resolution version
+        lowResBuffer = await sharp(file.buffer)
+          .resize(50, 50, { fit: "inside" }) // Adjust the size for placeholder
+          .jpeg({ quality: 50 }) // Adjust the quality for placeholder
+          .toBuffer();
       } else if (file.mimetype.startsWith("video/")) {
-        // Compress video using FFmpeg
-        buffer = await compressVideoWithFFmpeg(file.buffer);
+        // Compress video using FFmpeg for high-res
+        highResBuffer = await compressVideoWithFFmpeg(file.buffer);
+
+        // Optional: Create a low-res video (use FFmpeg to create a lower bitrate version)
+        lowResBuffer = await compressVideoWithFFmpeg(file.buffer, {
+          bitrate: "200k",
+        });
       } else {
-        buffer = file.buffer;
+        highResBuffer = file.buffer;
+        lowResBuffer = file.buffer;
       }
 
-      const uploadResult = await new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream(
-          {
-            resource_type: file.mimetype.startsWith("image/")
-              ? "image"
-              : "video",
-            folder: "social-app-posts",
-          },
-          (error, result) => {
-            if (error) {
-              reject(error);
-            } else {
-              resolve(result);
-            }
-          }
-        );
-        stream.end(buffer);
-      });
+      // Upload high-resolution version
+      const highResUpload = await uploadToCloudinary(
+        highResBuffer,
+        file.mimetype
+      );
+
+      // Upload low-resolution version
+      const lowResUpload = await uploadToCloudinary(
+        lowResBuffer,
+        file.mimetype
+      );
 
       mediaFiles.push({
         type: file.mimetype.startsWith("image/") ? "image" : "video",
-        url: uploadResult.secure_url,
+        highResUrl: highResUpload.secure_url,
+        lowResUrl: lowResUpload.secure_url,
       });
-
-      console.log("uploadResult.secure_url: ", uploadResult.secure_url);
     }
 
     console.log("mediaFiles is ", mediaFiles);
@@ -89,6 +93,26 @@ export const createPostController = async (req, res) => {
     console.log("error is ", error);
     res.status(500).json({ message: "Error creating post", error });
   }
+};
+
+// Helper function to upload buffer to Cloudinary
+const uploadToCloudinary = (buffer, mimetype) => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        resource_type: mimetype.startsWith("image/") ? "image" : "video",
+        folder: "social-app-posts",
+      },
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+    stream.end(buffer);
+  });
 };
 
 const compressVideoWithFFmpeg = (inputBuffer) => {
