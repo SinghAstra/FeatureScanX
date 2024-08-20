@@ -12,6 +12,7 @@
   box-shadow: var(--shadow-deep);
 }
 
+.post-image,
 .post-thumbnail {
   width: 100%;
   height: 100%;
