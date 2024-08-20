@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 
 const baseURL = "http://localhost:5000/api";
 const commonPassword = "YourCommonPassword123";
+const maxImagePerPost = 4;
 const maxPostsPerUser = 5;
 const maxHashTagsPerPost = 5;
 const maxMentionsPerPost = 5;
@@ -504,11 +505,14 @@ function getAvailableImage() {
   return selectedImage;
 }
 
-async function createPost(caption, location, token, imagePath, username) {
+async function createPost(caption, location, token, imagePaths, username) {
   const formData = new FormData();
   formData.append("caption", caption);
   formData.append("location", location);
-  formData.append("media", fs.createReadStream(imagePath));
+
+  imagePaths.forEach((imagePath) => {
+    formData.append("media", fs.createReadStream(imagePath));
+  });
 
   try {
     await axios.post(`${baseURL}/posts/create-post`, formData, {
@@ -517,12 +521,17 @@ async function createPost(caption, location, token, imagePath, username) {
         Cookie: `token=${token}`,
       },
     });
-    console.log(
-      `Post created with image :- ${path.basename(imagePath)} by ${username}`
-    );
+
+    const imageNames = imagePaths
+      .map((imagePath) => path.basename(imagePath))
+      .join(", ");
+    console.log(`Post created with images: ${imageNames} by ${username}`);
   } catch (error) {
+    const imageNames = imagePaths
+      .map((imagePath) => path.basename(imagePath))
+      .join(", ");
     console.log(
-      `Error creating post with ${path.basename(imagePath)}:`,
+      `Error creating post with images: ${imageNames}:`,
       error.message
     );
   }
@@ -541,10 +550,21 @@ async function automatePostCreation() {
       console.log(`Skipping ${currentUser.userName} due to login failure.`);
       continue;
     }
+
     const numberOfPosts = getRandomNumber(1, maxPostsPerUser);
     for (let i = 0; i < numberOfPosts; i++) {
       try {
-        const imagePath = path.join(imageDirectory, getAvailableImage());
+        const isSingleImagePost = Math.random() < 0.5;
+        let imagePaths = [];
+
+        if (isSingleImagePost) {
+          imagePaths.push(path.join(imageDirectory, getAvailableImage()));
+        } else {
+          const numberOfImages = getRandomNumber(2, maxImagePerPost);
+          for (let j = 0; j < numberOfImages; j++) {
+            imagePaths.push(path.join(imageDirectory, getAvailableImage()));
+          }
+        }
 
         let hashTags = " ";
         const numberOfHashTags = getRandomNumber(0, maxHashTagsPerPost);
@@ -569,7 +589,7 @@ async function automatePostCreation() {
           caption,
           location,
           token,
-          imagePath,
+          imagePaths,
           currentUser.userName
         );
       } catch (error) {

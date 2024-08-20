@@ -5,7 +5,8 @@ import fs from "fs";
 dotenv.config();
 
 const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
-const IMAGE_COUNT = 10;
+const IMAGE_COUNT = 1000;
+const FILE_PATH = "imageUrls.json";
 
 const fetchImageUrls = async () => {
   try {
@@ -23,9 +24,18 @@ const fetchImageUrls = async () => {
 };
 
 const saveImageUrls = async () => {
-  const urls = await fetchImageUrls();
-  fs.writeFileSync("imageUrls.json", JSON.stringify(urls, null, 2));
-  console.log("Saved image URLs to imageUrls.json");
+  const newUrls = await fetchImageUrls();
+
+  let existingUrls = [];
+  if (fs.existsSync(FILE_PATH)) {
+    const fileContent = fs.readFileSync(FILE_PATH, "utf-8");
+    existingUrls = JSON.parse(fileContent);
+  }
+
+  const allUrls = [...existingUrls, ...newUrls];
+  fs.writeFileSync(FILE_PATH, JSON.stringify(allUrls, null, 2));
+
+  console.log("Appended new image URLs to imageUrls.json");
 };
 
 saveImageUrls();
