@@ -6,12 +6,6 @@ const PostsSkeleton = () => {
       <div className="post-skeleton"></div>
       <div className="post-skeleton"></div>
       <div className="post-skeleton"></div>
-      <div className="post-skeleton"></div>
-      <div className="post-skeleton"></div>
-      <div className="post-skeleton"></div>
-      <div className="post-skeleton"></div>
-      <div className="post-skeleton"></div>
-      <div className="post-skeleton"></div>
     </div>
   );
 };

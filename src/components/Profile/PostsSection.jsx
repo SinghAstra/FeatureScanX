@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import PostsSectionSkeleton from "../../Loaders/PostsSectionSkeleton";
 import EmptyPostsSection from "../../placeholders/Profile/EmptyPostsSection";
 import "../../styles/PostsSection.css";
-import ProgressiveImage from "./ProgressiveImage";
+import ProgressivePostImage from "./ProgressivePostImage";
 
 const PostsSection = () => {
   const { username } = useParams();
@@ -51,7 +51,7 @@ const PostsSection = () => {
       {posts.map((post) => (
         <div key={post._id} className="post-item">
           {post.media[0].type === "image" ? (
-            <ProgressiveImage
+            <ProgressivePostImage
               lowResUrl={post.media[0].lowResUrl}
               highResUrl={post.media[0].highResUrl}
               alt="Post media"

@@ -1,0 +1,25 @@
+.progressive-post-image {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.progressive-post-image .low-res-image {
+  filter: blur(20px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.progressive-post-image .high-res-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.5s ease-in-out;
+}
