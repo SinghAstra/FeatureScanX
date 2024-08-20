@@ -8,7 +8,7 @@ async function getAllUsers() {
     const response = await axios.get(`${baseURL}/users/get-all-users`);
     return response.data;
   } catch (error) {
-    console.error("Error fetching users:", error.message);
+    console.log("Error fetching users:", error.message);
     return [];
   }
 }
@@ -28,30 +28,12 @@ async function loginUser(email) {
     const token = tokenCookie.split(";")[0].replace("token=", "");
     return token;
   } catch (error) {
-    console.error(`Error logging in user ${email}:`, error.message);
+    console.log(`Error logging in user ${email}:`, error.message);
     return null;
   }
 }
 
-async function followUser(currentUsername, token, userName) {
-  try {
-    await axios.get(`${baseURL}/users/${userName}/toggle-follow`, {
-      headers: {
-        Cookie: `token=${token}`,
-      },
-      withCredentials: true,
-    });
-    console.log(`${currentUsername} Started following ${userName}`);
-  } catch (error) {
-    console.error(`Error following ${userName}:`, error.message);
-  }
-}
-
-function shouldFollow() {
-  return Math.random() > 0.5;
-}
-
-async function automateFollowing() {
+async function createPost(title, content, token) {
   const users = await getAllUsers();
   if (users.length === 0) {
     console.log("No users to process.");
@@ -65,12 +47,6 @@ async function automateFollowing() {
       continue;
     }
 
-    for (const user of users) {
-      if (currentUser.userName !== user.userName && shouldFollow()) {
-        await followUser(currentUser.userName, token, user.userName);
-      }
-    }
+    // use the token to create post
   }
 }
-
-automateFollowing();

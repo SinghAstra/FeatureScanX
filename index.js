@@ -6,7 +6,6 @@ import express from "express";
 import helmet from "helmet";
 import { default as mongoose } from "mongoose";
 import morgan from "morgan";
-import { generateMultipleUsers } from "./generators/user.js";
 import authRoutes from "./routes/auth.js";
 import commentsRoutes from "./routes/comments.js";
 import postsRoutes from "./routes/posts.js";
@@ -64,15 +63,6 @@ app.get("/drop-database", async (req, res) => {
     res.json({ message: "Database dropped successfully" });
   }
 });
-
-const populateUsers = async () => {
-  try {
-    await generateMultipleUsers(100);
-    console.log("Users generated successfully.");
-  } catch (err) {
-    console.log("Error generating users:", err.message);
-  }
-};
 
 mongoose
   .connect(process.env.MONGODB_URI)
