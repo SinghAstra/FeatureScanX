@@ -34,3 +34,22 @@ export const addCommentToPost = async (req, res) => {
     res.status(500).json({ message: "Server error - addCommentToPost" });
   }
 };
+
+export const getAllCommentsOfPost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const comments = await Comment.find({ postId })
+      .populate("userId", "userName fullName profilePicture")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(comments);
+  } catch (error) {
+    res.status(500).json({ message: "Server error --getAllCommentsOfPost" });
+  }
+};
