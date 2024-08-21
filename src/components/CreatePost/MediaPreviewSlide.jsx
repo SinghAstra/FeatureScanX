@@ -39,17 +39,19 @@ const MediaPreviewSlide = ({ slides }) => {
         }}
         className="media-preview-slide"
       ></div>
-      <div className="dots-container-nav">
-        {slides.map((slide, slideIndex) => (
-          <div
-            className={`dot ${slideIndex === currentIndex ? "active" : ""}`}
-            key={slideIndex}
-            onClick={() => goToSlide(slideIndex)}
-          >
-            ●
-          </div>
-        ))}
-      </div>
+      {slides.length > 1 && (
+        <div className="dots-container-nav">
+          {slides.map((slide, slideIndex) => (
+            <div
+              className={`dot ${slideIndex === currentIndex ? "active" : ""}`}
+              key={slideIndex}
+              onClick={() => goToSlide(slideIndex)}
+            >
+              ●
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

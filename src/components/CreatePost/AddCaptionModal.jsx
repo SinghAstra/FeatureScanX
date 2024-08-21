@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
 import "../../styles/AddCaptionModal.css";
 import MediaPreviewSlide from "./MediaPreviewSlide";
 
@@ -11,28 +10,28 @@ const AddCaptionModal = ({
   setModalShown,
   onSubmit,
 }) => {
-  const renderMedia = (file, isActive) => {
-    const activeClass = isActive ? "active" : "";
+  // const renderMedia = (file, isActive) => {
+  //   const activeClass = isActive ? "active" : "";
 
-    if (file.type.startsWith("image")) {
-      return (
-        <img
-          src={file.url}
-          alt="Media Preview"
-          className={`media-slide ${activeClass}`}
-        />
-      );
-    } else if (file.type.startsWith("video")) {
-      return (
-        <video controls className={`media-slide ${activeClass}`}>
-          <source src={file.url} type={file.type} />
-          Your browser does not support the video tag.
-        </video>
-      );
-    } else {
-      return null;
-    }
-  };
+  //   if (file.type.startsWith("image")) {
+  //     return (
+  //       <img
+  //         src={file.url}
+  //         alt="Media Preview"
+  //         className={`media-slide ${activeClass}`}
+  //       />
+  //     );
+  //   } else if (file.type.startsWith("video")) {
+  //     return (
+  //       <video controls className={`media-slide ${activeClass}`}>
+  //         <source src={file.url} type={file.type} />
+  //         Your browser does not support the video tag.
+  //       </video>
+  //     );
+  //   } else {
+  //     return null;
+  //   }
+  // };
 
   return (
     <div className="modal-backdrop" onClick={() => setModalShown(false)}>

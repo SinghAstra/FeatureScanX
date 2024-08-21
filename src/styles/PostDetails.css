@@ -19,41 +19,6 @@
   display: flex;
 }
 
-.post-slideshow-container {
-  flex: 1;
-  position: relative;
-  max-width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: black;
-}
-
-.post-image-slide {
-  width: 100%;
-  height: 100%;
-  background: yellow;
-}
-
-.low-res-post-image {
-  filter: blur(20px);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transition: opacity 0.5s ease-in-out;
-}
-
-.high-res-post-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-  transition: opacity 0.5s ease-in-out;
-}
-
 .post-info-container {
   flex: 1;
   display: flex;

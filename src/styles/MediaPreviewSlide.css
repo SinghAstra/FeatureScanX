@@ -20,6 +20,7 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
+  z-index: 2;
   &:hover {
     background: rgba(0, 0, 0, 0.4);
   }
