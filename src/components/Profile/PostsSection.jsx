@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import PostsSectionSkeleton from "../../Loaders/PostsSectionSkeleton";
 import EmptyPostsSection from "../../placeholders/Profile/EmptyPostsSection";
 import "../../styles/PostsSection.css";
@@ -49,7 +49,7 @@ const PostsSection = () => {
   return (
     <div className="posts-grid">
       {posts.map((post) => (
-        <div key={post._id} className="post-item">
+        <Link to={`/posts/${post._id}`} key={post._id} className="post-item">
           {post.media[0].type === "image" ? (
             <ProgressivePostImage
               lowResUrl={post.media[0].lowResUrl}
@@ -64,7 +64,7 @@ const PostsSection = () => {
               loop
             />
           )}
-        </div>
+        </Link>
       ))}
     </div>
   );

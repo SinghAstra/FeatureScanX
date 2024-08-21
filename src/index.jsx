@@ -25,6 +25,7 @@ import HomePage from "./pages/HomePage";
 import MessagesPage from "./pages/MessagesPage.jsx";
 import NotificationsPage from "./pages/NotificationsPage.jsx";
 import PageNotFound from "./pages/PageNotFound";
+import PostDetails from "./pages/PostDetails.jsx";
 import ProfilePage from "./pages/ProfilePage";
 import ReelsPage from "./pages/ReelsPage.jsx";
 import SearchPage from "./pages/SearchPage.jsx";
@@ -54,6 +55,7 @@ const router = createBrowserRouter(
             <Route path="/:username/saved" element={<SavedSection />} />
             <Route path="/:username/tagged" element={<TaggedSection />} />
           </Route>
+          <Route path="/posts/:postId" element={<PostDetails />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Route>
