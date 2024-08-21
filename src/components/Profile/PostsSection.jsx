@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import PostsSectionSkeleton from "../../Loaders/PostsSectionSkeleton";
+import PostsSectionSkeleton from "../../Skeleton/PostsSectionSkeleton";
 import EmptyPostsSection from "../../placeholders/Profile/EmptyPostsSection";
 import "../../styles/PostsSection.css";
 import ProgressivePostImage from "./ProgressivePostImage";

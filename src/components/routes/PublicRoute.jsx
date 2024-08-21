@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
-import SplashScreen from "../../Loaders/SplashScreen";
+import SplashScreen from "../../Skeleton/SplashScreen";
 
 const PublicRoute = () => {
   const { isAuthenticated, isAuthenticating } = useContext(AuthContext);

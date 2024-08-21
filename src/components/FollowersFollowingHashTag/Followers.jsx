@@ -1,7 +1,7 @@
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-import FollowersFollowingSkeleton from "../../Loaders/FollowersFollowingSkeleton";
+import FollowersFollowingSkeleton from "../../Skeleton/FollowersFollowingSkeleton";
 import EmptyFollowers from "../../placeholders/FollowersFollowingHashtag/EmptyFollowers";
 import "../../styles/Followers.css";
 import UserItem from "./UserItem";

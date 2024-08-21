@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 import "../../styles/AddCaptionModal.css";
+import MediaPreviewSlide from "./MediaPreviewSlide";
 
 const AddCaptionModal = ({
   mediaPreview,
@@ -10,26 +11,20 @@ const AddCaptionModal = ({
   setModalShown,
   onSubmit,
 }) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const renderMedia = (file, isActive) => {
+    const activeClass = isActive ? "active" : "";
 
-  const nextSlide = () => {
-    setCurrentSlide((prevSlide) =>
-      prevSlide === mediaPreview.length - 1 ? 0 : prevSlide + 1
-    );
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prevSlide) =>
-      prevSlide === 0 ? mediaPreview.length - 1 : prevSlide - 1
-    );
-  };
-
-  const renderMedia = (file) => {
     if (file.type.startsWith("image")) {
-      return <img src={file.url} alt="Media Preview" className="media-slide" />;
+      return (
+        <img
+          src={file.url}
+          alt="Media Preview"
+          className={`media-slide ${activeClass}`}
+        />
+      );
     } else if (file.type.startsWith("video")) {
       return (
-        <video controls className="media-slide">
+        <video controls className={`media-slide ${activeClass}`}>
           <source src={file.url} type={file.type} />
           Your browser does not support the video tag.
         </video>
@@ -48,22 +43,8 @@ const AddCaptionModal = ({
           <span onClick={onSubmit}>Next</span>
         </div>
         <div className="modal-body">
-          <div className="media-preview">
-            {mediaPreview.length > 0 && (
-              <div className="slideshow-container">
-                {currentSlide !== 0 && (
-                  <button className="prev" onClick={prevSlide}>
-                    &#10094;
-                  </button>
-                )}
-                {renderMedia(mediaPreview[currentSlide])}
-                {currentSlide !== mediaPreview.length - 1 && (
-                  <button className="next" onClick={nextSlide}>
-                    &#10095;
-                  </button>
-                )}
-              </div>
-            )}
+          <div className="media-preview-slideshow-container">
+            <MediaPreviewSlide slides={mediaPreview} />
           </div>
           <div className="add-caption-location-section">
             <textarea
