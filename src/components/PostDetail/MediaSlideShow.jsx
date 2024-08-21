@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../../styles/MediaSlideShow.css";
 
 const MediaSlideShow = ({ media }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loadedImages, setLoadedImages] = useState({});
 
   const goToPrevious = () => {
     const isFirstSlide = currentIndex === 0;
@@ -20,6 +21,26 @@ const MediaSlideShow = ({ media }) => {
   const goToSlide = (slideIndex) => {
     setCurrentIndex(slideIndex);
   };
+
+  useEffect(() => {
+    // Preload high-resolution images
+    media.forEach((item, index) => {
+      const img = new Image();
+      img.src = item.highResUrl;
+      img.onload = () =>
+        setLoadedImages((prev) => ({ ...prev, [index]: true }));
+    });
+  }, [media]);
+
+  const currentMedia = media[currentIndex];
+  const backgroundStyle = {
+    backgroundImage: `url(${
+      loadedImages[currentIndex]
+        ? currentMedia.highResUrl
+        : currentMedia.lowResUrl
+    })`,
+  };
+
   return (
     <div className="post-media-slider">
       {currentIndex !== 0 && (
@@ -32,10 +53,7 @@ const MediaSlideShow = ({ media }) => {
           ❱
         </div>
       )}
-      <div
-        className="post-media-slide"
-        style={{ backgroundImage: `url(${media[currentIndex].highResUrl})` }}
-      ></div>
+      <div className="post-media-slide" style={backgroundStyle}></div>
       {media.length > 1 && (
         <div className="dots-container-nav">
           {media.map((media, mediaIndex) => (
