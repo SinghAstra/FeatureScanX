@@ -234,67 +234,20 @@ export const deleteAllPosts = async (req, res) => {
   }
 };
 
-export const getUserPosts = async (req, res) => {
-  try {
-    const { userId } = req.params;
-
-    if (!userId) {
-      return res.status(400).json({ message: "User ID is required." });
-    }
-
-    // Fetch posts by the user's ID
-    const posts = await Post.find({ user: userId })
-      .populate({ path: "user", select: "-password" })
-      .populate("comments")
-      .sort({ createdAt: -1 });
-
-    // If no posts are found, return a message indicating so
-    if (!posts.length) {
-      return res.status(404).json({ message: "No posts found for this user." });
-    }
-
-    // Return the posts
-    res.status(200).json(posts);
-  } catch (error) {
-    console.error("Error fetching user's posts:", error);
-    res.status(500).json({ message: "Internal Server error - getUserPosts" });
-  }
-};
-
-export const likePost = async (req, res) => {
+export const getPostById = async (req, res) => {
   try {
     const { postId } = req.params;
-    const userId = req.user.id;
-
-    // Find the post by ID
-    const post = await Post.findById(postId);
+    const post = await Post.findById(postId).populate(
+      "userId",
+      "userName profilePicture fullName"
+    );
 
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    // Check if the post is already liked by the user
-    const isLiked = post.likes.includes(userId);
-
-    if (isLiked) {
-      // Unlike the post by removing the user's ID from the likes array
-      post.likes = post.likes.filter(
-        (id) => id.toString() !== userId.toString()
-      );
-    } else {
-      // Like the post by adding the user's ID to the likes array
-      post.likes.push(userId);
-    }
-
-    // Save the updated post
-    const updatedPost = await post.save();
-
-    res.status(200).json({
-      message: isLiked ? "Post unLiked" : "Post liked",
-      post: updatedPost,
-    });
+    res.json(post);
   } catch (error) {
-    console.log("Error liking post:", error);
-    res.status(500).json({ message: " Internal Server error - Like Post" });
+    res.status(500).json({ message: "Server error - getPostById" });
   }
 };

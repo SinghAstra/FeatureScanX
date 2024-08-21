@@ -39,7 +39,7 @@ app.use(cors(corsOptions));
 app.use("/api/auth", authRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/posts", postsRoutes);
-app.use("/comments", commentsRoutes);
+app.use("/api/comments", commentsRoutes);
 
 app.get("/clear-cookies", (req, res) => {
   const cookies = req.cookies;

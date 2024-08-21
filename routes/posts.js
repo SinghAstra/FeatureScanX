@@ -5,8 +5,7 @@ import {
   deleteAllPosts,
   getAllPosts,
   getFeedPosts,
-  getUserPosts,
-  likePost,
+  getPostById,
 } from "../controllers/posts.js";
 import authMiddleware from "../middleware/auth.js";
 
@@ -25,20 +24,9 @@ router.post(
 );
 
 // get the posts for home page
-router.get("/", authMiddleware, getFeedPosts);
+router.get("/feed", authMiddleware, getFeedPosts);
 
-// get all the posts
-router.get("/all", authMiddleware, getAllPosts);
-
-// delete all the posts
-router.get("/delete-all", authMiddleware, deleteAllPosts);
-
-// get all post of a certain user
-router.get("/:userId", authMiddleware, getUserPosts);
-
-// toggle like for a post
-router.post("/:postId/like", authMiddleware, likePost);
-
-//
+// get detailed info of particular post
+router.get("/:postId", authMiddleware, getPostById);
 
 export default router;
