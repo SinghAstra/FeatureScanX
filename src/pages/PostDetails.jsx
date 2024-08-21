@@ -11,8 +11,6 @@ const PostDetails = () => {
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState(null);
   const navigate = useNavigate();
-  const [postLike, setPostLike] = useState(false);
-  const [postBookmark, setPostBookmark] = useState(false);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -50,13 +48,7 @@ const PostDetails = () => {
         onClick={(e) => e.stopPropagation()}
       >
         <MediaSlideShow media={post.media} />
-        <PostInfo
-          post={post}
-          togglePostLike={() => setPostLike(!postLike)}
-          postLike={postLike}
-          togglePostBookmark={() => setPostBookmark(!postBookmark)}
-          postBookmark={postBookmark}
-        />
+        <PostInfo post={post} />
       </div>
     </div>
   );
