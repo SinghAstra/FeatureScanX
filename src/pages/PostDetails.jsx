@@ -10,6 +10,7 @@ const PostDetails = () => {
   const { postId } = useParams();
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState(null);
+  const [isPostLiked, setIsPostLiked] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,9 +23,11 @@ const PostDetails = () => {
             withCredentials: true,
           }
         );
-        setPost(response.data);
+        setPost(response.data.post);
+        setIsPostLiked(response.data.likedByCurrentUser);
+        console.log("response.data --fetchPost is ", response.data);
       } catch (error) {
-        console.log("Error fetching post:", error.message);
+        console.log("error.message --fetchPost is ", error.message);
       } finally {
         setLoading(false);
       }
@@ -48,7 +51,7 @@ const PostDetails = () => {
         onClick={(e) => e.stopPropagation()}
       >
         <MediaSlideShow media={post.media} />
-        <PostInfo post={post} />
+        <PostInfo post={post} isPostLikedByCurrentUser={isPostLiked} />
       </div>
     </div>
   );
