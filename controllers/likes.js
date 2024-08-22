@@ -26,15 +26,17 @@ export const toggleLikeOnPost = async (req, res) => {
       await Like.findByIdAndDelete(existingLike._id);
 
       // Remove the like reference from the post
-      post.likes = post.likes.filter(
-        (like) => like.toString() !== existingLike._id.toString()
-      );
+      post.likes = post.likes.filter((like) => {
+        like.toString() !== existingLike._id.toString();
+      });
+
       await post.save();
 
       return res.json({ message: "Like removed", likes: post.likes.length });
     } else {
       // If no like exists, create a new like
-      const newLike = await Like.create({ postId, userId });
+      const newLike = new Like({ postId, userId });
+      newLike.save();
 
       // Add the like reference to the post
       post.likes.push(newLike._id);
@@ -43,7 +45,17 @@ export const toggleLikeOnPost = async (req, res) => {
       return res.json({ message: "Post liked", likes: post.likes.length });
     }
   } catch (err) {
-    console.log("err.message --toggleLike is ", err.message);
     res.status(500).json({ message: "Server Error --toggleLikeOnPost" });
+  }
+};
+
+export const deleteAllLikes = async (req, res) => {
+  try {
+    const likes = await Like.deleteMany({});
+    res.status(200).json({ message: "All Likes Deleted", likes });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: error.message, controller: deleteAllLikes });
   }
 };

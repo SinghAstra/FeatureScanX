@@ -157,7 +157,7 @@ async function fetchAllPosts() {
 async function postCommentOnPost(token, postId, commentText, userName) {
   try {
     await axios.post(
-      `${baseURL}/comments/${postId}`,
+      `${baseURL}/posts/${postId}/comment`,
       { commentText },
       {
         headers: {

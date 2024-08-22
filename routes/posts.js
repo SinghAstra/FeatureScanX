@@ -1,7 +1,11 @@
 import express from "express";
 import upload from "../config/multer.js";
-import { addCommentToPost, getCommentsOnPost } from "../controllers/comment.js";
-import { toggleLikeOnPost } from "../controllers/likes.js";
+import {
+  addCommentToPost,
+  deleteAllComments,
+  getCommentsOnPost,
+} from "../controllers/comment.js";
+import { deleteAllLikes, toggleLikeOnPost } from "../controllers/likes.js";
 import {
   createPostController,
   deleteAllPosts,
@@ -15,6 +19,8 @@ const router = express.Router();
 
 // Testing Purposes
 router.get("/delete-all-posts", deleteAllPosts);
+router.get("/delete-all-likes", deleteAllLikes);
+router.get("/delete-all-comments", deleteAllComments);
 router.get("/get-all-posts", getAllPosts);
 
 // route to create a post when the user is authenticated
@@ -32,12 +38,12 @@ router.get("/feed", authMiddleware, getFeedPosts);
 router.get("/:postId", authMiddleware, getPostById);
 
 // toggle like on a post
-router.post("/:postId/like", authMiddleware, toggleLikeOnPost);
+router.get("/:postId/like", authMiddleware, toggleLikeOnPost);
 
 // get comments of particular post
 router.get("/:postId/comments", authMiddleware, getCommentsOnPost);
 
 // add comment on particular post
-router.post("/:postId/comments", authMiddleware, addCommentToPost);
+router.post("/:postId/comment", authMiddleware, addCommentToPost);
 
 export default router;

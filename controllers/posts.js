@@ -237,17 +237,24 @@ export const deleteAllPosts = async (req, res) => {
 export const getPostById = async (req, res) => {
   try {
     const { postId } = req.params;
-    const post = await Post.findById(postId).populate(
-      "userId",
-      "userName profilePicture fullName"
-    );
+    const post = await Post.findById(postId)
+      .populate("userId", "userName profilePicture fullName")
+      .populate("likes", "userId");
 
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    res.json(post);
+    const likedByCurrentUser = post.likes.some(
+      (like) => like.userId.toString() === req.user.id
+    );
+
+    res.json({
+      post,
+      likedByCurrentUser,
+    });
   } catch (error) {
+    console.log("error.message is ", error.message);
     res.status(500).json({ message: "Server error - getPostById" });
   }
 };

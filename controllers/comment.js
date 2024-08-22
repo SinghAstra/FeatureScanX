@@ -1,5 +1,6 @@
 import Comment from "../models/Comment.js";
 import Post from "../models/Post.js";
+import User from "../models/User.js";
 
 export const addCommentToPost = async (req, res) => {
   try {
@@ -27,9 +28,23 @@ export const addCommentToPost = async (req, res) => {
     post.comments.push(newComment._id);
     await post.save();
 
-    res
-      .status(201)
-      .json({ message: "Comment added successfully", comment: newComment });
+    const user = await User.findById(userId).select(
+      "userName profilePicture fullName"
+    );
+
+    const commentWithUserDetails = {
+      ...newComment.toObject(),
+      userId: {
+        userName: user.userName,
+        profilePicture: user.profilePicture,
+        fullName: user.fullName,
+      },
+    };
+
+    res.status(201).json({
+      message: "Comment added successfully",
+      comment: commentWithUserDetails,
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error - addCommentToPost" });
   }
@@ -51,5 +66,16 @@ export const getCommentsOnPost = async (req, res) => {
     res.status(200).json(comments);
   } catch (error) {
     res.status(500).json({ message: "Server error --getAllCommentsOfPost" });
+  }
+};
+
+export const deleteAllComments = async (req, res) => {
+  try {
+    const comments = await Comment.deleteMany({});
+    res.json({ comments, message: "Deleted All Comments Successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: error.message, controller: deleteAllComments });
   }
 };

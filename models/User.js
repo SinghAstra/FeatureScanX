@@ -84,6 +84,23 @@ const userSchema = new Schema(
     address: {
       type: String,
     },
+    savedPosts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post",
+      },
+    ],
+    collections: [
+      {
+        name: { type: String, required: true },
+        posts: [
+          {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Post",
+          },
+        ],
+      },
+    ],
   },
   {
     timestamps: true,
