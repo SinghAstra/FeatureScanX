@@ -35,7 +35,7 @@ export const addCommentToPost = async (req, res) => {
   }
 };
 
-export const getAllCommentsOfPost = async (req, res) => {
+export const getCommentsOnPost = async (req, res) => {
   try {
     const { postId } = req.params;
 

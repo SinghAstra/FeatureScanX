@@ -1,5 +1,7 @@
 import express from "express";
 import upload from "../config/multer.js";
+import { addCommentToPost, getCommentsOnPost } from "../controllers/comment.js";
+import { toggleLikeOnPost } from "../controllers/likes.js";
 import {
   createPostController,
   deleteAllPosts,
@@ -28,5 +30,14 @@ router.get("/feed", authMiddleware, getFeedPosts);
 
 // get detailed info of particular post
 router.get("/:postId", authMiddleware, getPostById);
+
+// toggle like on a post
+router.post("/:postId/like", authMiddleware, toggleLikeOnPost);
+
+// get comments of particular post
+router.get("/:postId/comments", authMiddleware, getCommentsOnPost);
+
+// add comment on particular post
+router.post("/:postId/comments", authMiddleware, addCommentToPost);
 
 export default router;

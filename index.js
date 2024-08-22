@@ -7,7 +7,6 @@ import helmet from "helmet";
 import { default as mongoose } from "mongoose";
 import morgan from "morgan";
 import authRoutes from "./routes/auth.js";
-import commentsRoutes from "./routes/comments.js";
 import postsRoutes from "./routes/posts.js";
 import usersRoutes from "./routes/users.js";
 
@@ -39,7 +38,6 @@ app.use(cors(corsOptions));
 app.use("/api/auth", authRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/posts", postsRoutes);
-app.use("/api/comments", commentsRoutes);
 
 app.get("/clear-cookies", (req, res) => {
   const cookies = req.cookies;
