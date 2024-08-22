@@ -103,6 +103,7 @@
 .post-comments-container {
   flex: 1;
   overflow-y: auto;
+  scroll-behavior: smooth;
   &::-webkit-scrollbar {
     display: none;
   }

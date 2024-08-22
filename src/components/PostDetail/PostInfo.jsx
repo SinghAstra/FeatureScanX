@@ -1,19 +1,27 @@
 import axios from "axios";
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import AuthContext from "../../context/AuthContext";
 import "../../styles/PostInfo.css";
 import PostCaption from "./PostCaption";
 import PostComment from "./PostComment";
 
 const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
+  const { currentUser } = useContext(AuthContext);
   const [isPostLiked, setIsPostLiked] = useState(isPostLikedByCurrentUser);
   const [postLikesCount, setPostLikesCount] = useState(post.likes.length);
-  const [postBookmark, setPostBookmark] = useState(false);
+  const [postBookmark, setPostBookmark] = useState(
+    currentUser.savedPosts.includes(post._id)
+  );
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [loadingComments, setLoadingComments] = useState(true);
   const apiUrl = import.meta.env.VITE_API_URL;
+  const commentInputRef = useRef(null);
+  const commentsContainerRef = useRef(null);
+
+  console.log("currentUser is ", currentUser);
 
   const handleLikePost = async () => {
     try {
@@ -31,6 +39,22 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
     }
   };
 
+  const handleBookmarkToggle = async () => {
+    try {
+      setPostBookmark(!postBookmark);
+      const response = await axios.get(
+        `${apiUrl}/api/saved-post/${post._id}/toggle`,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("response.data --handleBookmarkToggle is ", response.data);
+    } catch (error) {
+      setPostBookmark(!postBookmark);
+      console.log("error.message --handleBookmarkToggle is :", error.message);
+    }
+  };
+
   const handleCommentChange = (e) => {
     setComment(e.target.value);
   };
@@ -40,7 +64,7 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
 
     try {
       const response = await axios.post(
-        `${apiUrl}/api/posts/${post._id}/comments`,
+        `${apiUrl}/api/posts/${post._id}/comment`,
         {
           commentText: comment,
         },
@@ -99,6 +123,33 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
     }
   };
 
+  const handleCommentButtonClick = () => {
+    if (commentInputRef.current) {
+      commentInputRef.current.focus();
+    }
+  };
+
+  const handleSharePost = async () => {
+    const shareData = {
+      title: post.caption,
+      text: `Check out this post by ${post.userId.userName}`,
+      url: window.location.href, // or a specific URL to share
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+        console.log("Post shared successfully!");
+        // Optionally, update the share count or state here
+      } else {
+        // Fallback for browsers that don't support the Share API
+        console.log("Share not supported");
+      }
+    } catch (error) {
+      console.log("Error sharing post:", error);
+    }
+  };
+
   useEffect(() => {
     const fetchComments = async () => {
       try {
@@ -121,6 +172,12 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
     fetchComments();
   }, [apiUrl, post._id]);
 
+  useEffect(() => {
+    if (commentsContainerRef.current) {
+      commentsContainerRef.current.scrollTop = 0;
+    }
+  }, [comments]);
+
   return (
     <div className="post-info-container">
       <div className="post-author-profile">
@@ -140,7 +197,7 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
         </Link>
         <i className="uil uil-ellipsis-h"></i>
       </div>
-      <div className="post-comments-container">
+      <div className="post-comments-container" ref={commentsContainerRef}>
         <PostCaption post={post} />
         {loadingComments ? (
           <p>Loading...</p>
@@ -160,17 +217,17 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
                 <i className="fa-regular fa-heart"></i>
               )}
             </button>
-            <button className="post-comment-btn">
+            <button
+              className="post-comment-btn"
+              onClick={handleCommentButtonClick}
+            >
               <i className="fa-regular fa-comment"></i>
             </button>
-            <button className="post-share-btn">
+            <button className="post-share-btn" onClick={handleSharePost}>
               <i className="fa-regular fa-paper-plane"></i>
             </button>
           </div>
-          <button
-            className="post-bookmark-btn"
-            onClick={() => setPostBookmark(!postBookmark)}
-          >
+          <button className="post-bookmark-btn" onClick={handleBookmarkToggle}>
             {postBookmark ? (
               <i className="fa-solid fa-bookmark"></i>
             ) : (
@@ -192,6 +249,7 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
           onChange={handleCommentChange}
           placeholder="Add a comment..."
           className="add-comment-input"
+          ref={commentInputRef}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               e.preventDefault();
