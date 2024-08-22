@@ -3,20 +3,21 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import MediaSlideShow from "../components/PostDetail/MediaSlideShow.jsx";
 import PostInfo from "../components/PostDetail/PostInfo.jsx";
+import PostDetailsSkeleton from "../Skeleton/PostDetailsSkeleton.jsx";
 import "../styles/PostDetails.css";
 import PageNotFound from "./PageNotFound.jsx";
 
 const PostDetails = () => {
   const { postId } = useParams();
-  const [loading, setLoading] = useState(true);
+  const [postLoading, setPostLoading] = useState(true);
   const [post, setPost] = useState(null);
   const [isPostLiked, setIsPostLiked] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchPost = async () => {
+    const fetchPostDetailUsingId = async () => {
       try {
-        setLoading(true);
+        setPostLoading(true);
         const response = await axios.get(
           `http://localhost:5000/api/posts/${postId}`,
           {
@@ -25,19 +26,25 @@ const PostDetails = () => {
         );
         setPost(response.data.post);
         setIsPostLiked(response.data.likedByCurrentUser);
-        console.log("response.data --fetchPost is ", response.data);
+        console.log(
+          "response.data --fetchPostDetailUsingId is ",
+          response.data
+        );
       } catch (error) {
-        console.log("error.message --fetchPost is ", error.message);
+        console.log(
+          "error.message --fetchPostDetailUsingId is ",
+          error.message
+        );
       } finally {
-        setLoading(false);
+        setPostLoading(false);
       }
     };
 
-    fetchPost();
+    fetchPostDetailUsingId();
   }, [postId]);
 
-  if (loading) {
-    return <div>Loading...</div>;
+  if (postLoading) {
+    return <PostDetailsSkeleton />;
   }
 
   if (!post) {

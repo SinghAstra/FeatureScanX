@@ -1,9 +1,10 @@
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
+import PostCommentsSkeleton from "../../Skeleton/PostCommentsSkeleton";
 import "../../styles/PostInfo.css";
+import PostAuthorProfile from "./PostAuthorProfile";
 import PostCaption from "./PostCaption";
 import PostComment from "./PostComment";
 
@@ -11,7 +12,7 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
   const { currentUser } = useContext(AuthContext);
   const [isPostLiked, setIsPostLiked] = useState(isPostLikedByCurrentUser);
   const [postLikesCount, setPostLikesCount] = useState(post.likes.length);
-  const [postBookmark, setPostBookmark] = useState(
+  const [isPostBookmarked, setIsPostBookmarked] = useState(
     currentUser.savedPosts.includes(post._id)
   );
   const [comment, setComment] = useState("");
@@ -21,27 +22,26 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
   const commentInputRef = useRef(null);
   const commentsContainerRef = useRef(null);
 
-  console.log("currentUser is ", currentUser);
-
-  const handleLikePost = async () => {
+  const handleLikePostToggle = async () => {
     try {
       // Handle the UI Optimistically
       setIsPostLiked(!isPostLiked);
       const response = await axios.get(`${apiUrl}/api/posts/${post._id}/like`, {
         withCredentials: true,
       });
-      console.log("response.data -- handleLikePost is ", response.data);
+      console.log("response.data -- handleLikePostToggle is ", response.data);
       setPostLikesCount(response.data.likes);
     } catch (error) {
       // if error comes in updating the backend, revert back to the original state
       setIsPostLiked(!isPostLiked);
-      console.log("error.message --handleLikePost is :", error.message);
+      console.log("error.message --handleLikePostToggle is :", error.message);
     }
   };
 
   const handleBookmarkToggle = async () => {
     try {
-      setPostBookmark(!postBookmark);
+      // Handle the UI Optimistically
+      setIsPostBookmarked(!isPostBookmarked);
       const response = await axios.get(
         `${apiUrl}/api/saved-post/${post._id}/toggle`,
         {
@@ -50,13 +50,10 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
       );
       console.log("response.data --handleBookmarkToggle is ", response.data);
     } catch (error) {
-      setPostBookmark(!postBookmark);
+      // if error comes in updating the backend, revert back to the original state
+      setIsPostBookmarked(!isPostBookmarked);
       console.log("error.message --handleBookmarkToggle is :", error.message);
     }
-  };
-
-  const handleCommentChange = (e) => {
-    setComment(e.target.value);
   };
 
   const handleCommentSubmit = async () => {
@@ -74,7 +71,7 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
       setComment("");
       console.log("response.data --handleCommentSubmit is ", response.data);
     } catch (error) {
-      console.log("Error submitting comment:", error);
+      console.log("error.message --handleCommentSubmit is :", error.message);
     }
   };
 
@@ -120,12 +117,6 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
       return formattedDate; // e.g., "10 August"
     } else {
       return `${formattedDate} ${postYear}`; // e.g., "1 July 2023"
-    }
-  };
-
-  const handleCommentButtonClick = () => {
-    if (commentInputRef.current) {
-      commentInputRef.current.focus();
     }
   };
 
@@ -180,37 +171,21 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
 
   return (
     <div className="post-info-container">
-      <div className="post-author-profile">
-        <Link to={`/${post.userId.userName}`} className="post-author-nav">
-          {post.userId.profilePicture ? (
-            <img
-              src={post.userId.profilePicture}
-              alt={post.userId.userName}
-              className="post-author-avatar"
-            />
-          ) : (
-            <span className="post-author-avatar">
-              {post.userId.fullName[0]}
-            </span>
-          )}
-          <span className="post-author-username">{post.userId.userName}</span>
-        </Link>
-        <i className="uil uil-ellipsis-h"></i>
-      </div>
-      <div className="post-comments-container" ref={commentsContainerRef}>
-        <PostCaption post={post} />
-        {loadingComments ? (
-          <p>Loading...</p>
-        ) : (
-          comments.map((comment) => (
+      <PostAuthorProfile userId={post.userId} />
+      {loadingComments ? (
+        <PostCommentsSkeleton />
+      ) : (
+        <div className="post-comments-container" ref={commentsContainerRef}>
+          <PostCaption post={post} />
+          {comments.map((comment) => (
             <PostComment key={comment._id} comment={comment} />
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
       <div className="post-actions">
         <div className="post-action-icons">
           <div className="post-interactions-icon">
-            <button className="post-like-btn" onClick={handleLikePost}>
+            <button className="post-like-btn" onClick={handleLikePostToggle}>
               {isPostLiked ? (
                 <i className="fa-solid fa-heart filled-heart"></i>
               ) : (
@@ -219,7 +194,7 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
             </button>
             <button
               className="post-comment-btn"
-              onClick={handleCommentButtonClick}
+              onClick={() => commentInputRef.current.focus()}
             >
               <i className="fa-regular fa-comment"></i>
             </button>
@@ -228,7 +203,7 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
             </button>
           </div>
           <button className="post-bookmark-btn" onClick={handleBookmarkToggle}>
-            {postBookmark ? (
+            {isPostBookmarked ? (
               <i className="fa-solid fa-bookmark"></i>
             ) : (
               <i className="fa-regular fa-bookmark"></i>
@@ -246,7 +221,7 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
         <input
           type="text"
           value={comment}
-          onChange={handleCommentChange}
+          onChange={(e) => setComment(e.target.value)}
           placeholder="Add a comment..."
           className="add-comment-input"
           ref={commentInputRef}
