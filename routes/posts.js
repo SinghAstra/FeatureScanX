@@ -20,7 +20,6 @@ const router = express.Router();
 // Testing Purposes
 router.get("/delete-all-posts", deleteAllPosts);
 router.get("/delete-all-likes", deleteAllLikes);
-router.get("/delete-all-comments", deleteAllComments);
 router.get("/get-all-posts", getAllPosts);
 
 // route to create a post when the user is authenticated

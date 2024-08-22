@@ -41,7 +41,7 @@ export const getUserPosts = async (req, res) => {
     }
 
     // Find posts created by the user
-    const posts = await Post.find({ userId: user._id });
+    const posts = await Post.find({ userId: user._id }).sort({ createdAt: -1 });
 
     res.json(posts);
   } catch (error) {
@@ -86,8 +86,7 @@ export const toggleFollow = async (req, res) => {
     await userToFollowOrUnFollow.save();
 
     res.status(200).json({
-      currentUser,
-      userToFollowOrUnFollow,
+      updatedFollowing: currentUser.following,
       message: isFollowing
         ? "UnFollowed successfully."
         : "Followed successfully.",

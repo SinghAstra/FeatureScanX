@@ -69,6 +69,17 @@ export const getCommentsOnPost = async (req, res) => {
   }
 };
 
+export const getAllComments = async (req, res) => {
+  try {
+    const comments = await Comment.find({}).sort({ createdAt: -1 });
+    res.status(200).json(comments);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: error.message, controller: getAllComments });
+  }
+};
+
 export const deleteAllComments = async (req, res) => {
   try {
     const comments = await Comment.deleteMany({});
@@ -77,5 +88,34 @@ export const deleteAllComments = async (req, res) => {
     res
       .status(500)
       .json({ message: error.message, controller: deleteAllComments });
+  }
+};
+
+export const toggleCommentLikePost = async (req, res) => {
+  const userId = req.user.id;
+  const { commentId } = req.params;
+
+  try {
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    // Toggle like status
+    if (comment.likes.includes(userId)) {
+      // User has already liked the comment, so unlike it
+      comment.likes = comment.likes.filter((id) => !id.equals(userId));
+    } else {
+      // User has not liked the comment, so like it
+      comment.likes.push(userId);
+    }
+
+    await comment.save();
+
+    res.status(200).json({ likesCount: comment.likes.length });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: error.message, controller: toggleCommentLikePost });
   }
 };
