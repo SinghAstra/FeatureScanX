@@ -2,6 +2,7 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import { useContext, useEffect, useRef, useState } from "react";
 import AuthContext from "../../context/AuthContext";
+import EmptyComments from "../../placeholders/PostDetails/EmptyComments";
 import PostCommentsSkeleton from "../../Skeleton/PostCommentsSkeleton";
 import "../../styles/PostInfo.css";
 import PostAuthorProfile from "./PostAuthorProfile";
@@ -9,7 +10,7 @@ import PostCaption from "./PostCaption";
 import PostComment from "./PostComment";
 
 const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, setCurrentUser } = useContext(AuthContext);
   const [isPostLiked, setIsPostLiked] = useState(isPostLikedByCurrentUser);
   const [postLikesCount, setPostLikesCount] = useState(post.likes.length);
   const [isPostBookmarked, setIsPostBookmarked] = useState(
@@ -21,6 +22,13 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const commentInputRef = useRef(null);
   const commentsContainerRef = useRef(null);
+
+  console.log("currentUser.savedPosts is ", currentUser.savedPosts);
+  console.log("post._id is ", post._id);
+  console.log(
+    "currentUser.savedPosts.includes(post._id) is ",
+    currentUser.savedPosts.includes(post._id)
+  );
 
   const handleLikePostToggle = async () => {
     try {
@@ -48,6 +56,7 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
           withCredentials: true,
         }
       );
+      setCurrentUser({ ...currentUser, savedPosts: response.data.savedPosts });
       console.log("response.data --handleBookmarkToggle is ", response.data);
     } catch (error) {
       // if error comes in updating the backend, revert back to the original state
@@ -175,12 +184,18 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
       {loadingComments ? (
         <PostCommentsSkeleton />
       ) : (
-        <div className="post-comments-container" ref={commentsContainerRef}>
-          <PostCaption post={post} />
-          {comments.map((comment) => (
-            <PostComment key={comment._id} comment={comment} />
-          ))}
-        </div>
+        <>
+          {post.caption === "" && comments.length === 0 ? (
+            <EmptyComments />
+          ) : (
+            <div className="post-comments-container" ref={commentsContainerRef}>
+              <PostCaption post={post} />
+              {comments.map((comment) => (
+                <PostComment key={comment._id} comment={comment} />
+              ))}
+            </div>
+          )}
+        </>
       )}
       <div className="post-actions">
         <div className="post-action-icons">

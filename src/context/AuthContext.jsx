@@ -46,6 +46,7 @@ export const AuthProvider = ({ children }) => {
         isAuthenticating,
         isAuthenticated,
         currentUser,
+        setCurrentUser,
         fetchCurrentUser,
       }}
     >

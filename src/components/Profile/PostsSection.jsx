@@ -54,6 +54,8 @@ const PostsSection = () => {
             <ProgressivePostImage
               lowResUrl={post.media[0].lowResUrl}
               highResUrl={post.media[0].highResUrl}
+              likes={post.likes.length}
+              comments={post.comments.length}
               alt="Post media"
             />
           ) : (

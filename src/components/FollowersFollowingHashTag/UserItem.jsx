@@ -6,15 +6,18 @@ import AuthContext from "../../context/AuthContext";
 import "../../styles/UserItem.css";
 
 const UserItem = ({ user, setShowFFHModal }) => {
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, setCurrentUser } = useContext(AuthContext);
   const [isFollowing, setIsFollowing] = useState(
     currentUser.following.includes(user._id)
   );
   const apiUrl = import.meta.env.VITE_API_URL;
   const isCurrentUser = currentUser.userName === user.userName;
 
+  console.log("currentUser is ", currentUser);
+
   const handleToggleFollow = async () => {
     try {
+      // update the ui optimistically
       setIsFollowing((prev) => !prev);
       const response = await axios.get(
         `${apiUrl}/api/users/${user.userName}/toggle-follow`,
@@ -22,9 +25,17 @@ const UserItem = ({ user, setShowFFHModal }) => {
           withCredentials: true,
         }
       );
+
+      setCurrentUser({
+        ...currentUser,
+        following: response.data.updatedFollowing,
+      });
+
       console.log("response.data --handleToggleFollow is ", response.data);
     } catch (error) {
-      console.log("error --handleToggleFollow is ", error);
+      // in case of error revert to original state
+      setIsFollowing((prev) => prev);
+      console.log("error.message --handleToggleFollow is ", error.message);
     }
   };
 

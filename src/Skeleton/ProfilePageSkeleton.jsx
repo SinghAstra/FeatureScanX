@@ -11,6 +11,11 @@ const ProfilePageSkelton = () => {
           <div className="profile-bio-skeleton skeleton"></div>
         </div>
       </div>
+      <div className="posts-skeleton">
+        <div className="post-skeleton"></div>
+        <div className="post-skeleton"></div>
+        <div className="post-skeleton"></div>
+      </div>
     </div>
   );
 };

@@ -2,7 +2,13 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import "../../styles/ProgressivePostImage.css";
 
-const ProgressivePostImage = ({ lowResUrl, highResUrl, alt }) => {
+const ProgressivePostImage = ({
+  lowResUrl,
+  highResUrl,
+  alt,
+  likes,
+  comments,
+}) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -30,10 +36,10 @@ const ProgressivePostImage = ({ lowResUrl, highResUrl, alt }) => {
       {isHovered && (
         <div className="overlay">
           <span className="likes">
-            <i className="uil uil-heart"></i> 2
+            <i className="uil uil-heart"></i> {likes}
           </span>
           <span className="comments">
-            <i className="uil uil-comment"></i> 2
+            <i className="uil uil-comment"></i> {comments}
           </span>
         </div>
       )}
@@ -45,6 +51,8 @@ ProgressivePostImage.propTypes = {
   lowResUrl: PropTypes.string.isRequired,
   highResUrl: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
+  likes: PropTypes.number.isRequired,
+  comments: PropTypes.number.isRequired,
 };
 
 export default ProgressivePostImage;

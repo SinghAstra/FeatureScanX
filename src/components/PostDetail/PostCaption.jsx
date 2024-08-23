@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import "../../styles/PostCaption.css";
 
 const PostCaption = ({ post }) => {
+  if (post.caption === "") {
+    return;
+  }
+
   return (
     <div className="post-caption">
       <Link to={`/${post.userId.userName}`}>
