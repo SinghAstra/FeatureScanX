@@ -7,6 +7,13 @@ const commentSchema = new mongoose.Schema(
     userId: { type: ObjectId, ref: "User", required: true },
     commentText: { type: String, required: true },
     likes: [{ type: ObjectId, ref: "User" }],
+    replies: [
+      {
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        replyText: String,
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   { timestamps: true }
 );

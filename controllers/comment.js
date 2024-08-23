@@ -119,3 +119,25 @@ export const toggleCommentLike = async (req, res) => {
       .json({ message: error.message, controller: toggleCommentLikePost });
   }
 };
+
+export const replyComment = async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    const userId = req.user.id;
+    const { replyText } = req.body;
+
+    const comment = await Comment.findById(commentId);
+    if (!comment) return res.status(404).json({ message: "Comment not found" });
+
+    if (replyText.trim() === "") {
+      return res.status(400).json({ message: "Reply text is required" });
+    }
+
+    comment.replies.push({ userId, replyText });
+    await comment.save();
+
+    res.status(201).json({ replies: comment.replies });
+  } catch (error) {
+    res.status(500).json({ message: error.message, error: replyComment });
+  }
+};
