@@ -4,6 +4,7 @@ import sharp from "sharp";
 import { PassThrough } from "stream";
 import cloudinary from "../config/cloudinary.js";
 import Hashtag from "../models/Hashtag.js";
+import Like from "../models/Like.js";
 import Post from "../models/Post.js";
 import User from "../models/User.js";
 
@@ -236,23 +237,19 @@ export const deleteAllPosts = async (req, res) => {
 
 export const getPostById = async (req, res) => {
   try {
+    const userId = req.user.id;
     const { postId } = req.params;
-    const post = await Post.findById(postId)
-      .populate("userId", "userName profilePicture fullName")
-      .populate("likes", "userId");
+    const post = await Post.findById(postId).populate(
+      "userId",
+      "userName profilePicture fullName"
+    );
 
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    const likedByCurrentUser = post.likes.some(
-      (like) => like.userId.toString() === req.user.id
-    );
-
-    res.json({
-      post,
-      likedByCurrentUser,
-    });
+    const existingLike = await Like.findOne({ postId, userId });
+    res.json({ post, likedByCurrentUser: existingLike ? true : false });
   } catch (error) {
     console.log("error.message is ", error.message);
     res.status(500).json({ message: "Server error - getPostById" });

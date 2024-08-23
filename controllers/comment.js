@@ -91,7 +91,7 @@ export const deleteAllComments = async (req, res) => {
   }
 };
 
-export const toggleCommentLikePost = async (req, res) => {
+export const toggleCommentLike = async (req, res) => {
   const userId = req.user.id;
   const { commentId } = req.params;
 

@@ -2,7 +2,7 @@ import express from "express";
 import {
   deleteAllComments,
   getAllComments,
-  toggleCommentLikePost,
+  toggleCommentLike,
 } from "../controllers/comment.js";
 import authMiddleware from "../middleware/auth.js";
 
@@ -12,6 +12,6 @@ const router = express.Router();
 router.get("/get-all-comments", getAllComments);
 router.get("/delete-all-comments", deleteAllComments);
 
-router.get("/:commentId/like", authMiddleware, toggleCommentLikePost);
+router.post("/:commentId/like", authMiddleware, toggleCommentLike);
 
 export default router;

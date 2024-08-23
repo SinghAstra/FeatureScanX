@@ -22,12 +22,12 @@ export const toggleLikeOnPost = async (req, res) => {
     const existingLike = await Like.findOne({ postId, userId });
 
     if (existingLike) {
-      // If like exists, remove it
       await Like.findByIdAndDelete(existingLike._id);
+      // If like exists, remove it
 
       // Remove the like reference from the post
       post.likes = post.likes.filter((like) => {
-        like.toString() !== existingLike._id.toString();
+        return like.toString() !== existingLike._id.toString();
       });
 
       await post.save();
