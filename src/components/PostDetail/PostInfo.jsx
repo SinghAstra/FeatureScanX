@@ -23,13 +23,6 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
   const commentInputRef = useRef(null);
   const commentsContainerRef = useRef(null);
 
-  console.log("currentUser.savedPosts is ", currentUser.savedPosts);
-  console.log("post._id is ", post._id);
-  console.log(
-    "currentUser.savedPosts.includes(post._id) is ",
-    currentUser.savedPosts.includes(post._id)
-  );
-
   const handleLikePostToggle = async () => {
     try {
       // Handle the UI Optimistically
@@ -150,6 +143,14 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
     }
   };
 
+  const getReplies = (commentId) =>
+    comments
+      .filter((comment) => comment.parentId === commentId)
+      .sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
+
   useEffect(() => {
     const fetchComments = async () => {
       try {
@@ -191,7 +192,11 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
             <div className="post-comments-container" ref={commentsContainerRef}>
               <PostCaption post={post} />
               {comments.map((comment) => (
-                <PostComment key={comment._id} comment={comment} />
+                <PostComment
+                  key={comment._id}
+                  comment={comment}
+                  replies={getReplies(comment._id)}
+                />
               ))}
             </div>
           )}
@@ -268,12 +273,8 @@ PostInfo.propTypes = {
       profilePicture: PropTypes.string,
       fullName: PropTypes.string.isRequired,
     }).isRequired,
+    likes: PropTypes.arrayOf(PropTypes.string).isRequired,
     caption: PropTypes.string.isRequired,
-    likes: PropTypes.arrayOf(
-      PropTypes.shape({
-        userId: PropTypes.string.isRequired,
-      })
-    ).isRequired,
     createdAt: PropTypes.string.isRequired,
   }).isRequired,
   isPostLikedByCurrentUser: PropTypes.bool.isRequired,

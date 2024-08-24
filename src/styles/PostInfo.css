@@ -94,6 +94,7 @@
 .add-comment-btn {
   background: transparent;
   color: var(--button-primary-color);
+  cursor: pointer;
 }
 
 .add-comment-btn.disabled {
@@ -178,4 +179,23 @@
 
 .toggle-like-button:active {
   color: var(--color-gray);
+}
+
+.view-replies-hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+}
+
+.view-replies-button {
+  background: transparent;
+  margin-top: 0.5rem;
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  &:hover {
+    color: var(--color-primary);
+  }
 }

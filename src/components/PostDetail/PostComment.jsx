@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 
-const PostComment = ({ comment }) => {
+const PostComment = ({ comment, replies }) => {
   const { currentUser } = useContext(AuthContext);
   const [isCommentLiked, setIsCommentLiked] = useState(
     comment.likes.includes(currentUser._id)
@@ -13,6 +13,7 @@ const PostComment = ({ comment }) => {
     comment.likes.length
   );
   const apiUrl = import.meta.env.VITE_API_URL;
+  const [showReplies, setShowReplies] = useState(false);
 
   const handleCommentLikeToggle = async () => {
     try {
@@ -53,6 +54,12 @@ const PostComment = ({ comment }) => {
 
   const formattedTime = formatTimeAgo(comment.createdAt);
 
+  const handleToggleReplies = () => {
+    setShowReplies((prev) => !prev);
+  };
+
+  console.log("replies is ", replies);
+
   return (
     <div className="post-comment">
       <Link to={`/${comment.userId.userName}`}>
@@ -86,6 +93,25 @@ const PostComment = ({ comment }) => {
           <span>Reply</span>
           <i className="uil uil-ellipsis-h menu-icon"></i>
         </div>
+        {replies.length > 0 && (
+          <div className="post-comment-replies">
+            <button
+              className="view-replies-button"
+              onClick={handleToggleReplies}
+            >
+              {showReplies
+                ? "Hide replies"
+                : `View replies (${replies.length})`}
+            </button>
+            {showReplies && (
+              <div className="post-comment-replies-list">
+                {replies.map((reply) => (
+                  <PostComment key={reply._id} comment={reply} replies={[]} />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
       <button className="toggle-like-button" onClick={handleCommentLikeToggle}>
         {isCommentLiked ? (
