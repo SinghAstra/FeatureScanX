@@ -5,7 +5,7 @@ import User from "../models/User.js";
 export const addCommentToPost = async (req, res) => {
   try {
     const { postId } = req.params;
-    const { commentText } = req.body;
+    const { commentText, parentId } = req.body;
     const userId = req.user.id;
 
     // Check if the post exists
@@ -19,14 +19,17 @@ export const addCommentToPost = async (req, res) => {
       postId,
       userId,
       commentText,
+      parentId: parentId || null,
     });
 
     // Save the comment
     await newComment.save();
 
-    // Update the post's comments array
-    post.comments.push(newComment._id);
-    await post.save();
+    // update the post only if the comment is top level comment
+    if (!parentId) {
+      post.comments.push(newComment._id);
+      await post.save();
+    }
 
     const user = await User.findById(userId).select(
       "userName profilePicture fullName"
@@ -46,7 +49,9 @@ export const addCommentToPost = async (req, res) => {
       comment: commentWithUserDetails,
     });
   } catch (error) {
-    res.status(500).json({ message: "Server error - addCommentToPost" });
+    res
+      .status(500)
+      .json({ message: error.message, controller: addCommentToPost });
   }
 };
 
@@ -61,6 +66,7 @@ export const getCommentsOnPost = async (req, res) => {
 
     const comments = await Comment.find({ postId })
       .populate("userId", "userName fullName profilePicture")
+      .populate("replies.userId", "userName profilePicture fullName")
       .sort({ createdAt: -1 });
 
     res.status(200).json(comments);
@@ -91,6 +97,20 @@ export const deleteAllComments = async (req, res) => {
   }
 };
 
+export const deleteAllNonRootComments = async (req, res) => {
+  try {
+    const comments = await Comment.deleteMany({ parentId: { $ne: null } });
+    res.json({
+      comments,
+      message: "Deleted All Non-Root Comments Successfully",
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: error.message, controller: deleteAllNonRootComments });
+  }
+};
+
 export const toggleCommentLike = async (req, res) => {
   const userId = req.user.id;
   const { commentId } = req.params;
@@ -117,27 +137,5 @@ export const toggleCommentLike = async (req, res) => {
     res
       .status(500)
       .json({ message: error.message, controller: toggleCommentLikePost });
-  }
-};
-
-export const replyComment = async (req, res) => {
-  try {
-    const { commentId } = req.params;
-    const userId = req.user.id;
-    const { replyText } = req.body;
-
-    const comment = await Comment.findById(commentId);
-    if (!comment) return res.status(404).json({ message: "Comment not found" });
-
-    if (replyText.trim() === "") {
-      return res.status(400).json({ message: "Reply text is required" });
-    }
-
-    comment.replies.push({ userId, replyText });
-    await comment.save();
-
-    res.status(201).json({ replies: comment.replies });
-  } catch (error) {
-    res.status(500).json({ message: error.message, error: replyComment });
   }
 };

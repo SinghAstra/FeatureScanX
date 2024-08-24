@@ -14,6 +14,15 @@ const commentSchema = new mongoose.Schema(
         createdAt: { type: Date, default: Date.now },
       },
     ],
+    parentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Comment",
+      default: null,
+    },
+    isEdited: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
