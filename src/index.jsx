@@ -7,7 +7,6 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import FeedSection from "./components/Profile/FeedSection.jsx";
 import PostsSection from "./components/Profile/PostsSection.jsx";
 import SavedSection from "./components/Profile/SavedSection.jsx";
 import TaggedSection from "./components/Profile/TaggedSection.jsx";
@@ -51,11 +50,10 @@ const router = createBrowserRouter(
           <Route exact path="/bookmarks" element={<BookmarksPage />} />
           <Route path="/:username" element={<ProfilePage />}>
             <Route path="/:username/" element={<PostsSection />} />
-            <Route path="/:username/feed" element={<FeedSection />} />
             <Route path="/:username/saved" element={<SavedSection />} />
             <Route path="/:username/tagged" element={<TaggedSection />} />
           </Route>
-          <Route path="/posts/:postId" element={<PostDetails />} />
+          <Route path="/posts/:postSlug" element={<PostDetails />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Route>

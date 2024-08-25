@@ -15,11 +15,13 @@
   }
 }
 
-.loading-more-followers {
+.loading-more-followers,
+.loading-more-following {
   height: 2rem;
 }
 
-.search-followers-container {
+.search-followers-container,
+.search-following-container {
   width: calc(100% - 1rem);
   margin: 0.5rem auto;
   border-radius: var(--border-radius-md);
@@ -30,7 +32,8 @@
   align-items: center;
 }
 
-.search-followers {
+.search-followers,
+.search-following {
   width: 100%;
   background: transparent;
   height: 1.5rem;

@@ -8,7 +8,7 @@ import "../styles/PostDetails.css";
 import PageNotFound from "./PageNotFound.jsx";
 
 const PostDetails = () => {
-  const { postId } = useParams();
+  const { postSlug } = useParams();
   const [postLoading, setPostLoading] = useState(true);
   const [post, setPost] = useState(null);
   const [isPostLiked, setIsPostLiked] = useState(false);
@@ -19,7 +19,7 @@ const PostDetails = () => {
       try {
         setPostLoading(true);
         const response = await axios.get(
-          `http://localhost:5000/api/posts/${postId}`,
+          `http://localhost:5000/api/posts/${postSlug}`,
           {
             withCredentials: true,
           }
@@ -41,7 +41,7 @@ const PostDetails = () => {
     };
 
     fetchPostDetailUsingId();
-  }, [postId]);
+  }, [postSlug]);
 
   if (postLoading) {
     return <PostDetailsSkeleton />;

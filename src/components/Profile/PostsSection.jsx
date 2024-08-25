@@ -49,7 +49,7 @@ const PostsSection = () => {
   return (
     <div className="posts-grid">
       {posts.map((post) => (
-        <Link to={`/posts/${post._id}`} key={post._id} className="post-item">
+        <Link to={`/posts/${post.slug}`} key={post._id} className="post-item">
           {post.media[0].type === "image" ? (
             <ProgressivePostImage
               lowResUrl={post.media[0].lowResUrl}

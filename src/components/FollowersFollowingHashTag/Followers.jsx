@@ -50,10 +50,6 @@ const Followers = ({ username, setShowFFHModal }) => {
     }
   };
 
-  const handleSearchChange = (e) => {
-    setSearch(e.target.value);
-  };
-
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -85,7 +81,7 @@ const Followers = ({ username, setShowFFHModal }) => {
     const delayDebounceFn = setTimeout(() => {
       setQuery(search);
       setPage(1);
-    }, 500);
+    }, 200);
 
     return () => clearTimeout(delayDebounceFn);
   }, [search]);
@@ -94,7 +90,7 @@ const Followers = ({ username, setShowFFHModal }) => {
     return <FollowersFollowingSkeleton />;
   }
 
-  const noFollowers = !search && followers.length === 0;
+  const noFollowers = !search && !loadingFollowers && followers.length === 0;
   const noResultsAfterSearch = search && followers.length === 0;
 
   if (noFollowers) {
@@ -109,7 +105,7 @@ const Followers = ({ username, setShowFFHModal }) => {
           className="search-followers"
           placeholder="Search"
           value={search}
-          onChange={handleSearchChange}
+          onChange={(e) => setSearch(e.target.value)}
         />
         {search && (
           <button className="clear-search" onClick={() => setSearch("")}>

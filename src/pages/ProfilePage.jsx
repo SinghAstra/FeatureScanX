@@ -138,10 +138,6 @@ const ProfilePage = () => {
           <i className="uil uil-table"></i>
           <h3>Posts</h3>
         </NavLink>
-        <NavLink to={`/${user.userName}/feed`} className="nav-link">
-          <i className="uil uil-newspaper"></i>
-          <h3>Feed</h3>
-        </NavLink>
         <NavLink to={`/${user.userName}/saved`} className="nav-link">
           <i className="uil uil-bookmark"></i>
           <h3>Saved</h3>
