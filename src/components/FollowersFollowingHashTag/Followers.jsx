@@ -1,6 +1,6 @@
 import axios from "axios";
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FollowersFollowingSkeleton from "../../Skeleton/FollowersFollowingSkeleton";
 import EmptyFollowers from "../../placeholders/FollowersFollowingHashtag/EmptyFollowers";
 import "../../styles/Followers.css";
@@ -10,30 +10,65 @@ const Followers = ({ username, setShowFFHModal }) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const [loadingFollowers, setLoadingFollowers] = useState(true);
   const [followers, setFollowers] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const observerRef = useRef(null);
 
-  const fetchFollowers = async () => {
+  const fetchFollowers = async (page) => {
     try {
       setLoadingFollowers(true);
+
       const response = await axios.get(
-        `${apiUrl}/api/users/${username}/followers`,
+        `${apiUrl}/api/users/${username}/followers?page=${page}&limit=10`,
         { withCredentials: true }
       );
+
+      setFollowers((prevFollowers) => [
+        ...prevFollowers,
+        ...response.data.followers,
+      ]);
+
+      if (page >= response.data.totalPages) {
+        setHasMore(false);
+      }
+
       console.log("response.data --fetchFollowers is ", response.data);
-      setFollowers(response.data.followers);
     } catch (error) {
-      console.log("error --fetchFollowers is ", error);
       setFollowers([]);
+      console.log("error.message --fetchFollowers is ", error.message);
     } finally {
       setLoadingFollowers(false);
     }
   };
 
   useEffect(() => {
-    fetchFollowers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [username]);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !loadingFollowers) {
+          setPage((prevPage) => prevPage + 1);
+        }
+      },
+      { threshold: 1 }
+    );
 
-  if (loadingFollowers) {
+    const currentObserver = observerRef.current;
+    if (currentObserver) {
+      observer.observe(currentObserver);
+    }
+
+    return () => {
+      if (currentObserver) {
+        observer.unobserve(currentObserver);
+      }
+    };
+  }, [hasMore, loadingFollowers]);
+
+  useEffect(() => {
+    fetchFollowers(page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, username]);
+
+  if (loadingFollowers && page === 1) {
     return <FollowersFollowingSkeleton />;
   }
 
@@ -46,7 +81,16 @@ const Followers = ({ username, setShowFFHModal }) => {
           setShowFFHModal={setShowFFHModal}
         />
       ))}
+
       {!followers.length && <EmptyFollowers username={username} />}
+
+      <div ref={observerRef} className="loading-more-followers">
+        {loadingFollowers && (
+          <div className="spinner-container">
+            <div className="spinner"></div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
