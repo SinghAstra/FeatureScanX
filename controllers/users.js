@@ -24,8 +24,9 @@ export const getUserProfile = async (req, res) => {
       isFollowing,
     });
   } catch (error) {
-    console.log("error.message is ", error.message);
-    res.status(500).json({ message: "Server error - getUserProfile" });
+    res
+      .status(500)
+      .json({ message: error.message, controller: getUserProfile });
   }
 };
 
@@ -108,27 +109,28 @@ export const getFollowers = async (req, res) => {
   };
 
   try {
-    const user = await User.findOne({ userName: username }).populate({
-      path: "followers",
-      match: searchQuery,
-      select: "-password",
-      options: {
-        skip: (page - 1) * limit,
-        limit: Number(limit),
-      },
-    });
-
+    const user = await User.findOne({ userName: username });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // Fetch the total count of followers based on the search query
     const totalFollowers = await User.countDocuments({
-      _id: { $in: user.followers.map((follower) => follower._id) },
+      _id: { $in: user.followers },
       ...searchQuery,
     });
 
+    // Apply pagination and search to get followers for the current page
+    const paginatedFollowers = await User.find({
+      _id: { $in: user.followers },
+      ...searchQuery,
+    })
+      .select("-password")
+      .skip((page - 1) * limit)
+      .limit(Number(limit));
+
     res.status(200).json({
-      followers: user.followers,
+      followers: paginatedFollowers,
       totalFollowers,
       currentPage: page,
       totalPages: Math.ceil(totalFollowers / limit),
@@ -140,6 +142,14 @@ export const getFollowers = async (req, res) => {
 
 export const getFollowing = async (req, res) => {
   const { username } = req.params;
+  const { page = 1, limit = 10, search = "" } = req.query;
+
+  const searchQuery = {
+    $or: [
+      { userName: { $regex: search, $options: "i" } },
+      { fullName: { $regex: search, $options: "i" } },
+    ],
+  };
 
   try {
     const user = await User.findOne({ userName: username }).populate({
@@ -151,9 +161,29 @@ export const getFollowing = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json({ following: user.following });
+    // Fetch total count of following users based on the search query
+    const totalFollowing = await User.countDocuments({
+      _id: { $in: user.following },
+      ...searchQuery,
+    });
+
+    // Apply pagination and search to get following users for the current page
+    const paginatedFollowing = await User.find({
+      _id: { $in: user.following },
+      ...searchQuery,
+    })
+      .select("-password")
+      .skip((page - 1) * limit)
+      .limit(Number(limit));
+
+    res.status(200).json({
+      following: paginatedFollowing,
+      totalFollowing,
+      currentPage: page,
+      totalPages: Math.ceil(totalFollowing / limit),
+    });
   } catch (error) {
-    res.status(500).json({ message: "Server error - getFollowing" });
+    res.status(500).json({ message: error.message, controller: getFollowing });
   }
 };
 
