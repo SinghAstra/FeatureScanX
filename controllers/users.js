@@ -98,18 +98,41 @@ export const toggleFollow = async (req, res) => {
 
 export const getFollowers = async (req, res) => {
   const { username } = req.params;
+  const { page = 1, limit = 10, search = "" } = req.query;
+
+  const searchQuery = {
+    $or: [
+      { userName: { $regex: search, $options: "i" } },
+      { fullName: { $regex: search, $options: "i" } },
+    ],
+  };
 
   try {
     const user = await User.findOne({ userName: username }).populate({
       path: "followers",
+      match: searchQuery,
       select: "-password",
+      options: {
+        skip: (page - 1) * limit,
+        limit: Number(limit),
+      },
     });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json({ followers: user.followers });
+    const totalFollowers = await User.countDocuments({
+      _id: { $in: user.followers.map((follower) => follower._id) },
+      ...searchQuery,
+    });
+
+    res.status(200).json({
+      followers: user.followers,
+      totalFollowers,
+      currentPage: page,
+      totalPages: Math.ceil(totalFollowers / limit),
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error - getFollowers" });
   }
