@@ -2,7 +2,7 @@
   display: flex;
   width: 100%;
   align-items: center;
-  padding: var(--padding-sm) var(--padding-md);
+  padding: var(--padding-sm) 0;
 }
 
 .user-item-nav {

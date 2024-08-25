@@ -13,8 +13,6 @@ const UserItem = ({ user, setShowFFHModal }) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const isCurrentUser = currentUser.userName === user.userName;
 
-  console.log("currentUser is ", currentUser);
-
   const handleToggleFollow = async () => {
     try {
       // update the ui optimistically

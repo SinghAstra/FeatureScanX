@@ -8,6 +8,7 @@
   text-align: center;
   gap: var(--gap-xs);
   overflow-y: auto;
+  padding: var(--padding-sm) var(--padding-md);
   padding-bottom: var(--padding-xxl);
   &::-webkit-scrollbar {
     display: none;
@@ -16,6 +17,39 @@
 
 .loading-more-followers {
   height: 2rem;
+}
+
+.search-followers-container {
+  width: calc(100% - 1rem);
+  margin: 0.5rem auto;
+  border-radius: var(--border-radius-md);
+  padding: var(--padding-xs) var(--padding-sm);
+  background: var(--color-very-light-gray);
+  box-shadow: var(--shadow-light);
+  display: flex;
+  align-items: center;
+}
+
+.search-followers {
+  width: 100%;
+  background: transparent;
+  height: 1.5rem;
+}
+
+.clear-search {
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-medium-gray);
+  color: white;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .spinner-container {

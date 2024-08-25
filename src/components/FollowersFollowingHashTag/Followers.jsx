@@ -12,24 +12,33 @@ const Followers = ({ username, setShowFFHModal }) => {
   const [followers, setFollowers] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [search, setSearch] = useState("");
+  const [query, setQuery] = useState("");
   const observerRef = useRef(null);
 
-  const fetchFollowers = async (page) => {
+  const fetchFollowers = async (page, query) => {
     try {
       setLoadingFollowers(true);
 
       const response = await axios.get(
-        `${apiUrl}/api/users/${username}/followers?page=${page}&limit=10`,
+        `${apiUrl}/api/users/${username}/followers?page=${page}&limit=10&search=${query}`,
         { withCredentials: true }
       );
 
-      setFollowers((prevFollowers) => [
-        ...prevFollowers,
-        ...response.data.followers,
-      ]);
+      // Reset followers on new search query
+      if (page === 1) {
+        setFollowers(response.data.followers);
+      } else {
+        setFollowers((prevFollowers) => [
+          ...prevFollowers,
+          ...response.data.followers,
+        ]);
+      }
 
       if (page >= response.data.totalPages) {
         setHasMore(false);
+      } else {
+        setHasMore(true);
       }
 
       console.log("response.data --fetchFollowers is ", response.data);
@@ -39,6 +48,10 @@ const Followers = ({ username, setShowFFHModal }) => {
     } finally {
       setLoadingFollowers(false);
     }
+  };
+
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
   };
 
   useEffect(() => {
@@ -64,16 +77,47 @@ const Followers = ({ username, setShowFFHModal }) => {
   }, [hasMore, loadingFollowers]);
 
   useEffect(() => {
-    fetchFollowers(page);
+    fetchFollowers(page, query);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, username]);
+  }, [page, query]);
 
-  if (loadingFollowers && page === 1) {
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      setQuery(search);
+      setPage(1);
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [search]);
+
+  if (loadingFollowers && page === 1 && search === "") {
     return <FollowersFollowingSkeleton />;
+  }
+
+  const noFollowers = !search && followers.length === 0;
+  const noResultsAfterSearch = search && followers.length === 0;
+
+  if (noFollowers) {
+    return <EmptyFollowers username={username} />;
   }
 
   return (
     <div className="followers-container">
+      <div className="search-followers-container">
+        <input
+          type="text"
+          className="search-followers"
+          placeholder="Search"
+          value={search}
+          onChange={handleSearchChange}
+        />
+        {search && (
+          <button className="clear-search" onClick={() => setSearch("")}>
+            &times;
+          </button>
+        )}
+      </div>
+
       {followers.map((user) => (
         <UserItem
           key={user._id}
@@ -82,7 +126,11 @@ const Followers = ({ username, setShowFFHModal }) => {
         />
       ))}
 
-      {!followers.length && <EmptyFollowers username={username} />}
+      {noResultsAfterSearch && (
+        <div className="no-results">
+          No followers found matching &quot;{search}&quot;.
+        </div>
+      )}
 
       <div ref={observerRef} className="loading-more-followers">
         {loadingFollowers && (
