@@ -1,4 +1,5 @@
 import Comment from "../models/Comment.js";
+import Notification from "../models/Notification.js";
 import Post from "../models/Post.js";
 import User from "../models/User.js";
 
@@ -29,6 +30,20 @@ export const addCommentToPost = async (req, res) => {
     if (!parentId) {
       post.comments.push(newComment._id);
       await post.save();
+
+      // Send a notification to the post author if someone else comments on their post
+      if (userId !== post.userId._id.toString()) {
+        const newNotification = new Notification({
+          type: "comment",
+          recipient: post.userId._id,
+          sender: userId,
+          postId: post._id,
+          commentText: commentText,
+          isRead: false,
+        });
+
+        await newNotification.save();
+      }
     }
 
     const user = await User.findById(userId).select(
