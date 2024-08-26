@@ -1,4 +1,5 @@
-import { useContext, useState } from "react";
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import "../styles/Sidebar.css";
@@ -9,6 +10,34 @@ const Sidebar = () => {
   const { currentUser } = useContext(AuthContext);
   const [createPostModal, setCreatePostModal] = useState(false);
   const [settingsModal, setSettingsModal] = useState(false);
+  const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
+  const apiUrl = import.meta.env.VITE_API_URL;
+
+  useEffect(() => {
+    const fetchUnreadNotificationsCount = async () => {
+      try {
+        const response = await axios.get(
+          `${apiUrl}/api/notifications/unread-count`,
+          {
+            withCredentials: true,
+          }
+        );
+        setUnreadNotificationCount(response.data.unreadCount);
+        console.log(
+          "response.data --fetchUnreadNotificationsCount is ",
+          response.data
+        );
+      } catch (error) {
+        console.log(
+          "error.message --fetchUnreadNotificationsCount is ",
+          error.message
+        );
+      }
+    };
+
+    fetchUnreadNotificationsCount();
+  }, [apiUrl]);
+
   return (
     <div className="sidebar-container">
       <NavLink to="/" className="sidebar-item">
@@ -43,9 +72,14 @@ const Sidebar = () => {
       <NavLink
         to="/notifications"
         className="sidebar-item sidebar-item-notifications"
+        onClick={() => setUnreadNotificationCount(0)}
       >
         <i className="uil uil-bell">
-          <small className="notification-count">9+</small>
+          {unreadNotificationCount > 0 && (
+            <span className="notification-count">
+              {unreadNotificationCount}
+            </span>
+          )}
         </i>
         <h3>Notifications</h3>
       </NavLink>

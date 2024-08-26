@@ -153,6 +153,10 @@
   margin-top: var(--margin-sm);
 }
 
+.post-comment-interaction span {
+  cursor: pointer;
+}
+
 .menu-icon {
   display: none;
 }
@@ -198,4 +202,19 @@
   &:hover {
     color: var(--color-primary);
   }
+}
+
+.reply-indicator {
+  color: var(--button-primary-color);
+  cursor: pointer;
+}
+
+.reply-indicator .cancel-reply {
+  margin-left: 0.5rem;
+  background: var(--color-medium-gray);
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
 }

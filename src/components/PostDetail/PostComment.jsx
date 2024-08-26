@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 
-const PostComment = ({ comment, replies }) => {
+const PostComment = ({ comment, handleReply }) => {
   const { currentUser } = useContext(AuthContext);
   const [isCommentLiked, setIsCommentLiked] = useState(
     comment.likes.includes(currentUser._id)
@@ -58,8 +58,6 @@ const PostComment = ({ comment, replies }) => {
     setShowReplies((prev) => !prev);
   };
 
-  console.log("replies is ", replies);
-
   return (
     <div className="post-comment">
       <Link to={`/${comment.userId.userName}`}>
@@ -90,10 +88,10 @@ const PostComment = ({ comment, replies }) => {
               {commentLikesCount} {commentLikesCount === 1 ? "like" : "likes"}
             </span>
           )}
-          <span>Reply</span>
+          <span onClick={handleReply}>Reply</span>
           <i className="uil uil-ellipsis-h menu-icon"></i>
         </div>
-        {replies.length > 0 && (
+        {comment.replyCount > 0 && (
           <div className="post-comment-replies">
             <button
               className="view-replies-button"
@@ -101,13 +99,13 @@ const PostComment = ({ comment, replies }) => {
             >
               {showReplies
                 ? "Hide replies"
-                : `View replies (${replies.length})`}
+                : `View replies (${comment.replyCount})`}
             </button>
             {showReplies && (
               <div className="post-comment-replies-list">
-                {replies.map((reply) => (
+                {/* {replies.map((reply) => (
                   <PostComment key={reply._id} comment={reply} replies={[]} />
-                ))}
+                ))} */}
               </div>
             )}
           </div>

@@ -22,19 +22,23 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const commentInputRef = useRef(null);
   const commentsContainerRef = useRef(null);
+  const [parentId, setParentId] = useState(null);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const observerRef = useRef(null);
 
   const handleLikePostToggle = async () => {
     try {
       // Handle the UI Optimistically
-      setIsPostLiked(!isPostLiked);
+      setIsPostLiked((isPostLiked) => !isPostLiked);
       const response = await axios.get(`${apiUrl}/api/posts/${post._id}/like`, {
         withCredentials: true,
       });
-      console.log("response.data -- handleLikePostToggle is ", response.data);
       setPostLikesCount(response.data.likes);
+      console.log("response.data -- handleLikePostToggle is ", response.data);
     } catch (error) {
       // if error comes in updating the backend, revert back to the original state
-      setIsPostLiked(!isPostLiked);
+      setIsPostLiked((isPostLiked) => !isPostLiked);
       console.log("error.message --handleLikePostToggle is :", error.message);
     }
   };
@@ -62,15 +66,31 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
     if (comment.trim() === "") return;
 
     try {
+      let updatedComment = comment;
+
+      if (parentId) {
+        const parentComment = comments.find(
+          (comment) => comment._id === parentId
+        );
+        const parentUserName = parentComment?.userId?.userName;
+
+        if (parentUserName) {
+          updatedComment = `@${parentUserName} ` + comment;
+        }
+      }
       const response = await axios.post(
         `${apiUrl}/api/posts/${post._id}/comment`,
         {
-          commentText: comment,
+          commentText: updatedComment,
+          parentId,
         },
         { withCredentials: true }
       );
       setComments([response.data.comment, ...comments]);
       setComment("");
+      if (commentsContainerRef.current) {
+        commentsContainerRef.current.scrollTop = 0;
+      }
       console.log("response.data --handleCommentSubmit is ", response.data);
     } catch (error) {
       console.log("error.message --handleCommentSubmit is :", error.message);
@@ -143,46 +163,66 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
     }
   };
 
-  const getReplies = (commentId) =>
-    comments
-      .filter((comment) => comment.parentId === commentId)
-      .sort(
-        (a, b) =>
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+  const handleReply = (commentId) => {
+    setParentId(commentId);
+    commentInputRef.current.focus();
+  };
+
+  const fetchComments = async () => {
+    try {
+      setLoadingComments(true);
+      const response = await axios.get(
+        `${apiUrl}/api/posts/${post._id}/comments?page=${page}&limit=10`,
+        {
+          withCredentials: true,
+        }
       );
+      setComments((prevComments) => [
+        ...prevComments,
+        ...response.data.comments,
+      ]);
+      if (page >= response.data.totalPages) {
+        setHasMore(false);
+      }
+      console.log("response.data --fetchComments is ", response.data);
+    } catch (error) {
+      console.log("error.message --fetchComments is :", error.message);
+    } finally {
+      setLoadingComments(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchComments = async () => {
-      try {
-        setLoadingComments(true);
-        const response = await axios.get(
-          `${apiUrl}/api/posts/${post._id}/comments`,
-          {
-            withCredentials: true,
-          }
-        );
-        setComments(response.data);
-        console.log("response.data --fetchComments is ", response.data);
-      } catch (error) {
-        console.log("error.message --fetchComments is :", error.message);
-      } finally {
-        setLoadingComments(false);
+    fetchComments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [apiUrl, post._id, page]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !loadingComments) {
+          setPage((prevPage) => prevPage + 1);
+        }
+      },
+      { threshold: 1 }
+    );
+
+    const currentObserver = observerRef.current;
+    if (currentObserver) {
+      observer.observe(currentObserver);
+    }
+
+    return () => {
+      if (currentObserver) {
+        observer.unobserve(currentObserver);
       }
     };
-
-    fetchComments();
-  }, [apiUrl, post._id]);
-
-  useEffect(() => {
-    if (commentsContainerRef.current) {
-      commentsContainerRef.current.scrollTop = 0;
-    }
-  }, [comments]);
+  }, [hasMore, loadingComments]);
 
   return (
     <div className="post-info-container">
       <PostAuthorProfile userId={post.userId} />
-      {loadingComments ? (
+      {loadingComments && page === 1 ? (
         <PostCommentsSkeleton />
       ) : (
         <>
@@ -195,9 +235,16 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
                 <PostComment
                   key={comment._id}
                   comment={comment}
-                  replies={getReplies(comment._id)}
+                  handleReply={() => handleReply(comment._id)}
                 />
               ))}
+              <div ref={observerRef} className="loading-more-followers">
+                {loadingComments && (
+                  <div className="spinner-container">
+                    <div className="spinner"></div>
+                  </div>
+                )}
+              </div>
             </div>
           )}
         </>
@@ -238,6 +285,18 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
         <div className="post-createdAt"> {formatDate(post.createdAt)}</div>
       </div>
       <div className="add-comment-container">
+        {parentId && (
+          <div className="reply-indicator">
+            @
+            {
+              comments.find((comment) => comment._id === parentId)?.userId
+                ?.userName
+            }
+            <button className="cancel-reply" onClick={() => setParentId(null)}>
+              ✕
+            </button>
+          </div>
+        )}
         <input
           type="text"
           value={comment}
@@ -258,7 +317,7 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
           }`}
           onClick={handleCommentSubmit}
         >
-          Post
+          {parentId ? "Reply" : "Post"}
         </button>
       </div>
     </div>
