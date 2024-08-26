@@ -6,6 +6,9 @@ import express from "express";
 import helmet from "helmet";
 import { default as mongoose } from "mongoose";
 import morgan from "morgan";
+import Comment from "./models/Comment.js";
+import Post from "./models/Post.js";
+import User from "./models/User.js";
 import authRoutes from "./routes/auth.js";
 import commentsRoutes from "./routes/comments.js";
 import postsRoutes from "./routes/posts.js";
@@ -43,7 +46,7 @@ app.use("/api/posts", postsRoutes);
 app.use("/api/saved-post", savePostsRoutes);
 app.use("/api/comments", commentsRoutes);
 
-app.get("/clear-cookies", (req, res) => {
+app.get("/testing/clear-cookies", (req, res) => {
   const cookies = req.cookies;
 
   for (const cookieName in cookies) {
@@ -54,15 +57,42 @@ app.get("/clear-cookies", (req, res) => {
 
   res.status(200).json({ message: "All cookies cleared." });
 });
-app.get("/view-cookies", (req, res) => {
+app.get("/testing/view-cookies", (req, res) => {
   res.json({ cookies: req.cookies });
 });
-app.get("/drop-database", async (req, res) => {
+app.get("/testing/drop-database", async (req, res) => {
   try {
     await mongoose.connection.dropDatabase();
     res.json({ message: "Database dropped successfully" });
   } catch (error) {
     res.json({ message: "Database dropped successfully" });
+  }
+});
+
+app.get("/testing/posts", async (req, res) => {
+  try {
+    const posts = await Post.find({});
+    res.json(posts);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.get("/testing/comments", async (req, res) => {
+  try {
+    const comments = await Comment.find({});
+    res.json(comments);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.get("/testing/delete-all-comments", async (req, res) => {
+  try {
+    const comments = await Comment.deleteMany({});
+    res.json({comments,message:"Deleted All Comments Successfully."});
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 

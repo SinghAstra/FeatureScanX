@@ -8,11 +8,17 @@ import sendEmail from "../utils/sendEmail.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Check if email, mobile, or username is taken
+// Check if email or username is taken
 export const checkAvailabilityController = async (req, res) => {
   const { email, username } = req.body;
 
   try {
+    if (!email && !username) {
+      return res
+        .status(400)
+        .json({ error: "Either email or username is required" });
+    }
+
     let user;
     if (email) {
       user = await User.findOne({
@@ -29,7 +35,10 @@ export const checkAvailabilityController = async (req, res) => {
       return res.status(200).json({ isAvailable: true });
     }
   } catch (error) {
-    return res.status(500).json({ error: "Server error - checkAvailability" });
+    return res.status(500).json({
+      message: error.message,
+      controller: checkAvailabilityController,
+    });
   }
 };
 
@@ -64,8 +73,9 @@ export const verifyEmailController = async (req, res) => {
 
     res.status(200).json({ message: "Email sent", confirmationCode });
   } catch (error) {
-    console.log("error.message is ", error.message);
-    res.status(500).json({ message: "Error sending email" });
+    res
+      .status(500)
+      .json({ message: error.message, controller: verifyEmailController });
   }
 };
 
@@ -73,7 +83,11 @@ export const registerUserController = async (req, res) => {
   try {
     const { fullName, username, email, password, dateOfBirth } = req.body;
 
-    // Check if a user with the provided email or mobile already exists
+    if (!fullName || !username || !email || !password || !dateOfBirth) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    // Check if a user with the provided email already exists
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
@@ -103,8 +117,6 @@ export const registerUserController = async (req, res) => {
       ),
     });
 
-    console.log("newUser is ", newUser);
-
     // Save the user to the database
     await newUser.save();
 
@@ -127,16 +139,21 @@ export const registerUserController = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log("error is ", error);
     res
       .status(500)
-      .json({ message: "Internal server error --registerUserController" });
+      .json({ message: error.message, controller: registerUserController });
   }
 };
 
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and password are required." });
+    }
 
     const user = await User.findOne({ email: email });
 
@@ -160,15 +177,6 @@ export const loginUser = async (req, res) => {
     res.status(200).json({ message: "Logged In Successfully." });
   } catch (err) {
     res.status(500).json({ message: "Internal Server Error - LogIn User." });
-  }
-};
-
-export const deleteAllUser = async (req, res) => {
-  try {
-    await User.deleteMany({});
-    res.status(200).json({ message: "All Users Deleted" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
   }
 };
 

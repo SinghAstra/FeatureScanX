@@ -42,20 +42,20 @@ export const toggleLikeOnPost = async (req, res) => {
       post.likes.push(newLike._id);
       await post.save();
 
+      // Create a notification only if the post owner is not the one liking the post
+      if (post.userId.toString() !== userId.toString()) {
+        const notification = new Notification({
+          type: "like",
+          recipient: post.userId,
+          sender: userId,
+          postId: post._id,
+        });
+        await notification.save();
+      }
+
       return res.json({ message: "Post liked", likes: post.likes.length });
     }
   } catch (err) {
     res.status(500).json({ message: "Server Error --toggleLikeOnPost" });
-  }
-};
-
-export const deleteAllLikes = async (req, res) => {
-  try {
-    const likes = await Like.deleteMany({});
-    res.status(200).json({ message: "All Likes Deleted", likes });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: error.message, controller: deleteAllLikes });
   }
 };

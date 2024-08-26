@@ -432,7 +432,7 @@ const datesOfBirth = [
 ];
 
 const password = "YourCommonPassword123";
-const numberOfUsers = 100;
+const numberOfUsers = 40;
 
 async function registerUser(userData) {
   try {

@@ -7,7 +7,7 @@ import { fileURLToPath } from "url";
 const baseURL = "http://localhost:5000/api";
 const commonPassword = "YourCommonPassword123";
 const maxImagePerPost = 4;
-const maxPostsPerUser = 5;
+const maxPostsPerUser = 30;
 const maxHashTagsPerPost = 5;
 const maxMentionsPerPost = 5;
 const __filename = fileURLToPath(import.meta.url);

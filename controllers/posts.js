@@ -96,7 +96,6 @@ export const createPostController = async (req, res) => {
   }
 };
 
-// Helper function to upload buffer to Cloudinary
 const uploadToCloudinary = (buffer, mimetype) => {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
@@ -226,20 +225,11 @@ export const getAllPosts = async (req, res) => {
   }
 };
 
-export const deleteAllPosts = async (req, res) => {
-  try {
-    const posts = await Post.deleteMany({});
-    res.status(200).json({ message: "All Posts Deleted", posts });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-export const getPostById = async (req, res) => {
+export const getPostBySlug = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { postId } = req.params;
-    const post = await Post.findById(postId).populate(
+    const { postSlug } = req.params;
+    const post = await Post.findOne({ slug: postSlug }).populate(
       "userId",
       "userName profilePicture fullName"
     );
@@ -248,10 +238,9 @@ export const getPostById = async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    const existingLike = await Like.findOne({ postId, userId });
+    const existingLike = await Like.findOne({ postId: post._id, userId });
     res.json({ post, likedByCurrentUser: existingLike ? true : false });
   } catch (error) {
-    console.log("error.message is ", error.message);
-    res.status(500).json({ message: "Server error - getPostById" });
+    res.status(500).json({ message: error.message, controller: getPostBySlug });
   }
 };

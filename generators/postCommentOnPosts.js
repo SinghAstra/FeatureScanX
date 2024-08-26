@@ -2,7 +2,7 @@ import axios from "axios";
 
 const baseURL = "http://localhost:5000/api";
 const commonPassword = "YourCommonPassword123";
-const maxCommentPerPost = 5;
+const maxCommentPerPost = 1;
 
 const commentsText = [
   "Great post!",

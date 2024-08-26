@@ -1,6 +1,35 @@
 import Post from "../models/Post.js";
 import User from "../models/User.js";
 
+export const getAllUsers = async (req, res) => {
+  try {
+    const { page = 1, limit = 10, search = "" } = req.query;
+
+    const searchQuery = {
+      $or: [
+        { userName: { $regex: search, $options: "i" } },
+        { fullName: { $regex: search, $options: "i" } },
+      ],
+    };
+
+    const totalUsers = await User.countDocuments(searchQuery);
+
+    const paginatedUsers = await User.find(searchQuery)
+      .select("-password -dateOfBirth")
+      .skip((page - 1) * limit)
+      .limit(Number(limit));
+
+    res.status(200).json({
+      users: paginatedUsers,
+      totalUsers,
+      currentPage: Number(page),
+      totalPages: Math.ceil(totalUsers / limit),
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message, controller: getAllUsers });
+  }
+};
+
 export const getUserProfile = async (req, res) => {
   try {
     const { username } = req.params;
@@ -187,22 +216,11 @@ export const getFollowing = async (req, res) => {
   }
 };
 
-export const getAllUsers = async (req, res) => {
+export const getAllUser = async (req, res) => {
   try {
     const users = await User.find({}).select("-password -dateOfBirth");
     res.status(200).json(users);
   } catch (error) {
-    res.status(500).json({ message: "Internal Server error - getAllUsers" });
-  }
-};
-
-export const deleteAllUsers = async (req, res) => {
-  try {
-    const users = await User.deleteMany({});
-    res.json({ users, message: "Deleted All Users Successfully" });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Error deleting all users - Internal Server Error." });
+    res.status(500).json({ message: error.message, controller: getAllUsers });
   }
 };

@@ -55,59 +55,48 @@ export const addCommentToPost = async (req, res) => {
   }
 };
 
+// Fetch paginated comments for a specific post
 export const getCommentsOnPost = async (req, res) => {
+  const { postId } = req.params;
+  const { page = 1, limit = 10 } = req.query;
+
   try {
-    const { postId } = req.params;
+    // Fetch the total count of comments
+    const totalComments = await Comment.countDocuments({
+      postId: postId,
+      parentId: null, // Top-level comments
+    });
 
-    const post = await Post.findById(postId);
-    if (!post) {
-      return res.status(404).json({ message: "Post not found" });
-    }
+    // Apply pagination to get comments for the current page
+    const topLevelComments = await Comment.find({
+      postId: postId,
+      parentId: null,
+    })
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(Number(limit))
+      .populate("userId", "userName fullName profilePicture");
 
-    const comments = await Comment.find({ postId })
-      .populate("userId", "userName fullName profilePicture")
-      .populate("replies.userId", "userName profilePicture fullName")
-      .sort({ createdAt: -1 });
+    const commentsWithReplyCount = await Promise.all(
+      topLevelComments.map(async (comment) => {
+        const replyCount = await Comment.countDocuments({
+          parentId: comment._id,
+        });
+        return {
+          ...comment.toObject(),
+          replyCount,
+        };
+      })
+    );
 
-    res.status(200).json(comments);
-  } catch (error) {
-    res.status(500).json({ message: "Server error --getAllCommentsOfPost" });
-  }
-};
-
-export const getAllComments = async (req, res) => {
-  try {
-    const comments = await Comment.find({}).sort({ createdAt: -1 });
-    res.status(200).json(comments);
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: error.message, controller: getAllComments });
-  }
-};
-
-export const deleteAllComments = async (req, res) => {
-  try {
-    const comments = await Comment.deleteMany({});
-    res.json({ comments, message: "Deleted All Comments Successfully" });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: error.message, controller: deleteAllComments });
-  }
-};
-
-export const deleteAllNonRootComments = async (req, res) => {
-  try {
-    const comments = await Comment.deleteMany({ parentId: { $ne: null } });
-    res.json({
-      comments,
-      message: "Deleted All Non-Root Comments Successfully",
+    res.status(200).json({
+      comments: commentsWithReplyCount,
+      totalComments,
+      currentPage: page,
+      totalPages: Math.ceil(totalComments / limit),
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: error.message, controller: deleteAllNonRootComments });
+    res.status(500).json({ message: error.message });
   }
 };
 

@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  deleteAllUsers,
+  getAllUser,
   getAllUsers,
   getFollowers,
   getFollowing,
@@ -12,9 +12,9 @@ import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
 
-// Testing Purposes
-router.get("/get-all-users", getAllUsers);
-router.get("/delete-all-users", deleteAllUsers);
+router.get("/", authMiddleware, getAllUsers);
+
+router.get("/get-all-users", getAllUser);
 
 // Fetch User Profile Information using username
 router.get("/:username", authMiddleware, getUserProfile);
