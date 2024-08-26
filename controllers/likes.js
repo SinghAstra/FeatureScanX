@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Like from "../models/Like.js";
+import Notification from "../models/Notification.js";
 import Post from "../models/Post.js";
 
 export const toggleLikeOnPost = async (req, res) => {

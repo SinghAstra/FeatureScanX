@@ -8,9 +8,9 @@ import { default as mongoose } from "mongoose";
 import morgan from "morgan";
 import Comment from "./models/Comment.js";
 import Post from "./models/Post.js";
-import User from "./models/User.js";
 import authRoutes from "./routes/auth.js";
 import commentsRoutes from "./routes/comments.js";
+import notificationsRoutes from "./routes/notifications.js";
 import postsRoutes from "./routes/posts.js";
 import savePostsRoutes from "./routes/savePosts.js";
 import usersRoutes from "./routes/users.js";
@@ -45,6 +45,7 @@ app.use("/api/users", usersRoutes);
 app.use("/api/posts", postsRoutes);
 app.use("/api/saved-post", savePostsRoutes);
 app.use("/api/comments", commentsRoutes);
+app.use("/api/notifications", notificationsRoutes);
 
 app.get("/testing/clear-cookies", (req, res) => {
   const cookies = req.cookies;
@@ -90,7 +91,7 @@ app.get("/testing/comments", async (req, res) => {
 app.get("/testing/delete-all-comments", async (req, res) => {
   try {
     const comments = await Comment.deleteMany({});
-    res.json({comments,message:"Deleted All Comments Successfully."});
+    res.json({ comments, message: "Deleted All Comments Successfully." });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
