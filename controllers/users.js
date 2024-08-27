@@ -1,3 +1,4 @@
+import Notification from "../models/Notification.js";
 import Post from "../models/Post.js";
 import User from "../models/User.js";
 
@@ -110,6 +111,24 @@ export const toggleFollow = async (req, res) => {
       // Follow the user
       currentUser.following.push(userToFollowOrUnFollow._id);
       userToFollowOrUnFollow.followers.push(currentUserId);
+
+      const existingNotification = await Notification.findOne({
+        type: "follow",
+        recipient: userToFollowOrUnFollow._id,
+        sender: currentUserId,
+      });
+
+      if (!existingNotification) {
+        // Create a notification for the follow action
+        const newNotification = new Notification({
+          type: "follow",
+          recipient: userToFollowOrUnFollow._id, // The user being followed
+          sender: currentUserId, // The user who is following
+          isRead: false, // Mark as unread by default
+        });
+
+        await newNotification.save();
+      }
     }
 
     await currentUser.save();

@@ -70,7 +70,6 @@ export const addCommentToPost = async (req, res) => {
   }
 };
 
-// Fetch paginated comments for a specific post
 export const getCommentsOnPost = async (req, res) => {
   const { postId } = req.params;
   const { page = 1, limit = 10 } = req.query;
@@ -141,5 +140,61 @@ export const toggleCommentLike = async (req, res) => {
     res
       .status(500)
       .json({ message: error.message, controller: toggleCommentLikePost });
+  }
+};
+
+export const deleteCommentById = async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    const userId = req.user.id;
+
+    const comment = await Comment.findById(commentId);
+
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found." });
+    }
+
+    if (comment.userId.toString() !== userId) {
+      return res.status(403).json({ message: "Unauthorized action." });
+    }
+
+    await Comment.findByIdAndDelete(commentId);
+
+    await Post.updateOne(
+      { comments: commentId },
+      { $pull: { comments: commentId } }
+    );
+
+    res.status(200).json({ message: "Comment deleted successfully." });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: error.message, controller: deleteCommentById });
+  }
+};
+
+export const getCommentReplies = async (req, res) => {
+  const { commentId } = req.params;
+  const { page = 1, limit = 10 } = req.query;
+
+  try {
+    const replies = await Comment.find({ parentId: commentId })
+      .populate("userId", "userName profilePicture fullName")
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    const totalReplies = await Comment.countDocuments({ parentId: commentId });
+    const totalPages = Math.ceil(totalReplies / limit);
+
+    res.json({
+      replies,
+      currentPage: page,
+      totalPages,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: error.message, controller: getCommentReplies });
   }
 };
