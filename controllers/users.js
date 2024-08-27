@@ -63,20 +63,33 @@ export const getUserProfile = async (req, res) => {
 export const getUserPosts = async (req, res) => {
   try {
     const { username } = req.params;
+    let { page = 1, limit = 10 } = req.query;
 
-    // Find the user by username
+    // Convert page and limit to numbers and handle invalid values
+    page = parseInt(page, 10) > 0 ? parseInt(page, 10) : 1;
+    limit = parseInt(limit, 10) > 0 ? parseInt(limit, 10) : 10;
+
     const user = await User.findOne({ userName: username });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Find posts created by the user
-    const posts = await Post.find({ userId: user._id }).sort({ createdAt: -1 });
+    const totalPosts = await Post.countDocuments({ userId: user._id });
 
-    res.json(posts);
+    const posts = await Post.find({ userId: user._id })
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    res.json({
+      posts,
+      totalPosts,
+      totalPages: Math.ceil(totalPosts / limit),
+      currentPage: page,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Server error - getUserPosts" });
+    res.status(500).json({ message: error.message });
   }
 };
 
