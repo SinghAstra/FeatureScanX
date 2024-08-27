@@ -4,6 +4,7 @@
   max-width: 800px;
   margin: 20px auto;
   border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-strong);
 }
 
 .notification-section {
@@ -63,4 +64,8 @@
   color: var(--color-medium-gray);
   font-size: 16px;
   font-weight: 500;
+}
+
+.loading-more-notifications {
+  margin: 10px auto 20px;
 }

@@ -23,7 +23,14 @@ const Notification = ({ notification }) => {
   };
 
   return (
-    <div className="notification">
+    <Link
+      to={
+        notification.postId
+          ? `/posts/${notification.postId.slug}`
+          : `/${notification.sender.userName}`
+      }
+      className="notification"
+    >
       <Link
         to={`/${notification.sender.userName}`}
         className="notification-user-avatar"
@@ -44,7 +51,7 @@ const Notification = ({ notification }) => {
             <Link to={`/${notification.sender.userName}`}>
               <strong>{notification.sender.userName}</strong>
             </Link>{" "}
-            <Link to={`/${notification.postId?.slug}`}>liked your post.</Link>
+            liked your post.
           </p>
         )}
         {notification.type === "comment" && (
@@ -52,41 +59,23 @@ const Notification = ({ notification }) => {
             <Link to={`/${notification.sender.userName}`}>
               <strong>{notification.sender.userName}</strong>
             </Link>{" "}
-            <Link to={`/posts/${notification.postId?.slug}`}>
-              commented: {notification.commentText}
-            </Link>
+            commented: {notification.commentText}
           </p>
         )}
         {notification.type === "follow" && (
           <p>
-            {" "}
             <Link to={`/${notification.sender.userName}`}>
               <strong>{notification.sender.userName}</strong>
             </Link>{" "}
-            <Link to={`/${notification.sender.userName}`}>
-              started following you
-            </Link>
+            started following you
           </p>
         )}
       </div>
-      <Link className="time-ago" to={`/posts/${notification.postId?.slug}`}>
-        {formatTimeAgo(notification.createdAt)}
-      </Link>
       {notification.postId && (
-        <Link
-          to={
-            notification.postId
-              ? `/posts/${notification.postId.slug}`
-              : `/${notification.sender.userName}`
-          }
-        >
-          <img
-            src={notification.postId.media[0].lowResUrl}
-            alt="Post preview"
-          />
-        </Link>
+        <img src={notification.postId.media[0].lowResUrl} alt="Post preview" />
       )}
-    </div>
+      <Link className="time-ago">{formatTimeAgo(notification.createdAt)}</Link>
+    </Link>
   );
 };
 

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import NotificationItem from "../components/NotificationItem";
-import "../styles/NotificationsPage.css";
+import NotificationPageSkeleton from "../Skeleton/NotificationPageSkeleton";
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState({
@@ -117,7 +117,7 @@ const Notifications = () => {
   }, [hasMore, loadingNotification]);
 
   if (loadingNotification && page === 1) {
-    return <div>Loading Notifications...</div>;
+    return <NotificationPageSkeleton />;
   }
 
   return (
