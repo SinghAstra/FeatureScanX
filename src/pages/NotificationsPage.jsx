@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import NotificationItem from "../components/NotificationItem";
 import NotificationPageSkeleton from "../Skeleton/NotificationPageSkeleton";
+import "../styles/NotificationPage.css";
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState({
@@ -14,6 +15,7 @@ const Notifications = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const [loadingNotification, setLoadingNotification] = useState(true);
   const observerRef = useRef(null);
+  const [activeTab, setActiveTab] = useState("new");
 
   const isToday = (date) => {
     const today = new Date();
@@ -115,56 +117,59 @@ const Notifications = () => {
       }
     };
   }, [hasMore, loadingNotification]);
+  const renderNotifications = (tab) => {
+    if (loadingNotification && page === 1) {
+      return <NotificationPageSkeleton />;
+    }
 
-  if (loadingNotification && page === 1) {
-    return <NotificationPageSkeleton />;
-  }
+    return (
+      <>
+        {notifications[tab].length > 0 ? (
+          <>
+            {notifications[tab].map((notification) => (
+              <NotificationItem
+                key={notification._id}
+                notification={notification}
+              />
+            ))}
+            <div ref={observerRef} className="loading-more-notifications">
+              {loadingNotification && (
+                <div className="spinner-container">
+                  <div className="spinner"></div>
+                </div>
+              )}
+            </div>
+          </>
+        ) : (
+          <p>No {tab} notifications.</p>
+        )}
+      </>
+    );
+  };
 
   return (
     <div className="notification-section-container">
-      {notifications.new.length > 0 && (
-        <div className="notification-section">
-          <h3>New</h3>
-          {notifications.new.map((notification) => (
-            <NotificationItem
-              key={notification._id}
-              notification={notification}
-            />
-          ))}
-        </div>
-      )}
-
-      {notifications.today.length > 0 && (
-        <div className="notification-section">
-          <h3>Today</h3>
-          {notifications.today.map((notification) => (
-            <NotificationItem
-              key={notification._id}
-              notification={notification}
-            />
-          ))}
-        </div>
-      )}
-
-      {notifications.earlier.length > 0 && (
-        <div className="notification-section">
-          <h3>Earlier</h3>
-          {notifications.earlier.map((notification) => (
-            <NotificationItem
-              key={notification._id}
-              notification={notification}
-            />
-          ))}
-        </div>
-      )}
-
-      <div ref={observerRef} className="loading-more-notifications">
-        {loadingNotification && (
-          <div className="spinner-container">
-            <div className="spinner"></div>
-          </div>
-        )}
+      <div className="tab">
+        <button
+          className={`tabLinks ${activeTab === "new" ? "active" : ""}`}
+          onClick={() => setActiveTab("new")}
+        >
+          New
+        </button>
+        <button
+          className={`tabLinks ${activeTab === "today" ? "active" : ""}`}
+          onClick={() => setActiveTab("today")}
+        >
+          Today
+        </button>
+        <button
+          className={`tabLinks ${activeTab === "earlier" ? "active" : ""}`}
+          onClick={() => setActiveTab("earlier")}
+        >
+          Earlier
+        </button>
       </div>
+      <div className="tabContent">{renderNotifications(activeTab)}</div>
     </div>
   );
 };
