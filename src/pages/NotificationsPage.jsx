@@ -33,8 +33,9 @@ const Notifications = () => {
         const newNotifications = allNotifications.filter(
           (notification) => !notification.isRead
         );
-        const todayNotifications = allNotifications.filter((notification) =>
-          isToday(notification.createdAt)
+        const todayNotifications = allNotifications.filter(
+          (notification) =>
+            isToday(notification.createdAt) && notification.isRead
         );
         const earlierNotifications = allNotifications.filter(
           (notification) =>

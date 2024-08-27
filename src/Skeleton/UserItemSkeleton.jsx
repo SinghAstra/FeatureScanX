@@ -8,6 +8,7 @@ const UserItem = () => {
         <span className="username-skeleton skeleton"></span>
         <span className="user-fullName-skeleton skeleton"></span>
       </div>
+      <div className="user-follow-button-skeleton skeleton"></div>
     </div>
   );
 };

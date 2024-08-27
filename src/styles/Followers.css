@@ -8,7 +8,6 @@
   text-align: center;
   gap: var(--gap-xs);
   overflow-y: auto;
-  padding: var(--padding-sm) var(--padding-md);
   padding-bottom: var(--padding-xxl);
   &::-webkit-scrollbar {
     display: none;
@@ -22,6 +21,7 @@
 
 .search-followers-container,
 .search-following-container {
+  padding: var(--padding-sm) var(--padding-md);
   width: calc(100% - 1rem);
   margin: 0.5rem auto;
   border-radius: var(--border-radius-md);

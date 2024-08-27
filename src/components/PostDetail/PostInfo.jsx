@@ -86,11 +86,21 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
         },
         { withCredentials: true }
       );
-      setComments([response.data.comment, ...comments]);
-      setComment("");
-      if (commentsContainerRef.current) {
-        commentsContainerRef.current.scrollTop = 0;
+      if (parentId) {
+        const updatedComments = comments.map((c) =>
+          c._id === parentId ? { ...c, replyCount: c.replyCount + 1 } : c
+        );
+        setComments(updatedComments);
+        setComment("");
+        setParentId(null);
+      } else {
+        setComments([response.data.comment, ...comments]);
+        setComment("");
+        if (commentsContainerRef.current) {
+          commentsContainerRef.current.scrollTop = 0;
+        }
       }
+      console.log("parentId is ", parentId);
       console.log("response.data --handleCommentSubmit is ", response.data);
     } catch (error) {
       console.log("error.message --handleCommentSubmit is :", error.message);
@@ -165,6 +175,15 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
 
   const handleReply = (commentId) => {
     setParentId(commentId);
+    console.log(
+      "Comment to be replied is ",
+      comments.find((comment) => comment._id === commentId)
+    );
+    setComment(
+      `@${
+        comments.find((comment) => comment._id === commentId)?.userId?.userName
+      } ` + " "
+    );
     commentInputRef.current.focus();
   };
 
@@ -287,12 +306,13 @@ const PostInfo = ({ post, isPostLikedByCurrentUser }) => {
       <div className="add-comment-container">
         {parentId && (
           <div className="reply-indicator">
-            @
-            {
-              comments.find((comment) => comment._id === parentId)?.userId
-                ?.userName
-            }
-            <button className="cancel-reply" onClick={() => setParentId(null)}>
+            <button
+              className="cancel-reply"
+              onClick={() => {
+                setParentId(null);
+                setComment("");
+              }}
+            >
               ✕
             </button>
           </div>

@@ -113,7 +113,11 @@ const Followers = ({ username, setShowFFHModal }) => {
           </button>
         )}
       </div>
-
+      {noResultsAfterSearch && (
+        <div className="no-results">
+          No followers found matching &quot;{search}&quot;.
+        </div>
+      )}
       {followers.map((user) => (
         <UserItem
           key={user._id}
@@ -121,12 +125,6 @@ const Followers = ({ username, setShowFFHModal }) => {
           setShowFFHModal={setShowFFHModal}
         />
       ))}
-
-      {noResultsAfterSearch && (
-        <div className="no-results">
-          No followers found matching &quot;{search}&quot;.
-        </div>
-      )}
 
       <div ref={observerRef} className="loading-more-followers">
         {loadingFollowers && (

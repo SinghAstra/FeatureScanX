@@ -1,6 +1,6 @@
 import axios from "axios";
 import PropTypes from "prop-types";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 
@@ -12,8 +12,13 @@ const PostComment = ({ comment, handleReply }) => {
   const [commentLikesCount, setCommentLikesCount] = useState(
     comment.likes.length
   );
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const [replies, setReplies] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [loadingReplies, setLoadingReplies] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
+  const observerRef = useRef(null);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const handleCommentLikeToggle = async () => {
     try {
@@ -52,11 +57,59 @@ const PostComment = ({ comment, handleReply }) => {
     }
   };
 
-  const formattedTime = formatTimeAgo(comment.createdAt);
+  const fetchReplies = async (page) => {
+    setLoadingReplies(true);
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/comments/${comment._id}/replies?page=${page}&limit=10`,
+        { withCredentials: true }
+      );
+
+      setReplies((prevReplies) => [...prevReplies, ...response.data.replies]);
+      if (page >= response.data.totalPages) {
+        setHasMore(false);
+      } else {
+        setHasMore(true);
+      }
+
+      console.log("response.data --fetchReplies is ", response.data);
+    } catch (error) {
+      console.log("error.message --fetchReplies is :", error.message);
+    } finally {
+      setLoadingReplies(false);
+    }
+  };
 
   const handleToggleReplies = () => {
     setShowReplies((prev) => !prev);
   };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !loadingReplies) {
+          setPage((prevPage) => prevPage + 1);
+        }
+      },
+      { threshold: 1 }
+    );
+
+    const currentObserver = observerRef.current;
+    if (currentObserver) {
+      observer.observe(currentObserver);
+    }
+
+    return () => {
+      if (currentObserver) {
+        observer.unobserve(currentObserver);
+      }
+    };
+  }, [hasMore, loadingReplies]);
+
+  useEffect(() => {
+    fetchReplies(page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, comment.replyCount]);
 
   return (
     <div className="post-comment">
@@ -73,23 +126,38 @@ const PostComment = ({ comment, handleReply }) => {
           </span>
         )}
       </Link>
-      <div className="post-comment-text">
-        <Link to={`/${comment.userId.userName}`}>
-          <strong className="post-comment-username">
-            {comment.userId.userName}
-          </strong>
-        </Link>
-        &nbsp;&nbsp;
-        <span className="post-comment-text">{comment.commentText}</span>
-        <div className="post-comment-interaction">
-          <span>{formattedTime}</span>
-          {commentLikesCount !== 0 && (
-            <span>
-              {commentLikesCount} {commentLikesCount === 1 ? "like" : "likes"}
-            </span>
-          )}
-          <span onClick={handleReply}>Reply</span>
-          <i className="uil uil-ellipsis-h menu-icon"></i>
+      <div className="post-comment-right">
+        <div className="post-comment-content">
+          <div className="post-comment-text">
+            <Link to={`/${comment.userId.userName}`}>
+              <strong className="post-comment-username">
+                {comment.userId.userName}
+              </strong>
+            </Link>
+            &nbsp;&nbsp;
+            <span className="post-comment-text">{comment.commentText}</span>
+            <div className="post-comment-interaction">
+              <span>{formatTimeAgo(comment.createdAt)}</span>
+              {commentLikesCount !== 0 && (
+                <span>
+                  {commentLikesCount}{" "}
+                  {commentLikesCount === 1 ? "like" : "likes"}
+                </span>
+              )}
+              <span onClick={handleReply}>Reply</span>
+              <i className="uil uil-ellipsis-h menu-icon"></i>
+            </div>
+          </div>
+          <button
+            className="toggle-like-button"
+            onClick={handleCommentLikeToggle}
+          >
+            {isCommentLiked ? (
+              <i className="fa-solid fa-heart filled-heart"></i>
+            ) : (
+              <i className="fa-regular fa-heart"></i>
+            )}
+          </button>
         </div>
         {comment.replyCount > 0 && (
           <div className="post-comment-replies">
@@ -103,21 +171,24 @@ const PostComment = ({ comment, handleReply }) => {
             </button>
             {showReplies && (
               <div className="post-comment-replies-list">
-                {/* {replies.map((reply) => (
-                  <PostComment key={reply._id} comment={reply} replies={[]} />
-                ))} */}
+                <div className="post-comment-replies-list">
+                  {replies.map((reply) => (
+                    <div key={reply._id}>
+                      <PostComment comment={reply} handleReply={handleReply} />
+                    </div>
+                  ))}
+                  <div ref={observerRef}></div>
+                  {loadingReplies && (
+                    <div className="spinner-container">
+                      <div className="spinner"></div>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
         )}
       </div>
-      <button className="toggle-like-button" onClick={handleCommentLikeToggle}>
-        {isCommentLiked ? (
-          <i className="fa-solid fa-heart filled-heart"></i>
-        ) : (
-          <i className="fa-regular fa-heart"></i>
-        )}
-      </button>
     </div>
   );
 };
