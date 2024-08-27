@@ -14,7 +14,17 @@
 .post-detail-container {
   background: var(--color-white);
   box-shadow: var(--shadow-deep);
-  width: 70%;
-  height: 90%;
+  width: 80%;
+  height: 80%;
   display: flex;
+}
+
+@media screen and (max-width: 1024px) {
+  .post-detail-container {
+    height: 70%;
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 768px) {
 }
