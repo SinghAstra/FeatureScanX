@@ -2,12 +2,10 @@
   display: flex;
   flex-direction: column;
   gap: var(--gap-md);
-  width: 600px;
+  width: 900px;
   margin: 20px auto;
 }
 
-.notification {
-  display: flex;
-  align-items: center;
-  gap: var(--gap-sm);
+.loading-more-notifications {
+  margin: 10px auto 20px;
 }

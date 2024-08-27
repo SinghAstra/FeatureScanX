@@ -141,6 +141,9 @@
   --button-primary-color-disabled: hsl(210, 80%, 70%);
   --button-active-scale: 0.9;
 }
+a {
+  color: black;
+}
 
 * {
   padding: 0;

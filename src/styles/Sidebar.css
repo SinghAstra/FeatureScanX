@@ -1,10 +1,10 @@
 .sidebar-container {
-  overflow-y: auto;
   text-align: center;
   z-index: 10;
   background: white;
   display: flex;
   flex-direction: column;
+  position: relative;
   box-shadow: var(--shadow-strong);
   &::-webkit-scrollbar {
     display: none;

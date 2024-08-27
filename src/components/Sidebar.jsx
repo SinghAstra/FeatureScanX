@@ -72,7 +72,9 @@ const Sidebar = () => {
       <NavLink
         to="/notifications"
         className="sidebar-item sidebar-item-notifications"
-        onClick={() => setUnreadNotificationCount(0)}
+        onClick={() => {
+          setUnreadNotificationCount(0);
+        }}
       >
         <i className="uil uil-bell">
           {unreadNotificationCount > 0 && (
@@ -87,13 +89,6 @@ const Sidebar = () => {
         <i className="uil uil-bookmark"></i>
         <h3>Bookmarks</h3>
       </NavLink>
-      <div
-        className="sidebar-item sidebar-item-settings"
-        onClick={() => setSettingsModal(true)}
-      >
-        <i className="uil uil-setting"></i>
-        <h3>Settings</h3>
-      </div>
       <NavLink to={`/${currentUser.userName}`} className="sidebar-item">
         {currentUser.profilePicture ? (
           <div className="user-profile-picture">

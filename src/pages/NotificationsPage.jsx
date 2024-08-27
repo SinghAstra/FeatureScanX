@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import Notification from "../components/Notification";
+import { useEffect, useRef, useState } from "react";
+import NotificationItem from "../components/NotificationItem";
 import "../styles/NotificationsPage.css";
 
 const Notifications = () => {
@@ -9,7 +9,11 @@ const Notifications = () => {
     today: [],
     earlier: [],
   });
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
   const apiUrl = import.meta.env.VITE_API_URL;
+  const [loadingNotification, setLoadingNotification] = useState(true);
+  const observerRef = useRef(null);
 
   const isToday = (date) => {
     const today = new Date();
@@ -21,56 +25,111 @@ const Notifications = () => {
     );
   };
 
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const response = await axios.get(`${apiUrl}/api/notifications/`, {
+  const markAllNotificationAsRead = async () => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/notifications/mark-as-read`,
+        {
           withCredentials: true,
-        });
-        const allNotifications = response.data.notifications;
+        }
+      );
+      console.log(
+        "response.data --markAllNotificationAsRead is  ",
+        response.data
+      );
+    } catch (error) {
+      console.log(
+        "error.message --markAllNotificationAsRead is ",
+        error.message
+      );
+    }
+  };
 
-        // Group notifications into categories
-        const newNotifications = allNotifications.filter(
-          (notification) => !notification.isRead
-        );
-        const todayNotifications = allNotifications.filter(
-          (notification) =>
-            isToday(notification.createdAt) && notification.isRead
-        );
-        const earlierNotifications = allNotifications.filter(
-          (notification) =>
-            !isToday(notification.createdAt) && notification.isRead
-        );
+  const fetchNotifications = async (page) => {
+    try {
+      setLoadingNotification(true);
+      const response = await axios.get(`${apiUrl}/api/notifications/`, {
+        params: { page },
+        withCredentials: true,
+      });
+      const allNotifications = response.data.notifications;
 
-        setNotifications({
-          new: newNotifications,
-          today: todayNotifications,
-          earlier: earlierNotifications,
-        });
-        console.log("response.data --fetchNotifications is  ", response.data);
+      // Group notifications into categories
+      const newNotifications = allNotifications.filter(
+        (notification) => !notification.isRead
+      );
+      const todayNotifications = allNotifications.filter(
+        (notification) => isToday(notification.createdAt) && notification.isRead
+      );
+      const earlierNotifications = allNotifications.filter(
+        (notification) =>
+          !isToday(notification.createdAt) && notification.isRead
+      );
 
-        const res = await axios.get(
-          `${apiUrl}/api/notifications/mark-as-read`,
-          {
-            withCredentials: true,
-          }
-        );
-        console.log("res.data notifications mark as read is ", res.data);
-      } catch (error) {
-        console.log("error.message --fetchNotifications is ", error.message);
+      setNotifications((prevNotifications) => ({
+        new: [...prevNotifications.new, ...newNotifications],
+        today: [...prevNotifications.today, ...todayNotifications],
+        earlier: [...prevNotifications.earlier, ...earlierNotifications],
+      }));
+
+      if (page >= response.data.totalPages) {
+        setHasMore(false);
+      } else {
+        setHasMore(true);
+      }
+
+      console.log("response.data --fetchNotifications is  ", response.data);
+    } catch (error) {
+      console.log("error.message --fetchNotifications is ", error.message);
+    } finally {
+      setLoadingNotification(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchNotifications(page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
+
+  useEffect(() => {
+    markAllNotificationAsRead();
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          setPage((prevPage) => prevPage + 1);
+        }
+      },
+      { threshold: 1 }
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
       }
     };
+  }, [hasMore, loadingNotification]);
 
-    fetchNotifications();
-  }, [apiUrl]);
+  if (loadingNotification && page === 1) {
+    return <div>Loading Notifications...</div>;
+  }
 
   return (
-    <div className="notification-container">
+    <div className="notification-section-container">
       {notifications.new.length > 0 && (
         <div className="notification-section">
           <h3>New</h3>
           {notifications.new.map((notification) => (
-            <Notification key={notification._id} notification={notification} />
+            <NotificationItem
+              key={notification._id}
+              notification={notification}
+            />
           ))}
         </div>
       )}
@@ -79,7 +138,10 @@ const Notifications = () => {
         <div className="notification-section">
           <h3>Today</h3>
           {notifications.today.map((notification) => (
-            <Notification key={notification._id} notification={notification} />
+            <NotificationItem
+              key={notification._id}
+              notification={notification}
+            />
           ))}
         </div>
       )}
@@ -88,10 +150,21 @@ const Notifications = () => {
         <div className="notification-section">
           <h3>Earlier</h3>
           {notifications.earlier.map((notification) => (
-            <Notification key={notification._id} notification={notification} />
+            <NotificationItem
+              key={notification._id}
+              notification={notification}
+            />
           ))}
         </div>
       )}
+
+      <div ref={observerRef} className="loading-more-notifications">
+        {loadingNotification && (
+          <div className="spinner-container">
+            <div className="spinner"></div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
