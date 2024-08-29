@@ -3,6 +3,7 @@ import ffmpeg from "fluent-ffmpeg";
 import sharp from "sharp";
 import { PassThrough } from "stream";
 import cloudinary from "../config/cloudinary.js";
+import Comment from "../models/Comment.js";
 import Hashtag from "../models/Hashtag.js";
 import Like from "../models/Like.js";
 import Post from "../models/Post.js";
@@ -218,14 +219,51 @@ export const getFeedPosts = async (req, res) => {
       .skip((page - 1) * limit)
       .limit(limit);
 
+    const postsWithStatus = await Promise.all(
+      posts.map(async (post) => {
+        // Check if the post is liked by the current user
+        const isLiked = await Like.exists({
+          postId: post._id,
+          userId: userId,
+        });
+
+        const totalComments = await Comment.countDocuments({
+          postId: post._id,
+        });
+
+        // Fetch the most recent comments
+        const comments = await Comment.find({ postId: post._id })
+          .populate("userId", "userName fullName profilePicture")
+          .sort({ createdAt: -1 })
+          .limit(3); // Show up to 3 comments
+
+        // Check if the current user has commented
+        const userComment = comments.find(
+          (comment) => comment.userId._id.toString() === userId
+        );
+
+        // Return post with both like status and comments (with prioritized user's comment)
+        return {
+          ...post.toObject(),
+          isLikedByCurrentUser: !!isLiked,
+          totalComments,
+          comments: userComment
+            ? [userComment, ...comments.filter((c) => c !== userComment)]
+            : comments,
+        };
+      })
+    );
+
     res.status(200).json({
-      posts,
+      posts: postsWithStatus,
       totalPosts,
       totalPages: Math.ceil(totalPosts / limit),
       currentPage: page,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message, controller: getFeedPosts });
+    res
+      .status(500)
+      .json({ message: error.message, controller: "getFeedPosts" });
   }
 };
 

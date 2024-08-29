@@ -62,6 +62,7 @@ export const addCommentToPost = async (req, res) => {
     res.status(201).json({
       message: "Comment added successfully",
       comment: commentWithUserDetails,
+      commentCount: post.comments.length,
     });
   } catch (error) {
     res

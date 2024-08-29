@@ -25,8 +25,8 @@ const postSchema = new mongoose.Schema(
 const generateSlug = async (caption, PostModel) => {
   let slug = caption
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-") // Replace non-alphanumeric characters with hyphens
-    .replace(/^-+|-+$/g, ""); // Remove leading or trailing hyphens
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 
   // Check for existing slugs and modify if needed
   let originalSlug = slug;

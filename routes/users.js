@@ -4,6 +4,7 @@ import {
   getAllUsers,
   getFollowers,
   getFollowing,
+  getRandomUsers,
   getUserPosts,
   getUserProfile,
   toggleFollow,
@@ -15,6 +16,8 @@ const router = express.Router();
 router.get("/", authMiddleware, getAllUsers);
 
 router.get("/get-all-users", getAllUser);
+
+router.get("/random-users", authMiddleware, getRandomUsers);
 
 // Fetch User Profile Information using username
 router.get("/:username", authMiddleware, getUserProfile);

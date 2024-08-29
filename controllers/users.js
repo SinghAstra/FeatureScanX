@@ -256,3 +256,25 @@ export const getAllUser = async (req, res) => {
     res.status(500).json({ message: error.message, controller: getAllUsers });
   }
 };
+
+export const getRandomUsers = async (req, res) => {
+  try {
+    const currentUserId = req.user.id;
+
+    const currentUser = await User.findById(currentUserId).select("following");
+
+    const users = await User.aggregate([
+      {
+        $match: {
+          _id: { $ne: currentUserId },
+          _id: { $nin: currentUser.following },
+        },
+      },
+      { $sample: { size: 6 } },
+    ]);
+
+    res.json({ users });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
