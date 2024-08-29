@@ -12,7 +12,7 @@ export const getUserNotifications = async (req, res) => {
       .sort({ createdAt: -1 })
       .populate({
         path: "postId",
-        select: "media",
+        select: "media slug",
       })
       .populate("sender", "userName fullName profilePicture");
 

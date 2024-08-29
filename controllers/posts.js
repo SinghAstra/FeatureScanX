@@ -201,18 +201,31 @@ const processMentions = async (caption) => {
 export const getFeedPosts = async (req, res) => {
   try {
     const userId = req.user.id;
-    const user = await User.findById(userId).populate("following");
-    const followingIds = user.following.map((following) => following._id);
+    const user = await User.findById(userId);
+    const followingIds = user.following;
+    let { page = 1, limit = 10 } = req.query;
 
-    const posts = await Post.find({ user: { $in: followingIds } })
-      .populate("user")
-      .populate("comments")
-      .sort({ createdAt: -1 });
+    page = parseInt(page, 10) > 0 ? parseInt(page, 10) : 1;
+    limit = parseInt(limit, 10) > 0 ? parseInt(limit, 10) : 10;
 
-    res.status(200).json(posts);
-  } catch (err) {
-    console.log("error is ", err);
-    res.status(500).json({ message: "Error while fetching feed posts." });
+    const totalPosts = await Post.countDocuments({
+      userId: { $in: followingIds },
+    });
+
+    const posts = await Post.find({ userId: { $in: followingIds } })
+      .populate("userId", "userName fullName profilePicture")
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    res.status(200).json({
+      posts,
+      totalPosts,
+      totalPages: Math.ceil(totalPosts / limit),
+      currentPage: page,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message, controller: getFeedPosts });
   }
 };
 
