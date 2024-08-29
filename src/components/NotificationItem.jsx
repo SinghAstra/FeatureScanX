@@ -84,15 +84,19 @@ Notification.propTypes = {
     type: PropTypes.oneOf(["like", "comment", "follow"]).isRequired,
     sender: PropTypes.shape({
       userName: PropTypes.string.isRequired,
+      fullName: PropTypes.string.isRequired,
+      profilePicture: PropTypes.string,
     }).isRequired,
     commentText: PropTypes.string,
     postId: PropTypes.shape({
+      slug: PropTypes.string.isRequired,
       media: PropTypes.arrayOf(
         PropTypes.shape({
           lowResUrl: PropTypes.string.isRequired,
         })
       ),
     }),
+    createdAt: PropTypes.string.isRequired,
   }).isRequired,
 };
 

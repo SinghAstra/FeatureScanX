@@ -1,6 +1,9 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import NotificationItem from "../components/NotificationItem";
+import EarlierNotification from "../placeholders/NotificationsPage/EarlierNotification";
+import NewNotification from "../placeholders/NotificationsPage/NewNotification";
+import TodayNotification from "../placeholders/NotificationsPage/TodayNotification";
 import NotificationPageSkeleton from "../Skeleton/NotificationPageSkeleton";
 import "../styles/NotificationPage.css";
 
@@ -141,7 +144,11 @@ const Notifications = () => {
             </div>
           </>
         ) : (
-          <p>No {tab} notifications.</p>
+          <>
+            {tab === "new" && <NewNotification />}
+            {tab === "today" && <TodayNotification />}
+            {tab === "earlier" && <EarlierNotification />}
+          </>
         )}
       </>
     );

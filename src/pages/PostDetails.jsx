@@ -57,7 +57,11 @@ const PostDetails = () => {
         className="post-detail-container"
         onClick={(e) => e.stopPropagation()}
       >
-        <MediaSlideShow media={post.media} />
+        <div className="post-detail-media-container">
+          <div className="post-detail-media">
+            <MediaSlideShow media={post.media} />
+          </div>
+        </div>
         <PostInfo post={post} isPostLikedByCurrentUser={isPostLiked} />
       </div>
     </div>

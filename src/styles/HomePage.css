@@ -1,0 +1,11 @@
+.home {
+  display: flex;
+}
+
+.feed {
+  flex: 2;
+}
+
+.recommended-profile {
+  flex: 1;
+}

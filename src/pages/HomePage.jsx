@@ -1,7 +1,12 @@
+import Feed from "../components/Home/Feed";
+import RecommendedProfile from "../components/Home/RecommendedProfile";
+import "../styles/HomePage.css";
+
 const HomePage = () => {
   return (
-    <div className="placeholder">
-      <h1>Home</h1>
+    <div className="home">
+      <Feed />
+      <RecommendedProfile />
     </div>
   );
 };

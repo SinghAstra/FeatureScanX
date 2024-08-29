@@ -19,6 +19,22 @@
   display: flex;
 }
 
+.post-detail-media-container {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: black;
+}
+
+.post-detail-media {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+}
+
 @media screen and (max-width: 1024px) {
   .post-detail-container {
     height: 70%;

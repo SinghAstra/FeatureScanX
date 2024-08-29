@@ -52,10 +52,10 @@
   display: flex;
   gap: 0.7rem;
 }
-
+/* 
 .post-action-icons button {
   background: transparent;
-}
+} */
 
 .post-action-icons button:active i {
   color: var(--color-medium-gray);
