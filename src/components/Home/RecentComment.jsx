@@ -1,4 +1,5 @@
 import axios from "axios";
+import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
@@ -41,6 +42,17 @@ const RecentComment = ({ comment }) => {
       </button>
     </div>
   );
+};
+
+RecentComment.propTypes = {
+  comment: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    commentText: PropTypes.string.isRequired,
+    likes: PropTypes.arrayOf(PropTypes.string).isRequired,
+    userId: PropTypes.shape({
+      userName: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 export default RecentComment;

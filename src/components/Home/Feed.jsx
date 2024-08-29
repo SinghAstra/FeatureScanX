@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
+import FeedSkeleton from "../../Skeleton/Home/FeedSkeleton";
 import "../../styles/Feed.css";
 import FeedPost from "./FeedPost";
 
@@ -62,7 +63,7 @@ const Feed = () => {
   }, [hasMore, loading]);
 
   if (loading && page === 1) {
-    return <div>Loading...</div>;
+    return <FeedSkeleton />;
   }
 
   return (

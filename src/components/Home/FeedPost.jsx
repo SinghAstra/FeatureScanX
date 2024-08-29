@@ -1,4 +1,5 @@
 import axios from "axios";
+import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
@@ -168,6 +169,39 @@ const FeedPost = ({ post }) => {
       />
     </div>
   );
+};
+
+FeedPost.propTypes = {
+  post: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    isLikedByCurrentUser: PropTypes.bool.isRequired,
+    likes: PropTypes.arrayOf(PropTypes.object).isRequired,
+    totalComments: PropTypes.number.isRequired,
+    comments: PropTypes.arrayOf(
+      PropTypes.shape({
+        _id: PropTypes.string.isRequired,
+        userId: PropTypes.shape({
+          userName: PropTypes.string.isRequired,
+        }).isRequired,
+        commentText: PropTypes.string.isRequired,
+      })
+    ).isRequired,
+    userId: PropTypes.shape({
+      userName: PropTypes.string.isRequired,
+      profilePicture: PropTypes.string,
+      fullName: PropTypes.string.isRequired,
+    }).isRequired,
+    caption: PropTypes.string.isRequired,
+    media: PropTypes.arrayOf(
+      PropTypes.shape({
+        type: PropTypes.oneOf(["image", "video"]).isRequired,
+        lowResUrl: PropTypes.string,
+        highResUrl: PropTypes.string,
+        url: PropTypes.string,
+      })
+    ).isRequired,
+    slug: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default FeedPost;
