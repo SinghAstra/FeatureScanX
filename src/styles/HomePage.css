@@ -6,6 +6,12 @@
   flex: 2;
 }
 
-.recommended-profile {
+.recommend-users {
   flex: 1;
+  background: white;
+  margin: 20px;
+  height: fit-content;
+  padding: var(--padding-sm) 0;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-strong);
 }

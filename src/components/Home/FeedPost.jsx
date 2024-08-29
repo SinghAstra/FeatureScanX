@@ -22,6 +22,25 @@ const FeedPost = ({ post }) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const limit = 40;
 
+  const formatTimeAgo = (commentDate) => {
+    const now = new Date();
+    const timeDifference = (now - new Date(commentDate)) / 1000; // in seconds
+
+    if (timeDifference < 1) {
+      return "Now";
+    } else if (timeDifference < 60) {
+      return `${Math.floor(timeDifference)} s`; // seconds
+    } else if (timeDifference < 3600) {
+      return `${Math.floor(timeDifference / 60)} m`; // minutes
+    } else if (timeDifference < 86400) {
+      return `${Math.floor(timeDifference / 3600)} h`; // hours
+    } else if (timeDifference < 604800) {
+      return `${Math.floor(timeDifference / 86400)} d`; // days
+    } else {
+      return `${Math.floor(timeDifference / 604800)} w`; // weeks
+    }
+  };
+
   const toggleReadMore = () => {
     setIsExpanded(!isExpanded);
   };
@@ -98,7 +117,9 @@ const FeedPost = ({ post }) => {
         <div className="feed-post-author-info">
           <strong>{post.userId.userName}</strong>
         </div>
-        <span className="feed-post-createdAt">21h</span>
+        <span className="feed-post-createdAt">
+          {formatTimeAgo(post.createdAt)}
+        </span>
       </Link>
       <div className="feed-post-media">
         <MediaSlideShow media={post.media} />

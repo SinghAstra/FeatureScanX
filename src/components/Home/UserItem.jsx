@@ -3,15 +3,11 @@ import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
-import "../../styles/UserItem.css";
 
-const UserItem = ({ user, setShowFFHModal }) => {
-  const { currentUser, setCurrentUser } = useContext(AuthContext);
-  const [isFollowing, setIsFollowing] = useState(
-    currentUser.following.includes(user._id)
-  );
+const UserItem = ({ user }) => {
+  const [isFollowing, setIsFollowing] = useState(false);
   const apiUrl = import.meta.env.VITE_API_URL;
-  const isCurrentUser = currentUser.userName === user.userName;
+  const { currentUser, setCurrentUser } = useContext(AuthContext);
 
   const handleToggleFollow = async () => {
     try {
@@ -36,14 +32,9 @@ const UserItem = ({ user, setShowFFHModal }) => {
       console.log("error.message --handleToggleFollow is ", error.message);
     }
   };
-
   return (
     <div key={user._id} className="user-item">
-      <Link
-        className="user-item-nav"
-        to={`/${user.userName}`}
-        onClick={() => setShowFFHModal(false)}
-      >
+      <Link className="user-item-nav" to={`/${user.userName}`}>
         {user.profilePicture ? (
           <img
             src={user.profilePicture}
@@ -58,16 +49,15 @@ const UserItem = ({ user, setShowFFHModal }) => {
           <span className="user-fullName">{user.fullName}</span>
         </div>
       </Link>
-      {!isCurrentUser &&
-        (isFollowing ? (
-          <button className="following-button" onClick={handleToggleFollow}>
-            Following
-          </button>
-        ) : (
-          <button className="follow-button" onClick={handleToggleFollow}>
-            Follow
-          </button>
-        ))}
+      {isFollowing ? (
+        <button className="following-button" onClick={handleToggleFollow}>
+          Following
+        </button>
+      ) : (
+        <button className="follow-button" onClick={handleToggleFollow}>
+          Follow
+        </button>
+      )}
     </div>
   );
 };
@@ -79,7 +69,6 @@ UserItem.propTypes = {
     fullName: PropTypes.string.isRequired,
     profilePicture: PropTypes.string,
   }).isRequired,
-  setShowFFHModal: PropTypes.func.isRequired,
 };
 
 export default UserItem;

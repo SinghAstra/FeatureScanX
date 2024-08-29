@@ -1,12 +1,12 @@
 import Feed from "../components/Home/Feed";
-import RecommendedProfile from "../components/Home/RecommendedProfile";
+import RecommendUsers from "../components/Home/RecommendUsers";
 import "../styles/HomePage.css";
 
 const HomePage = () => {
   return (
     <div className="home">
       <Feed />
-      <RecommendedProfile />
+      <RecommendUsers />
     </div>
   );
 };
