@@ -1,17 +1,19 @@
 .home {
-  display: flex;
-}
-
-.feed {
-  flex: 2;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
 }
 
 .recommend-users {
-  flex: 1;
   background: white;
   margin: 20px;
   height: fit-content;
   padding: var(--padding-sm) 0;
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-strong);
+}
+
+.recommend-users h1 {
+  color: var(--color-medium-gray);
+  font-size: 1rem;
+  padding: var(--padding-sm) var(--padding-md);
 }

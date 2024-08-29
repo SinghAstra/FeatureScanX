@@ -4,12 +4,10 @@ import { NavLink } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import "../styles/Sidebar.css";
 import CreatePostModal from "./CreatePost/CreatePostModal";
-import SettingsModal from "./SettingsModal";
 
 const Sidebar = () => {
   const { currentUser } = useContext(AuthContext);
-  const [createPostModal, setCreatePostModal] = useState(false);
-  const [settingsModal, setSettingsModal] = useState(false);
+  const [showCreatePostModal, setShowCreatePostModal] = useState(false);
   const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
   const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -46,7 +44,7 @@ const Sidebar = () => {
       </NavLink>
       <div
         className="sidebar-item sidebar-item-create-post"
-        onClick={() => setCreatePostModal(true)}
+        onClick={() => setShowCreatePostModal(true)}
       >
         <i className="uil uil-plus-circle"></i>
         <h3>Create Post</h3>
@@ -103,20 +101,14 @@ const Sidebar = () => {
       </NavLink>
       <div
         className="create-post-button"
-        onClick={() => setCreatePostModal(true)}
+        onClick={() => setShowCreatePostModal(true)}
       >
         Create Post
       </div>
-      {createPostModal && (
+      {showCreatePostModal && (
         <CreatePostModal
-          modalShown={createPostModal}
-          setModalShown={setCreatePostModal}
-        />
-      )}
-      {settingsModal && (
-        <SettingsModal
-          modalShown={settingsModal}
-          setModalShown={setSettingsModal}
+          modalShown={showCreatePostModal}
+          setModalShown={setShowCreatePostModal}
         />
       )}
     </div>

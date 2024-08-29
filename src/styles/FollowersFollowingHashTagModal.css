@@ -7,6 +7,7 @@
   align-items: center;
   box-shadow: var(--shadow-strong);
   overflow: hidden;
+  background: white;
 }
 
 .light .followers-following-modal {

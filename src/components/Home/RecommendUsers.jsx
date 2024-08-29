@@ -1,10 +1,11 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import AuthContext from "../../context/AuthContext";
 import RecommendUsersSkeleton from "../../Skeleton/Home/RecommendUsersSkeleton";
-import "../../styles/RecommendUsers.css";
 import UserItem from "./UserItem";
 
 const RecommendUsers = () => {
+  const { currentUser } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -37,7 +38,16 @@ const RecommendUsers = () => {
       {users.length === 0 ? (
         <p>No users to recommend.</p>
       ) : (
-        users.map((user) => <UserItem key={user._id} user={user} />)
+        <>
+          {currentUser.following.length > 0 ? (
+            <h1>Suggested for you</h1>
+          ) : (
+            <h1>Start Following</h1>
+          )}
+          {users.map((user) => (
+            <UserItem key={user._id} user={user} />
+          ))}
+        </>
       )}
     </div>
   );

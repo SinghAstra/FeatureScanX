@@ -124,3 +124,7 @@
   width: 100%;
   border-bottom: 1px solid var(--color-light-gray);
 }
+
+.username-link {
+  color: var(--color-primary);
+}

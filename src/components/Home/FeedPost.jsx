@@ -41,6 +41,22 @@ const FeedPost = ({ post }) => {
     }
   };
 
+  const renderCaptionWithLinks = (caption) => {
+    const parts = caption.split(/(@[a-zA-Z0-9_]+)/g);
+
+    return parts.map((part, index) => {
+      if (part.startsWith("@")) {
+        const username = part.slice(1);
+        return (
+          <Link key={index} to={`/${username}`} className="username-link">
+            {part}
+          </Link>
+        );
+      }
+      return part;
+    });
+  };
+
   const toggleReadMore = () => {
     setIsExpanded(!isExpanded);
   };
@@ -157,7 +173,11 @@ const FeedPost = ({ post }) => {
       </span>{" "}
       <p className="feed-post-caption">
         <strong>{post.userId.userName} </strong>{" "}
-        {isExpanded ? post.caption : `${post.caption.substring(0, limit)}...`}{" "}
+        {isExpanded
+          ? renderCaptionWithLinks(post.caption)
+          : renderCaptionWithLinks(
+              `${post.caption.substring(0, limit)}...`
+            )}{" "}
         {post.caption.length > limit && (
           <span onClick={toggleReadMore} className="read-more">
             {isExpanded ? " Show Less" : " Read More"}
@@ -196,7 +216,7 @@ FeedPost.propTypes = {
   post: PropTypes.shape({
     _id: PropTypes.string.isRequired,
     isLikedByCurrentUser: PropTypes.bool.isRequired,
-    likes: PropTypes.arrayOf(PropTypes.object).isRequired,
+    likes: PropTypes.arrayOf(PropTypes.string).isRequired,
     totalComments: PropTypes.number.isRequired,
     comments: PropTypes.arrayOf(
       PropTypes.shape({
@@ -222,6 +242,7 @@ FeedPost.propTypes = {
       })
     ).isRequired,
     slug: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
   }).isRequired,
 };
 

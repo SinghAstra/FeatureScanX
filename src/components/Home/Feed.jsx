@@ -66,6 +66,10 @@ const Feed = () => {
     return <FeedSkeleton />;
   }
 
+  if (posts.length === 0) {
+    return;
+  }
+
   return (
     <div className="feed">
       {posts.map((post) => (

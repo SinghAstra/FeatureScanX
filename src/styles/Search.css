@@ -1,0 +1,7 @@
+.search-container {
+  background: white;
+  width: 500px;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-strong);
+  margin: 20px auto;
+}

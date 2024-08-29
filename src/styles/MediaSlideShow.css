@@ -12,7 +12,7 @@
   position: relative;
   background: black;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
   background-position: center;
   transition: background-image 0.3s ease-in-out;
 }
