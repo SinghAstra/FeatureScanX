@@ -119,7 +119,8 @@ const Notifications = () => {
         observer.unobserve(observerRef.current);
       }
     };
-  }, [hasMore, loadingNotification]);
+  }, [hasMore, loadingNotification, activeTab]);
+
   const renderNotifications = (tab) => {
     if (loadingNotification && page === 1) {
       return <NotificationPageSkeleton />;

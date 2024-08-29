@@ -1,13 +1,88 @@
+import axios from "axios";
+import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
+import AuthContext from "../../context/AuthContext";
 import MediaSlideShow from "../PostDetail/MediaSlideShow";
+import RecentComment from "./RecentComment";
 
 const FeedPost = ({ post }) => {
-  const isPostLiked = true;
-  const isPostBookmarked = false;
-  const handleLikePostToggle = () => {};
-  const handleBookmarkToggle = () => {};
+  const { currentUser, setCurrentUser } = useContext(AuthContext);
+  const [isPostLiked, setIsPostLiked] = useState(post.isLikedByCurrentUser);
+  const [isPostBookmarked, setIsPostBookmarked] = useState(
+    currentUser.savedPosts.includes(post._id)
+  );
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [postLikesCount, setPostLikesCount] = useState(post.likes.length);
+  const [comment, setComment] = useState("");
+  const [commentCount, setCommentCount] = useState(post.totalComments);
+  const [recentComments, setRecentComments] = useState(
+    post.comments.slice(0, 3)
+  );
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const limit = 40;
+
+  const toggleReadMore = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  const handleLikePostToggle = async () => {
+    try {
+      // Handle the UI Optimistically
+      setIsPostLiked((isPostLiked) => !isPostLiked);
+      const response = await axios.get(`${apiUrl}/api/posts/${post._id}/like`, {
+        withCredentials: true,
+      });
+      setPostLikesCount(response.data.likes);
+      console.log("response.data -- handleLikePostToggle is ", response.data);
+    } catch (error) {
+      // if error comes in updating the backend, revert back to the original state
+      setIsPostLiked((isPostLiked) => !isPostLiked);
+      console.log("error.message --handleLikePostToggle is :", error.message);
+    }
+  };
+
+  const handleBookmarkToggle = async () => {
+    try {
+      // Handle the UI Optimistically
+      setIsPostBookmarked(!isPostBookmarked);
+      const response = await axios.get(
+        `${apiUrl}/api/saved-post/${post._id}/toggle`,
+        {
+          withCredentials: true,
+        }
+      );
+      setCurrentUser({ ...currentUser, savedPosts: response.data.savedPosts });
+      console.log("response.data --handleBookmarkToggle is ", response.data);
+    } catch (error) {
+      // if error comes in updating the backend, revert back to the original state
+      setIsPostBookmarked(!isPostBookmarked);
+      console.log("error.message --handleBookmarkToggle is :", error.message);
+    }
+  };
+
+  const handleCommentSubmit = async () => {
+    if (comment.trim() === "") return;
+
+    try {
+      const response = await axios.post(
+        `${apiUrl}/api/posts/${post._id}/comment`,
+        {
+          commentText: comment,
+        },
+        { withCredentials: true }
+      );
+      setCommentCount(response.data.commentCount);
+      setRecentComments([...recentComments, response.data.comment].slice(-3));
+
+      console.log("response.data --handleCommentSubmit is ", response.data);
+    } catch (error) {
+      console.log("error.message --handleCommentSubmit is :", error.message);
+    }
+  };
+
   return (
     <div className="feed-post">
-      <div className="feed-post-author">
+      <Link className="feed-post-author" to={`/${post.userId.userName}`}>
         {post.userId.profilePicture ? (
           <img
             src={post.userId.profilePicture}
@@ -23,7 +98,7 @@ const FeedPost = ({ post }) => {
           <strong>{post.userId.userName}</strong>
         </div>
         <span className="feed-post-createdAt">21h</span>
-      </div>
+      </Link>
       <div className="feed-post-media">
         <MediaSlideShow media={post.media} />
       </div>
@@ -36,9 +111,9 @@ const FeedPost = ({ post }) => {
               <i className="fa-regular fa-heart"></i>
             )}
           </button>
-          <button className="post-comment-btn">
+          <Link to={`/posts/${post.slug}`} className="post-comment-btn">
             <i className="fa-regular fa-comment"></i>
-          </button>
+          </Link>
           <button className="post-share-btn">
             <i className="fa-regular fa-paper-plane"></i>
           </button>
@@ -52,25 +127,44 @@ const FeedPost = ({ post }) => {
         </button>
       </div>
       <span className="feed-post-likes-counter">
-        {post.likes.length > 0
-          ? post.likes.length > 1
-            ? `${post.likes.length} likes`
-            : `${post.likes.length} like`
+        {postLikesCount > 0
+          ? postLikesCount > 1
+            ? `${postLikesCount} likes`
+            : `${postLikesCount} like`
           : "Be the first to like this."}
       </span>{" "}
       <p className="feed-post-caption">
-        <strong>{post.userId.userName} </strong> {post.caption}
+        <strong>{post.userId.userName} </strong>{" "}
+        {isExpanded ? post.caption : `${post.caption.substring(0, limit)}...`}{" "}
+        {post.caption.length > limit && (
+          <span onClick={toggleReadMore} className="read-more">
+            {isExpanded ? " Show Less" : " Read More"}
+          </span>
+        )}
       </p>
-      {post.comments.length > 0 && (
-        <p className="feed-post-comments-counter">
-          View all {post.comments.length} comment
-          {post.comments.length > 1 && "s"}
-        </p>
+      {commentCount > 0 && (
+        <Link to={`/posts/${post.slug}`} className="feed-post-comments-counter">
+          View all {commentCount} comment
+          {commentCount > 1 && "s"}
+        </Link>
       )}
+      <div className="feed-post-recent-comments">
+        {recentComments.map((comment) => {
+          return <RecentComment comment={comment} key={comment._id} />;
+        })}
+      </div>
       <input
         type="text"
         placeholder="Add a comment..."
         className="add-comment-input"
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            handleCommentSubmit();
+          }
+        }}
       />
     </div>
   );

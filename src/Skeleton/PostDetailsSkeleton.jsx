@@ -11,7 +11,7 @@ const PostDetailsSkeleton = () => {
         className="post-detail-container"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="post-media-slider skeleton"></div>
+        <div className="post-detail-media-container skeleton"></div>
         <div className="post-info-container-skeleton">
           <div className="user-item-skeleton post-author-skeleton">
             <div className="user-avatar-skeleton skeleton"></div>

@@ -5,11 +5,11 @@
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-strong);
   overflow: hidden;
+  padding: var(--padding-sm);
 }
 
 .tab {
   width: fit-content;
-  margin: var(--margin-sm);
   margin-bottom: var(--margin-lg);
   display: flex;
   gap: var(--gap-sm);
@@ -36,4 +36,8 @@
   background: var(--color-primary);
   color: white;
   box-shadow: var(--shadow-strong);
+}
+
+.loading-more-notifications {
+  height: 10px;
 }

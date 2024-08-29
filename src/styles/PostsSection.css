@@ -42,7 +42,8 @@
   transition: transform 0.3s ease;
 }
 
-.loading-more-posts {
+.loading-more-posts,
+.loading-more-feed-posts {
   display: flex;
   justify-content: center;
   align-items: center;
