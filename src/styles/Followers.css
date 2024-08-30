@@ -72,6 +72,13 @@
   animation: spin 1s linear infinite;
 }
 
+.no-results {
+  margin-top: 1rem;
+  font-size: 14px;
+  width: 100%;
+  text-align: center;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
+import UserItemSkeleton from "../../Skeleton/UserItemSkeleton";
 import "../../styles/Search.css";
+import Recent from "./Recent";
 import UserItem from "./UserItem";
 
 let timer;
@@ -90,6 +92,8 @@ const Search = () => {
     };
   }, [hasMore, loading]);
 
+  const noResultsAfterSearch = !loading && query && results.length === 0;
+
   return (
     <div className="search-container">
       <div className="search-input-container">
@@ -106,13 +110,22 @@ const Search = () => {
           </button>
         )}
       </div>
-      <div className="search-result-list">
-        {results.length > 0 ? (
-          results.map((user) => <UserItem key={user._id} user={user} />)
-        ) : (
-          <p>No results found</p>
-        )}
-      </div>
+      {query === "" && <Recent />}
+      {results.map((user) => {
+        return <UserItem key={user._id} user={user} />;
+      })}
+      {loading && (
+        <>
+          <UserItemSkeleton showFollowButton={false} />
+          <UserItemSkeleton showFollowButton={false} />
+          <UserItemSkeleton showFollowButton={false} />
+          <UserItemSkeleton showFollowButton={false} />
+          <UserItemSkeleton showFollowButton={false} />
+        </>
+      )}
+      {noResultsAfterSearch && (
+        <div className="no-results">No results found.</div>
+      )}
       <div ref={observerRef} className="loading-more-followers">
         {loading && page !== 1 && (
           <div className="spinner-container">

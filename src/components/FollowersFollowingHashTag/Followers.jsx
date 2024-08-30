@@ -114,9 +114,7 @@ const Followers = ({ username, setShowFFHModal }) => {
         )}
       </div>
       {noResultsAfterSearch && (
-        <div className="no-results">
-          No followers found matching &quot;{search}&quot;.
-        </div>
+        <div className="no-results">No Results Found.</div>
       )}
       {followers.map((user) => (
         <UserItem

@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import PostsSectionSkeleton from "../../Skeleton/PostsSectionSkeleton";
 import EmptyPostsSection from "../../placeholders/Profile/EmptyPostsSection";
 import "../../styles/PostsSection.css";
 import ProgressivePostImage from "./ProgressivePostImage";
@@ -63,11 +62,7 @@ const PostsSection = () => {
     };
   }, [hasMore, loading]);
 
-  if (loading && page === 1) {
-    return <PostsSectionSkeleton />;
-  }
-
-  if (posts.length === 0) {
+  if (!loading && posts.length === 0) {
     return <EmptyPostsSection username={username} />;
   }
 
@@ -94,6 +89,12 @@ const PostsSection = () => {
             )}
           </Link>
         ))}
+        {loading && <div className="post-skeleton"></div>}
+        {loading && <div className="post-skeleton"></div>}
+        {loading && <div className="post-skeleton"></div>}
+        {loading && <div className="post-skeleton"></div>}
+        {loading && <div className="post-skeleton"></div>}
+        {loading && <div className="post-skeleton"></div>}
       </div>
       <div ref={observerRef} className="loading-more-posts">
         {loading && (

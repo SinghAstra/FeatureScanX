@@ -1,0 +1,28 @@
+.recent-interactions-container {
+  color: black;
+  width: 100%;
+}
+
+.recent-interactions-container .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.recent-interactions-container .header .clear-all {
+  color: var(--color-primary);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.work-in-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.work-in-progress p {
+  font-weight: 500;
+}

@@ -1,8 +1,8 @@
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
-import FollowersFollowingSkeleton from "../../Skeleton/FollowersFollowingSkeleton";
 import EmptyFollowing from "../../placeholders/FollowersFollowingHashtag/EmptyFollowing";
+import UserItemSkeleton from "../../Skeleton/UserItemSkeleton";
 import UserItem from "./UserItem";
 
 let timer;
@@ -86,12 +86,9 @@ const Following = ({ username, setShowFFHModal }) => {
     }, 1000);
   }, [search]);
 
-  if (loadingFollowing && page === 1 && search === "") {
-    return <FollowersFollowingSkeleton />;
-  }
-
-  const noFollowing = !query && !loadingFollowing && following.length === 0;
-  const noResultsAfterSearch = search && following.length === 0;
+  const noFollowing = !loadingFollowing && !query && following.length === 0;
+  const noResultsAfterSearch =
+    !loadingFollowing && query && following.length === 0;
 
   if (noFollowing) {
     return <EmptyFollowing username={username} />;
@@ -120,10 +117,19 @@ const Following = ({ username, setShowFFHModal }) => {
           setShowFFHModal={setShowFFHModal}
         />
       ))}
+      {loadingFollowing && (
+        <>
+          <UserItemSkeleton />
+          <UserItemSkeleton />
+          <UserItemSkeleton />
+          <UserItemSkeleton />
+          <UserItemSkeleton />
+          <UserItemSkeleton />
+          <UserItemSkeleton />
+        </>
+      )}
       {noResultsAfterSearch && (
-        <div className="no-results">
-          No followers found matching &quot;{search}&quot;.
-        </div>
+        <div className="no-results">No results found.</div>
       )}
       <div ref={observerRef} className="loading-more-following">
         {loadingFollowing && page !== 1 && (

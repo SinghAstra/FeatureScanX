@@ -1,8 +1,10 @@
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import "../../styles/Search/UserItem.css";
 
 const UserItem = ({ user }) => {
   return (
-    <div className="search-user-item">
+    <Link to={`/${user.userName}`} className="search-user-item">
       {user.profilePicture ? (
         <img src={user.profilePicture} alt={user.userName} className="avatar" />
       ) : (
@@ -12,8 +14,16 @@ const UserItem = ({ user }) => {
         <span className="username">{user.userName}</span>
         <span className="user-fullName">{user.fullName}</span>
       </div>
-    </div>
+    </Link>
   );
+};
+
+UserItem.propTypes = {
+  user: PropTypes.shape({
+    userName: PropTypes.string.isRequired,
+    fullName: PropTypes.string.isRequired,
+    profilePicture: PropTypes.string,
+  }).isRequired,
 };
 
 export default UserItem;
