@@ -5,6 +5,7 @@ import FollowersFollowingSkeleton from "../../Skeleton/FollowersFollowingSkeleto
 import EmptyFollowing from "../../placeholders/FollowersFollowingHashtag/EmptyFollowing";
 import UserItem from "./UserItem";
 
+let timer;
 const Following = ({ username, setShowFFHModal }) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const [loadingFollowing, setLoadingFollowing] = useState(true);
@@ -20,8 +21,8 @@ const Following = ({ username, setShowFFHModal }) => {
       setLoadingFollowing(true);
 
       const response = await axios.get(
-        `${apiUrl}/api/users/${username}/following?page=${page}&limit=10&search=${query}`,
-        { withCredentials: true }
+        `${apiUrl}/api/users/${username}/following`,
+        { params: { page, search: query }, withCredentials: true }
       );
 
       if (page === 1) {
@@ -76,19 +77,20 @@ const Following = ({ username, setShowFFHModal }) => {
   }, [page, query]);
 
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(() => {
       setQuery(search);
       setPage(1);
-    }, 200);
-
-    return () => clearTimeout(delayDebounceFn);
+    }, 1000);
   }, [search]);
 
   if (loadingFollowing && page === 1 && search === "") {
     return <FollowersFollowingSkeleton />;
   }
 
-  const noFollowing = !search && !loadingFollowing && following.length === 0;
+  const noFollowing = !query && !loadingFollowing && following.length === 0;
   const noResultsAfterSearch = search && following.length === 0;
 
   if (noFollowing) {
@@ -124,7 +126,7 @@ const Following = ({ username, setShowFFHModal }) => {
         </div>
       )}
       <div ref={observerRef} className="loading-more-following">
-        {loadingFollowing && (
+        {loadingFollowing && page !== 1 && (
           <div className="spinner-container">
             <div className="spinner"></div>
           </div>

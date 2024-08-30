@@ -30,14 +30,7 @@
   flex-direction: column;
   margin: 0 var(--margin-md);
   justify-content: center;
-}
-
-.light .user-item-nav .user-info {
   color: var(--color-black);
-}
-
-.dark .user-item-nav .user-info {
-  color: var(--color-white);
 }
 
 .user-item-nav .user-info .username {

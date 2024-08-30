@@ -1,11 +1,12 @@
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
-import FollowersFollowingSkeleton from "../../Skeleton/FollowersFollowingSkeleton";
+import UserItemSkeleton from "../../Skeleton/UserItemSkeleton";
 import EmptyFollowers from "../../placeholders/FollowersFollowingHashtag/EmptyFollowers";
 import "../../styles/Followers.css";
 import UserItem from "./UserItem";
 
+let timer;
 const Followers = ({ username, setShowFFHModal }) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const [loadingFollowers, setLoadingFollowers] = useState(true);
@@ -21,8 +22,8 @@ const Followers = ({ username, setShowFFHModal }) => {
       setLoadingFollowers(true);
 
       const response = await axios.get(
-        `${apiUrl}/api/users/${username}/followers?page=${page}&limit=10&search=${query}`,
-        { withCredentials: true }
+        `${apiUrl}/api/users/${username}/followers`,
+        { params: { page, search: query }, withCredentials: true }
       );
 
       // Reset followers on new search query
@@ -78,20 +79,19 @@ const Followers = ({ username, setShowFFHModal }) => {
   }, [page, query]);
 
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(() => {
       setQuery(search);
       setPage(1);
-    }, 200);
-
-    return () => clearTimeout(delayDebounceFn);
+    }, 1000);
   }, [search]);
 
-  if (loadingFollowers && page === 1 && search === "") {
-    return <FollowersFollowingSkeleton />;
-  }
-
-  const noFollowers = !search && !loadingFollowers && followers.length === 0;
-  const noResultsAfterSearch = search && followers.length === 0;
+  const noFollowers =
+    !loadingFollowers && query === "" && followers.length === 0;
+  const noResultsAfterSearch =
+    !loadingFollowers && search && followers.length === 0;
 
   if (noFollowers) {
     return <EmptyFollowers username={username} />;
@@ -125,9 +125,20 @@ const Followers = ({ username, setShowFFHModal }) => {
           setShowFFHModal={setShowFFHModal}
         />
       ))}
+      {loadingFollowers && (
+        <>
+          <UserItemSkeleton />
+          <UserItemSkeleton />
+          <UserItemSkeleton />
+          <UserItemSkeleton />
+          <UserItemSkeleton />
+          <UserItemSkeleton />
+          <UserItemSkeleton />
+        </>
+      )}
 
       <div ref={observerRef} className="loading-more-followers">
-        {loadingFollowers && (
+        {loadingFollowers && page !== 1 && (
           <div className="spinner-container">
             <div className="spinner"></div>
           </div>

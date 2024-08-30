@@ -22,11 +22,12 @@
 .search-followers-container,
 .search-following-container {
   padding: var(--padding-sm) var(--padding-md);
-  width: calc(100% - 1rem);
+  width: calc(100% - 2rem);
   margin: 0.5rem auto;
   border-radius: var(--border-radius-md);
   padding: var(--padding-xs) var(--padding-sm);
   background: var(--color-very-light-gray);
+  border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-light);
   display: flex;
   align-items: center;

@@ -13,7 +13,7 @@ const EmptyFollowers = ({ username }) => {
         <img src="/group.png" alt="followers" />
       </div>
       {isCurrentUser ? (
-        <p>You&#039;ll see everyone you follow here.</p>
+        <p>You&#039;ll see your followers here.</p>
       ) : (
         <p>This account has no followers.</p>
       )}

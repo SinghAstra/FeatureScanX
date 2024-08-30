@@ -4,4 +4,30 @@
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-strong);
   margin: 20px auto;
+  padding: var(--padding-md);
+}
+
+.search-input-container {
+  width: 100%;
+  padding: var(--padding-sm) var(--padding-md);
+  background: var(--color-very-light-gray);
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+  border-radius: var(--border-radius-lg);
+}
+
+.search-input-container input {
+  width: 100%;
+  background: transparent;
+}
+
+.search-input-container .clear-search {
+  width: 1rem;
+  height: 1rem;
+  font-size: 1rem;
+}
+
+.search-result-list {
+  padding: var(--padding-md) 0;
 }

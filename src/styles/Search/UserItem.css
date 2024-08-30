@@ -1,0 +1,39 @@
+.search-user-item {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding: var(--padding-sm) var(--padding-md);
+}
+
+.search-user-item .avatar {
+  width: var(--container-width-sm-fixed);
+  aspect-ratio: 1/1;
+  background: var(--color-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--border-radius-full);
+  box-shadow: var(--shadow-strong);
+  object-fit: cover;
+  color: var(--color-white);
+}
+
+.search-user-item .user-info {
+  flex: 1;
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+  margin: 0 var(--margin-md);
+  justify-content: center;
+  color: var(--color-black);
+}
+
+.search-user-item .user-info .username {
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+}
+
+.search-user-item .user-info .user-fullName {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-light);
+}
