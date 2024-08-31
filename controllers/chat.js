@@ -52,3 +52,19 @@ export const accessChat = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const getAllUserChats = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // Fetch all chats where the user is a participant
+    const chats = await Chat.find({ participants: { $in: [userId] } })
+      .populate("participants", "userName fullName profilePicture")
+      .populate("lastMessage")
+      .sort({ updatedAt: -1 });
+
+    res.status(200).json({ chats });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
