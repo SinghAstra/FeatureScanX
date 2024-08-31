@@ -8,10 +8,6 @@
   flex-direction: column;
 }
 
-.dark .post-info-container-skeleton {
-  background: var(--color-charcoal);
-}
-
 .post-comments-container-skeleton {
   flex: 1;
   display: flex;

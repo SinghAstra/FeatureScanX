@@ -34,6 +34,18 @@
   cursor: pointer;
 }
 
+.post-item-icon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: var(--color-light-gray);
+  font-size: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 2px;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-strong);
+}
+
 .post-image,
 .post-thumbnail {
   width: 100%;

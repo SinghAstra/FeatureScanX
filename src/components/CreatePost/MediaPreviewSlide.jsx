@@ -33,12 +33,32 @@ const MediaPreviewSlide = ({ slides }) => {
           ❱
         </div>
       )}
-      <div
+      {/* <div
         style={{
           backgroundImage: `url(${slides[currentIndex].url})`,
         }}
         className="media-preview-slide"
-      ></div>
+      ></div> */}
+      {slides[currentIndex].type.includes("image") ? (
+        <div
+          style={{
+            backgroundImage: `url(${slides[currentIndex].url})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            width: "100%",
+            height: "100%",
+          }}
+          className="media-preview-slide"
+        ></div>
+      ) : (
+        <video controls style={{ maxWidth: "100%", height: "auto" }}>
+          <source
+            src={slides[currentIndex].url}
+            type={slides[currentIndex].type}
+          />
+          Your browser does not support the video tag.
+        </video>
+      )}
       {slides.length > 1 && (
         <div className="dots-container-nav">
           {slides.map((slide, slideIndex) => (

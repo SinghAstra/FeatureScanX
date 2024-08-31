@@ -1,4 +1,5 @@
 import "../styles/ProfilePageSkeleton.css";
+import PostsSectionSkeleton from "./PostsSectionSkeleton";
 
 const ProfilePageSkelton = () => {
   return (
@@ -16,6 +17,7 @@ const ProfilePageSkelton = () => {
         <div className="post-skeleton"></div>
         <div className="post-skeleton"></div>
       </div>
+      <PostsSectionSkeleton />
     </div>
   );
 };

@@ -10,6 +10,7 @@ const Recent = () => {
       <div className="work-in-progress">
         <img src="/work-in-progress.png" alt="work-in-progress" />
         <p>Building Recent Section</p>
+        <p>Search Functionality is Implemented.</p>
       </div>
     </div>
   );

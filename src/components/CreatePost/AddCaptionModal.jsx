@@ -10,28 +10,7 @@ const AddCaptionModal = ({
   setModalShown,
   onSubmit,
 }) => {
-  // const renderMedia = (file, isActive) => {
-  //   const activeClass = isActive ? "active" : "";
-
-  //   if (file.type.startsWith("image")) {
-  //     return (
-  //       <img
-  //         src={file.url}
-  //         alt="Media Preview"
-  //         className={`media-slide ${activeClass}`}
-  //       />
-  //     );
-  //   } else if (file.type.startsWith("video")) {
-  //     return (
-  //       <video controls className={`media-slide ${activeClass}`}>
-  //         <source src={file.url} type={file.type} />
-  //         Your browser does not support the video tag.
-  //       </video>
-  //     );
-  //   } else {
-  //     return null;
-  //   }
-  // };
+  console.log("mediaPreview is ", mediaPreview);
 
   return (
     <div className="modal-backdrop" onClick={() => setModalShown(false)}>
@@ -88,3 +67,26 @@ AddCaptionModal.propTypes = {
 };
 
 export default AddCaptionModal;
+
+// const renderMedia = (file, isActive) => {
+//   const activeClass = isActive ? "active" : "";
+
+//   if (file.type.startsWith("image")) {
+//     return (
+//       <img
+//         src={file.url}
+//         alt="Media Preview"
+//         className={`media-slide ${activeClass}`}
+//       />
+//     );
+//   } else if (file.type.startsWith("video")) {
+//     return (
+//       <video controls className={`media-slide ${activeClass}`}>
+//         <source src={file.url} type={file.type} />
+//         Your browser does not support the video tag.
+//       </video>
+//     );
+//   } else {
+//     return null;
+//   }
+// };

@@ -8,10 +8,7 @@
   align-items: center;
   overflow: hidden;
   box-shadow: var(--shadow-deep);
-}
-
-.dark .add-caption-modal {
-  background: var(--card-bg-color);
+  max-height: 500px;
 }
 
 .add-caption-modal .modal-header {
@@ -37,6 +34,7 @@
   display: flex;
   width: 100%;
   flex: 1;
+  overflow: auto;
 }
 
 .media-preview-slideshow-container {

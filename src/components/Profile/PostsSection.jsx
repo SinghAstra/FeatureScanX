@@ -87,6 +87,12 @@ const PostsSection = () => {
                 loop
               />
             )}
+            {post.media.length > 1 && (
+              <i className="uil uil-square-shape post-item-icon"></i>
+            )}
+            {post.media[0].type === "video" && (
+              <i className="uil uil-square-shape post-item-icon"></i>
+            )}
           </Link>
         ))}
         {loading && <div className="post-skeleton"></div>}

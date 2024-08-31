@@ -57,10 +57,6 @@ const Sidebar = () => {
         <i className="uil uil-compass"></i>
         <h3>Explore</h3>
       </NavLink>
-      <NavLink to="/reels" className="sidebar-item sidebar-item-reels">
-        <i className="uil uil-film"></i>
-        <h3>Reels</h3>
-      </NavLink>
       <NavLink to="/messages" className="sidebar-item">
         <i className="uil uil-envelope-alt">
           <small className="notification-count">6</small>

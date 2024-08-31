@@ -20,8 +20,4 @@ UserItem.propTypes = {
   showFollowButton: PropTypes.bool,
 };
 
-UserItem.defaultProps = {
-  showFollowButton: true,
-};
-
 export default UserItem;
