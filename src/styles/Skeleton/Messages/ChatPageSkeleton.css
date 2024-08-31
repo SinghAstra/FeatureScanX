@@ -11,4 +11,24 @@
 .chat-header .username-skeleton {
   width: 40%;
   height: 20px;
+  border-radius: var(--border-radius-lg);
+}
+
+.chat-section .avatar-skeleton {
+  width: 160px;
+  height: 160px;
+  font-size: 5rem;
+  box-shadow: var(--shadow-strong);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+  padding: 2rem;
+}
+
+.chat-section .username-skeleton {
+  border-radius: var(--border-radius-lg);
+  width: 180px;
+  height: 30px;
 }

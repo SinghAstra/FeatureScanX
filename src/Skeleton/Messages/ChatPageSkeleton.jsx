@@ -7,7 +7,11 @@ const ChatPageSkeleton = () => {
         <div className="avatar-skeleton skeleton"></div>
         <span className="username-skeleton skeleton"></span>
       </div>
-      <div className="chat-section"></div>
+      <div className="chat-section">
+        <div className="avatar-skeleton skeleton"></div>
+        <p className="username-skeleton skeleton"></p>
+        <button className="view-replies-skeleton skeleton"></button>
+      </div>
     </div>
   );
 };
