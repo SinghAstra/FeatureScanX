@@ -6,6 +6,7 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+import ChatPage from "./components/Messages/ChatPage.jsx";
 import PostsSection from "./components/Profile/PostsSection.jsx";
 import SavedSection from "./components/Profile/SavedSection.jsx";
 import TaggedSection from "./components/Profile/TaggedSection.jsx";
@@ -27,6 +28,7 @@ import PostDetails from "./pages/PostDetails.jsx";
 import ProfilePage from "./pages/ProfilePage";
 import ReelsPage from "./pages/ReelsPage.jsx";
 import SearchPage from "./pages/SearchPage.jsx";
+import StartChat from "./placeholders/Messages/StartChat.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -44,7 +46,10 @@ const router = createBrowserRouter(
           <Route exact path="/search" element={<SearchPage />} />
           <Route exact path="/explore" element={<ExplorePage />} />
           <Route exact path="/reels" element={<ReelsPage />} />
-          <Route exact path="/messages" element={<MessagesPage />} />
+          <Route exact path="/chats/" element={<MessagesPage />}>
+            <Route index element={<StartChat />} />
+            <Route path=":chatSlug" element={<ChatPage />} />
+          </Route>
           <Route exact path="/notifications" element={<NotificationsPage />} />
           <Route exact path="/bookmarks" element={<BookmarksPage />} />
           <Route path="/:username" element={<ProfilePage />}>

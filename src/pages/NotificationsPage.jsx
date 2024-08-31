@@ -97,7 +97,9 @@ const Notifications = () => {
   }, [page]);
 
   useEffect(() => {
-    markAllNotificationAsRead();
+    return () => {
+      markAllNotificationAsRead();
+    };
   }, []);
 
   useEffect(() => {

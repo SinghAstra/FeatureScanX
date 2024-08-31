@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { NavLink, Outlet, useParams } from "react-router-dom";
+import { NavLink, Outlet, useNavigate, useParams } from "react-router-dom";
 import FollowersFollowingHashTagModal from "../components/FollowersFollowingHashTag/FollowersFollowingHashTagModal";
 import AuthContext from "../context/AuthContext";
 import ProfilePageSkeleton from "../Skeleton/ProfilePageSkeleton";
@@ -17,6 +17,7 @@ const ProfilePage = () => {
   const [isFollowing, setIsFollowing] = useState(false);
   const isCurrentUser = currentUser?.userName === username;
   const apiUrl = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -91,14 +92,30 @@ const ProfilePage = () => {
             <h1>{user.userName}</h1>
             {isCurrentUser ? (
               <button className="edit-profile-button">Edit Profile</button>
-            ) : isFollowing ? (
-              <button className="following-button" onClick={handleToggleFollow}>
-                Following
-              </button>
             ) : (
-              <button className="follow-button" onClick={handleToggleFollow}>
-                Follow
-              </button>
+              <>
+                {isFollowing ? (
+                  <button
+                    className="following-button"
+                    onClick={handleToggleFollow}
+                  >
+                    Following
+                  </button>
+                ) : (
+                  <button
+                    className="follow-button"
+                    onClick={handleToggleFollow}
+                  >
+                    Follow
+                  </button>
+                )}
+                <button
+                  className="send-message-button"
+                  onClick={() => navigate(`/chats/@${user.userName}`)}
+                >
+                  Message
+                </button>
+              </>
             )}
           </div>
           <div className="profile-stats">

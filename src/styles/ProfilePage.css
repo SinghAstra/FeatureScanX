@@ -55,7 +55,8 @@
 
 .profile-username .edit-profile-button,
 .profile-username .follow-button,
-.profile-username .following-button {
+.profile-username .following-button,
+.profile-username .send-message-button {
   background-color: var(--color-primary);
   padding: var(--padding-sm) var(--padding-md);
   border-radius: var(--border-radius-lg);
@@ -68,7 +69,8 @@
   border: 2px solid transparent;
 }
 
-.profile-username .following-button {
+.profile-username .following-button,
+.profile-username .send-message-button {
   background-color: transparent;
   border: 2px solid var(--color-primary);
   color: var(--color-primary);
@@ -77,7 +79,10 @@
 
 .profile-username .edit-profile-button:active,
 .profile-username .follow-button:active,
-.profile-username .following-button:active {
+.profile-username
+  .following-button:active
+  .profile-username
+  .send-message-button:active {
   transform: scale(var(--button-active-scale));
 }
 

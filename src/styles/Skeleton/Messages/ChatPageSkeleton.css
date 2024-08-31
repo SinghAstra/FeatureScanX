@@ -1,0 +1,14 @@
+.chat-header .avatar-skeleton {
+  width: 40px;
+  height: 40px;
+  box-shadow: var(--shadow-light);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-header .username-skeleton {
+  width: 40%;
+  height: 20px;
+}

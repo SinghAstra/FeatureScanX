@@ -185,17 +185,6 @@ body {
   justify-content: center;
 }
 
-.messages-page-container {
-  height: 400px;
-  width: 500px;
-  margin: 40px auto;
-  background: white;
-  overflow: auto;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
 @media screen and (max-width: 768px) {
   .placeholder {
     border-left: 0;
