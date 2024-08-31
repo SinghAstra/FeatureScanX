@@ -61,9 +61,11 @@ const MessageList = () => {
         <h2>Messages</h2>
         <p>Requests</p>
       </div>
-      {chats.map((chat) => (
-        <MessageListItem key={chat._id} chat={chat} />
-      ))}
+      <div className="message-list-content">
+        {chats.map((chat) => (
+          <MessageListItem key={chat._id} chat={chat} />
+        ))}
+      </div>
     </div>
   );
 };

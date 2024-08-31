@@ -18,6 +18,7 @@ const ChatPage = () => {
 
     const accessChat = async () => {
       try {
+        setLoadingChat(true);
         const response = await axios.post(
           `${apiUrl}/api/chat/@${receiverName}`,
           {},
