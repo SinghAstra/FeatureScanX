@@ -10,6 +10,7 @@ import Comment from "./models/Comment.js";
 import Post from "./models/Post.js";
 import authRoutes from "./routes/auth.js";
 import commentsRoutes from "./routes/comments.js";
+import messagesRoutes from "./routes/messages.js";
 import notificationsRoutes from "./routes/notifications.js";
 import postsRoutes from "./routes/posts.js";
 import savePostsRoutes from "./routes/savePosts.js";
@@ -46,6 +47,7 @@ app.use("/api/posts", postsRoutes);
 app.use("/api/saved-post", savePostsRoutes);
 app.use("/api/comments", commentsRoutes);
 app.use("/api/notifications", notificationsRoutes);
+app.use("/api/messages", messagesRoutes);
 
 app.get("/testing/clear-cookies", (req, res) => {
   const cookies = req.cookies;
