@@ -267,6 +267,34 @@ export const getFeedPosts = async (req, res) => {
   }
 };
 
+export const getExplorePosts = async (req, res) => {
+  try {
+    let { page = 1, limit = 10 } = req.query;
+
+    page = parseInt(page, 10) > 0 ? parseInt(page, 10) : 1;
+    limit = parseInt(limit, 10) > 0 ? parseInt(limit, 10) : 10;
+
+    const totalPosts = await Post.countDocuments({});
+
+    const posts = await Post.find({})
+      .populate("userId", "userName fullName profilePicture")
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    res.status(200).json({
+      posts,
+      totalPosts,
+      totalPages: Math.ceil(totalPosts / limit),
+      currentPage: page,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: error.message, controller: "getExplorePosts" });
+  }
+};
+
 export const getAllPosts = async (req, res) => {
   try {
     const posts = await Post.find({});

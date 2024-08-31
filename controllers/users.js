@@ -278,3 +278,28 @@ export const getRandomUsers = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const getFilteredUsers = async (req, res) => {
+  const { page = 1, limit = 10, search = "" } = req.query;
+
+  const searchQuery = {
+    $or: [
+      { userName: { $regex: search, $options: "i" } },
+      { fullName: { $regex: search, $options: "i" } },
+    ],
+  };
+
+  const totalUsers = await User.countDocuments(searchQuery);
+
+  const paginatedUsers = await User.find(searchQuery)
+    .select("-password")
+    .skip((page - 1) * limit)
+    .limit(Number(limit));
+
+  res.json({
+    users: paginatedUsers,
+    totalUsers,
+    currentPage: page,
+    totalPages: Math.ceil(totalUsers / limit),
+  });
+};

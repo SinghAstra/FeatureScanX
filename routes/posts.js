@@ -5,6 +5,7 @@ import { toggleLikeOnPost } from "../controllers/likes.js";
 import {
   createPostController,
   getAllPosts,
+  getExplorePosts,
   getFeedPosts,
   getPostBySlug,
 } from "../controllers/posts.js";
@@ -25,6 +26,9 @@ router.post(
 
 // get the posts for home page
 router.get("/feed", authMiddleware, getFeedPosts);
+
+// get posts for explore page
+router.get("/explore", authMiddleware, getExplorePosts);
 
 // get detailed info of particular post
 router.get("/:postSlug", authMiddleware, getPostBySlug);

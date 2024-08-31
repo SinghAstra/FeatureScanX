@@ -2,6 +2,7 @@ import express from "express";
 import {
   getAllUser,
   getAllUsers,
+  getFilteredUsers,
   getFollowers,
   getFollowing,
   getRandomUsers,
@@ -18,6 +19,8 @@ router.get("/", authMiddleware, getAllUsers);
 router.get("/get-all-users", getAllUser);
 
 router.get("/random-users", authMiddleware, getRandomUsers);
+
+router.get("/search", authMiddleware, getFilteredUsers);
 
 // Fetch User Profile Information using username
 router.get("/:username", authMiddleware, getUserProfile);
