@@ -1,7 +1,10 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import AuthContext from "../../context/AuthContext";
+import "../../styles/Messages/Messages.css";
 
 const Messages = ({ chatId }) => {
+  const { currentUser } = useContext(AuthContext);
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -30,27 +33,45 @@ const Messages = ({ chatId }) => {
   }
 
   if (messages.length === 0) {
-    return;
+    return <div>No messages</div>;
   }
 
   return (
     <div className="messages">
-      {messages.map((message) => (
-        <div key={message._id} className="message">
-          <div className="message-header">
-            {/* <img
-              src={message.sender.profilePicture || "/default-avatar.png"}
-              alt={message.sender.fullName}
-              className="avatar"
-            /> */}
-            <span className="sender-name">{message.sender.fullName}</span>
+      {messages.map((message, index) => {
+        const isSelfMessage = message.sender._id === currentUser._id;
+        const isLastMessageFromSender =
+          index === messages.length - 1 ||
+          messages[index + 1].sender._id !== message.sender._id;
+
+        return (
+          <div
+            key={message._id}
+            className={
+              isSelfMessage
+                ? "self-message-container"
+                : "other-message-container"
+            }
+          >
+            {!isSelfMessage && isLastMessageFromSender && (
+              <div className="avatar-container">
+                {message.sender.profilePicture ? (
+                  <img
+                    src={message.sender.profilePicture}
+                    className="avatar"
+                    alt={message.sender.fullName}
+                  />
+                ) : (
+                  <div className="avatar">{message.sender.fullName[0]}</div>
+                )}
+              </div>
+            )}
+            <div className={isSelfMessage ? "self-message" : "other-message"}>
+              <p className="message-content">{message.content}</p>
+            </div>
           </div>
-          <p className="message-content">{message.content}</p>
-          <small className="message-timestamp">
-            {new Date(message.createdAt).toLocaleString()}
-          </small>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };
