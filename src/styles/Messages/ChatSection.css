@@ -6,6 +6,10 @@
   padding: 0 var(--padding-lg);
 }
 
+.message-container .avatar-container {
+  cursor: pointer;
+}
+
 .message-avatar {
   width: 2.5rem;
   height: 2.5rem;

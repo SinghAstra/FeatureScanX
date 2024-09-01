@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ChatPageSkeleton from "../../Skeleton/Messages/ChatPageSkeleton";
 import "../../styles/Messages/ChatPage.css";
-import Messages from "./Messages";
+import ChatSection from "./ChatSection";
 
 const ChatPage = () => {
   const { chatSlug } = useParams();
@@ -75,14 +75,7 @@ const ChatPage = () => {
         <div className="avatar">{receiver.fullName[0]}</div>
         <span className="username">{receiver.fullName}</span>
       </Link>
-      <div className="chat-section">
-        <div className="avatar">{receiver.fullName[0]}</div>
-        <p className="username">{receiver.userName}</p>
-        <Link to={`/${receiver.userName}`} className="view-replies">
-          View Profile
-        </Link>
-        <Messages chatId={chat._id} />
-      </div>
+      <ChatSection receiver={receiver} chatId={chat._id} />
       <div className="send-message-section">
         <div className="send-message-input-container">
           <input
