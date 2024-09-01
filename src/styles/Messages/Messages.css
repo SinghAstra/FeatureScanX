@@ -6,10 +6,24 @@
   padding: 0 var(--padding-lg);
 }
 
+.message-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.4rem;
+  box-shadow: var(--shadow-strong);
+  background: var(--color-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
 .self-message,
 .other-message {
   width: fit-content;
   padding: var(--padding-sm) var(--padding-md);
+  border-radius: var(--border-radius-xl);
 }
 
 .self-message {
@@ -19,6 +33,39 @@
 }
 
 .other-message {
-  margin-right: auto;
   background: var(--color-light-gray);
+  margin-left: 2.8rem;
+}
+
+.first-message .self-message {
+  border-bottom-right-radius: var(--border-radius-md);
+}
+
+.first-message .other-message {
+  border-bottom-left-radius: var(--border-radius-md);
+}
+
+.mid-message .self-message {
+  border-top-right-radius: var(--border-radius-md);
+  border-bottom-right-radius: var(--border-radius-md);
+}
+
+.mid-message .other-message {
+  border-top-left-radius: var(--border-radius-md);
+  border-bottom-left-radius: var(--border-radius-md);
+}
+
+.last-message .self-message {
+  border-top-right-radius: var(--border-radius-md);
+}
+
+.last-message .other-message {
+  border-top-left-radius: var(--border-radius-md);
+  margin-left: 0rem;
+}
+
+.other-message-container {
+  margin-right: auto;
+  display: flex;
+  gap: 0.5rem;
 }

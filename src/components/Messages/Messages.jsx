@@ -40,32 +40,49 @@ const Messages = ({ chatId }) => {
     <div className="messages">
       {messages.map((message, index) => {
         const isSelfMessage = message.sender._id === currentUser._id;
+
+        const isFirstMessageFromSender =
+          index === 0 || messages[index - 1].sender._id !== message.sender._id;
         const isLastMessageFromSender =
           index === messages.length - 1 ||
           messages[index + 1].sender._id !== message.sender._id;
 
+        let messageTypeClass = "";
+        if (isFirstMessageFromSender && isLastMessageFromSender) {
+          messageTypeClass = "only-message";
+        } else if (isFirstMessageFromSender) {
+          messageTypeClass = "first-message";
+        } else if (isLastMessageFromSender) {
+          messageTypeClass = "last-message";
+        } else {
+          messageTypeClass = "mid-message";
+        }
+
         return (
           <div
             key={message._id}
-            className={
+            className={`message-container ${
               isSelfMessage
                 ? "self-message-container"
                 : "other-message-container"
-            }
+            } ${messageTypeClass}`}
           >
             {!isSelfMessage && isLastMessageFromSender && (
               <div className="avatar-container">
                 {message.sender.profilePicture ? (
                   <img
                     src={message.sender.profilePicture}
-                    className="avatar"
+                    className="message-avatar"
                     alt={message.sender.fullName}
                   />
                 ) : (
-                  <div className="avatar">{message.sender.fullName[0]}</div>
+                  <div className="message-avatar">
+                    {message.sender.fullName[0]}
+                  </div>
                 )}
               </div>
             )}
+
             <div className={isSelfMessage ? "self-message" : "other-message"}>
               <p className="message-content">{message.content}</p>
             </div>
