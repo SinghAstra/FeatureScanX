@@ -1,7 +1,9 @@
 import axios from "axios";
+import PropTypes from "prop-types";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
+import ChatSectionSkeleton from "../../Skeleton/Messages/ChatSectionSkeleton";
 import "../../styles/Messages/ChatSection.css";
 
 const ChatSection = ({ receiver, chatId }) => {
@@ -45,12 +47,9 @@ const ChatSection = ({ receiver, chatId }) => {
   }, [messages]);
 
   if (loading) {
-    return <div>Loading messages...</div>;
+    return <ChatSectionSkeleton />;
   }
 
-  if (messages.length === 0) {
-    return <div>No messages</div>;
-  }
   return (
     <div className="chat-section" ref={messagesEndRef}>
       <div className="avatar">{receiver.fullName[0]}</div>
@@ -117,6 +116,15 @@ const ChatSection = ({ receiver, chatId }) => {
       </div>
     </div>
   );
+};
+
+ChatSection.propTypes = {
+  receiver: PropTypes.shape({
+    fullName: PropTypes.string.isRequired,
+    userName: PropTypes.string.isRequired,
+    profilePicture: PropTypes.string,
+  }).isRequired,
+  chatId: PropTypes.string.isRequired,
 };
 
 export default ChatSection;
