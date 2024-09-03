@@ -15,6 +15,7 @@ import chatRoutes from "./routes/chat.js";
 import commentsRoutes from "./routes/comments.js";
 import messagesRoutes from "./routes/messages.js";
 import notificationsRoutes from "./routes/notifications.js";
+import OTPRoutes from "./routes/OTP.js";
 import postsRoutes from "./routes/posts.js";
 import savePostsRoutes from "./routes/savePosts.js";
 import usersRoutes from "./routes/users.js";
@@ -59,6 +60,7 @@ app.use("/api/comments", commentsRoutes);
 app.use("/api/notifications", notificationsRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/messages", messagesRoutes);
+app.use("/api/otp", OTPRoutes);
 
 app.get("/testing/clear-cookies", (req, res) => {
   const cookies = req.cookies;
