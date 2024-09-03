@@ -4,8 +4,10 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import helmet from "helmet";
+import http from "http";
 import { default as mongoose } from "mongoose";
 import morgan from "morgan";
+import { Server } from "socket.io";
 import Comment from "./models/Comment.js";
 import Post from "./models/Post.js";
 import authRoutes from "./routes/auth.js";
@@ -33,6 +35,13 @@ const corsOptions = {
 };
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
 app.use(cookieParser());
 app.use(express.json());
 app.use(helmet());
@@ -73,7 +82,6 @@ app.get("/testing/drop-database", async (req, res) => {
     res.json({ message: "Database dropped successfully" });
   }
 });
-
 app.get("/testing/posts", async (req, res) => {
   try {
     const posts = await Post.find({});
@@ -82,7 +90,6 @@ app.get("/testing/posts", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
 app.get("/testing/comments", async (req, res) => {
   try {
     const comments = await Comment.find({});
@@ -91,7 +98,6 @@ app.get("/testing/comments", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
 app.get("/testing/delete-all-comments", async (req, res) => {
   try {
     const comments = await Comment.deleteMany({});
@@ -110,6 +116,51 @@ mongoose
     console.log("Error connecting to MongoDB Database");
   });
 
-app.listen(5000, () => {
-  console.log("Listening on Port 5000");
+io.on("connection", (socket) => {
+  // A new client has connected, and socket.id represents the unique ID of this connection.
+  console.log("New client connected: ", socket.id);
+
+  // This event is triggered when a user is "set up" (like logging in or connecting to the app).
+  // The user joins a room based on their user ID, allowing for targeted messaging.
+  socket.on("setup", (userData) => {
+    socket.join(userData.id); // The user joins a room named after their user ID.
+    socket.emit("connected"); // Notify the client that they have successfully connected.
+  });
+
+  // This event allows the user to join a chat room based on the chat ID (either group or one-to-one).
+  // Rooms are created dynamically for each chat, identified by chatId.
+  socket.on("join room", (chatId) => {
+    socket.join(chatId); // The user joins a room specific to the chat.
+    console.log(`User joined Room : ${chatId}`);
+  });
+
+  // When a user is typing a message, notify everyone else in the same chat room.
+  socket.on("typing", (room) => socket.in(room).emit("typing"));
+
+  // When a user stops typing, notify everyone else in the same chat room.
+  socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
+
+  // When a new message is sent, this event is triggered.
+  // The message contains information about the participants and the sender.
+  socket.on("new message", (message) => {
+    const { participants } = message; // Get all participants in the chat.
+
+    // Loop through all the participants except the sender and emit the message to their individual rooms.
+    participants.forEach((user) => {
+      if (user._id == message.sender._id) return; // Skip the sender.
+
+      // Send the message to the user's room (each user is in a room named after their user ID).
+      socket.in(user._id).emit("message received", message);
+    });
+  });
+
+  // Cleanup when the user disconnects.
+  socket.off("setup", () => {
+    console.log("User Disconnected");
+    socket.leave(userData._id); // The user leaves their personal room when they disconnect.
+  });
+});
+
+server.listen(5000, () => {
+  console.log("Server is running on port 5000");
 });

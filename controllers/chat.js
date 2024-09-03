@@ -57,13 +57,27 @@ export const getAllUserChats = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    // Fetch all chats where the user is a participant
     const chats = await Chat.find({ participants: { $in: [userId] } })
       .populate("participants", "userName fullName profilePicture")
-      .populate("lastMessage")
+      .populate("lastMessage", "content createdAt")
       .sort({ updatedAt: -1 });
 
-    res.status(200).json({ chats });
+    const formattedChats = chats.map((chat) => {
+      let receiver = null;
+      if (!chat.isGroupChat) {
+        receiver = chat.participants.find(
+          (participant) => participant._id.toString() !== userId
+        );
+      }
+      return {
+        ...chat.toObject(),
+        receiver,
+      };
+    });
+
+    const filteredChats = formattedChats.filter((chat) => chat.lastMessage);
+
+    res.status(200).json({ chats: filteredChats });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
