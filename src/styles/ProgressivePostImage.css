@@ -2,6 +2,11 @@
   width: 100%;
   height: 100%;
   position: relative;
+  &:hover {
+    .overlay {
+      opacity: 1;
+    }
+  }
 }
 
 .progressive-post-image .low-res-image {

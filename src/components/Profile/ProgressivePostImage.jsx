@@ -10,14 +10,9 @@ const ProgressivePostImage = ({
   comments,
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div
-      className="progressive-post-image"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className="progressive-post-image">
       <img
         src={lowResUrl}
         alt={alt}
@@ -33,16 +28,14 @@ const ProgressivePostImage = ({
           opacity: isLoaded ? 1 : 0,
         }}
       />
-      {isHovered && (
-        <div className="overlay">
-          <span className="likes">
-            <i className="uil uil-heart"></i> {likes}
-          </span>
-          <span className="comments">
-            <i className="uil uil-comment"></i> {comments}
-          </span>
-        </div>
-      )}
+      <div className="overlay">
+        <span className="likes">
+          <i className="uil uil-heart"></i> {likes}
+        </span>
+        <span className="comments">
+          <i className="uil uil-comment"></i> {comments}
+        </span>
+      </div>
     </div>
   );
 };

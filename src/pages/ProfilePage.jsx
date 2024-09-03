@@ -71,22 +71,69 @@ const ProfilePage = () => {
     }
   };
 
+  const handleProfilePictureChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("profilePicture", file);
+
+      console.log("file is ", file);
+
+      try {
+        // const response = await axios.post(
+        //   `${apiUrl}/api/users/upload-profile-pic`,
+        //   formData,
+        //   {
+        //     headers: {
+        //       "Content-Type": "multipart/form-data",
+        //     },
+        //     withCredentials: true,
+        //   }
+        // );
+
+        const localImageUrl = URL.createObjectURL(file);
+
+        console.log("localImageUrl is ", localImageUrl);
+
+        // Update the user's profile picture with the new one
+        setUser((prev) => ({
+          ...prev,
+          // profilePicture: response.data.profilePictureUrl,
+          profilePicture: localImageUrl,
+        }));
+      } catch (error) {
+        console.log("error --handleProfilePictureChange :", error);
+      }
+    }
+  };
+
   return (
     <div className="profile-page">
       <div className="profile-header">
-        {user.profilePicture ? (
-          <div className="profile-picture">
-            <img
-              src={user.profilePicture}
-              alt="Profile"
-              className="profile-picture-img"
-            />
+        <div
+          className="profile-picture"
+          onClick={() => document.getElementById("profilePictureInput").click()}
+        >
+          {user.profilePicture ? (
+            <img src={user.profilePicture} alt="Profile" />
+          ) : (
+            <div className="avatar">
+              <span>{user.fullName[0]}</span>
+            </div>
+          )}
+          <div className="overlay-profile-picture">
+            <span className="picture">
+              <i className="uil uil-camera"></i>
+            </span>
           </div>
-        ) : (
-          <div className="profile-picture-logo">
-            <span>{user.fullName[0]}</span>
-          </div>
-        )}
+          <input
+            type="file"
+            id="profilePictureInput"
+            style={{ display: "none" }}
+            accept="image/*"
+            onChange={handleProfilePictureChange}
+          />
+        </div>
         <div className="profile-info">
           <div className="profile-username">
             <h1>{user.userName}</h1>
