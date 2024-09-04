@@ -23,14 +23,7 @@ const Notification = ({ notification }) => {
   };
 
   return (
-    <Link
-      to={
-        notification.postId
-          ? `/posts/${notification.postId.slug}`
-          : `/${notification.sender.userName}`
-      }
-      className="notification"
-    >
+    <div className="notification">
       <Link
         to={`/${notification.sender.userName}`}
         className="notification-user-avatar"
@@ -51,7 +44,15 @@ const Notification = ({ notification }) => {
             <Link to={`/${notification.sender.userName}`}>
               <strong>{notification.sender.userName}</strong>
             </Link>{" "}
-            liked your post.
+            <Link
+              to={
+                notification.postId
+                  ? `/posts/${notification.postId.slug}`
+                  : `/${notification.sender.userName}`
+              }
+            >
+              liked your post.
+            </Link>
           </p>
         )}
         {notification.type === "comment" && (
@@ -59,7 +60,15 @@ const Notification = ({ notification }) => {
             <Link to={`/${notification.sender.userName}`}>
               <strong>{notification.sender.userName}</strong>
             </Link>{" "}
-            commented: {notification.commentText}
+            <Link
+              to={
+                notification.postId
+                  ? `/posts/${notification.postId.slug}`
+                  : `/${notification.sender.userName}`
+              }
+            >
+              commented: {notification.commentText}
+            </Link>
           </p>
         )}
         {notification.type === "follow" && (
@@ -67,15 +76,37 @@ const Notification = ({ notification }) => {
             <Link to={`/${notification.sender.userName}`}>
               <strong>{notification.sender.userName}</strong>
             </Link>{" "}
-            started following you
+            <Link
+              to={
+                notification.postId
+                  ? `/posts/${notification.postId.slug}`
+                  : `/${notification.sender.userName}`
+              }
+            >
+              started following you
+            </Link>
           </p>
         )}
       </div>
       {notification.postId && (
-        <img src={notification.postId.media[0].lowResUrl} alt="Post preview" />
+        <Link to={`/posts/${notification.postId.slug}`}>
+          <img
+            src={notification.postId.media[0].lowResUrl}
+            alt="Post preview"
+          />
+        </Link>
       )}
-      <Link className="time-ago">{formatTimeAgo(notification.createdAt)}</Link>
-    </Link>
+      <Link
+        className="time-ago"
+        to={
+          notification.postId
+            ? `/posts/${notification.postId.slug}`
+            : `/${notification.sender.userName}`
+        }
+      >
+        {formatTimeAgo(notification.createdAt)}
+      </Link>
+    </div>
   );
 };
 
