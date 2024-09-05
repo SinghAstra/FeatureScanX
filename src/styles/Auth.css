@@ -389,6 +389,41 @@
   text-decoration: none;
 }
 
+.password-validation-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: left;
+  align-self: flex-start;
+}
+
+.password-validation-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+.icon {
+  width: 1rem;
+  height: auto;
+}
+
+.icon-success,
+.text-success {
+  color: var(--color-green);
+}
+
+.icon-error,
+.text-error {
+  color: var(--color-danger);
+}
+
+.error-message {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
 @media screen and (max-width: 768px) {
   .auth-form-container {
     width: 60%;

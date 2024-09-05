@@ -35,7 +35,11 @@ const RegisterPage = () => {
         />
       )}
       {currentStage === 2 && (
-        <Password formData={formData} setFormData={setFormData} />
+        <Password
+          formData={formData}
+          setFormData={setFormData}
+          onNext={handleNext}
+        />
       )}
       {currentStage === 3 && (
         <DateOfBirth

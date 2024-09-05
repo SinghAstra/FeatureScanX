@@ -1,10 +1,24 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
+import CorrectIcon from "../../icons/CorrectIcon";
+import WrongIcon from "../../icons/WrongIcon";
 
 const Password = ({ formData, setFormData, onNext }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({
+    minValueValidation: false,
+    numberValidation: false,
+    capitalLetterValidation: false,
+    specialCharacterValidation: false,
+  });
+  const [passwordsMatchError, setPasswordsMatchError] = useState(false);
+
+  const isPasswordValid =
+    errors.minValueValidation &&
+    errors.numberValidation &&
+    errors.capitalLetterValidation &&
+    errors.specialCharacterValidation;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -12,6 +26,28 @@ const Password = ({ formData, setFormData, onNext }) => {
       ...formData,
       [name]: value,
     });
+    if (name === "password") {
+      validatePassword(value);
+    }
+  };
+
+  const handleBlur = (e) => {
+    const { name } = e.target;
+    if (name === "confirmPassword") {
+      validatePasswordMatch();
+    }
+  };
+
+  const validatePasswordMatch = () => {
+    if (formData.password !== formData.confirmPassword) {
+      setPasswordsMatchError("Passwords do not match");
+    } else {
+      setPasswordsMatchError("");
+    }
+  };
+
+  const handleFocus = () => {
+    setPasswordsMatchError("");
   };
 
   const togglePasswordVisibility = () => {
@@ -24,23 +60,25 @@ const Password = ({ formData, setFormData, onNext }) => {
     );
   };
 
-  //   const validatePassword = (value) => {
-  //     const passwordRegex =
-  //       /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,20}$/;
-  //     if (value.trim() === "") {
-  //       return "Password is required.";
-  //     } else if (passwordRegex.test(value)) {
-  //       return "";
-  //     } else {
-  //       return "Password must be 6-20 characters long and include at least one letter, one number, and one special character.";
-  //     }
-  //   };
+  const validatePassword = (password) => {
+    setErrors({
+      minValueValidation: password.length >= 8,
+      numberValidation: /\d/.test(password),
+      capitalLetterValidation: /[A-Z]/.test(password),
+      specialCharacterValidation: /[^A-Za-z0-9]/.test(password),
+    });
+  };
 
-  // const passwordError = validatePassword(formData.password);
-  // Implement handleBlur & handleFocus
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    validatePasswordMatch();
+    if (isPasswordValid && passwordsMatchError === "") {
+      onNext();
+    }
+  };
 
   return (
-    <form className="auth-form-container">
+    <form className="auth-form-container" onSubmit={handleSubmit}>
       <div className="logo-container">
         <img src="/social.png" alt="logo" />
       </div>
@@ -82,49 +120,80 @@ const Password = ({ formData, setFormData, onNext }) => {
         />
         {errors.password && <p className="error-message">{errors.password}</p>}
       </div>
-      <div className="input-container">
-        <label
-          className={`input-label ${errors.confirmPassword ? "error" : ""}`}
-          htmlFor="confirmPassword"
-        >
-          Confirm Password
-        </label>
-        {showConfirmPassword ? (
-          <i
-            className={`uil uil-eye icon-right ${
-              errors.confirmPassword ? "error" : ""
+      {!isPasswordValid && (
+        <div className="password-validation-items">
+          {Object.entries(errors).map(([key, value]) => (
+            <div key={key} className="password-validation-item">
+              {value ? (
+                <CorrectIcon wrapperClass="icon icon-success" />
+              ) : (
+                <WrongIcon wrapperClass="icon icon-error" />
+              )}
+              <p
+                className={`error-message ${
+                  value ? "text-success" : "text-error"
+                }`}
+              >
+                {key === "minValueValidation" &&
+                  "Password must be at least 8 Characters"}
+                {key === "numberValidation" &&
+                  "Password must have at least one Number"}
+                {key === "capitalLetterValidation" &&
+                  "Password must have at least one Capital Letter"}
+                {key === "specialCharacterValidation" &&
+                  "Password must have at least one Special Character"}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
+      {isPasswordValid && (
+        <div className="input-container">
+          <label
+            className={`input-label ${passwordsMatchError ? "error" : ""}`}
+            htmlFor="confirmPassword"
+          >
+            Confirm Password
+          </label>
+          {showConfirmPassword ? (
+            <i
+              className={`uil uil-eye icon-right ${
+                passwordsMatchError ? "error" : ""
+              }`}
+              onClick={toggleConfirmPasswordVisibility}
+            ></i>
+          ) : (
+            <i
+              className={`uil uil-eye-slash icon-right ${
+                passwordsMatchError ? "error" : ""
+              }`}
+              onClick={toggleConfirmPasswordVisibility}
+            ></i>
+          )}
+          <input
+            className={`input-field-with-icon-right ${
+              passwordsMatchError ? "error" : ""
             }`}
-            onClick={toggleConfirmPasswordVisibility}
-          ></i>
-        ) : (
-          <i
-            className={`uil uil-eye-slash icon-right ${
-              errors.confirmPassword ? "error" : ""
-            }`}
-            onClick={toggleConfirmPasswordVisibility}
-          ></i>
-        )}
-        <input
-          className={`input-field-with-icon-right ${
-            errors.confirmPassword ? "error" : ""
-          }`}
-          id="confirmPassword"
-          name="confirmPassword"
-          onChange={handleChange}
-          //   onBlur={handleBlur}
-          //   onFocus={handleFocus}
-          placeholder="Confirm Password"
-          type={showConfirmPassword ? "text" : "password"}
-          value={formData.confirmPassword}
-          autoComplete="off"
-        />
-        {errors.confirmPassword && (
-          <p className="error-message">{errors.confirmPassword}</p>
-        )}
-      </div>
-      <button type="submit" className="register-next-button">
-        Next
-      </button>
+            id="confirmPassword"
+            name="confirmPassword"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            onFocus={handleFocus}
+            placeholder="Confirm Password"
+            type={showConfirmPassword ? "text" : "password"}
+            value={formData.confirmPassword}
+            autoComplete="off"
+          />
+          {passwordsMatchError && (
+            <p className="error-message">{passwordsMatchError}</p>
+          )}
+        </div>
+      )}
+      {isPasswordValid && (
+        <button type="submit" className="register-next-button">
+          Next
+        </button>
+      )}
     </form>
   );
 };
@@ -135,6 +204,7 @@ Password.propTypes = {
     confirmPassword: PropTypes.string.isRequired,
   }).isRequired,
   setFormData: PropTypes.func.isRequired,
+  onNext: PropTypes.func.isRequired,
 };
 
 export default Password;
