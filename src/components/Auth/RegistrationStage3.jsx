@@ -3,20 +3,13 @@ import PropTypes from "prop-types";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
-// import Notification from "../Notification";
 
-const RegistrationStage3 = ({
-  formData,
-  confirmationCode,
-  setConfirmationCode,
-  onBack,
-}) => {
+const RegistrationStage3 = ({ formData, onBack }) => {
   const [otp, setOtp] = useState("");
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
   const { fetchCurrentUser } = useContext(AuthContext);
   const apiUrl = import.meta.env.VITE_API_URL;
-  //   const [notification, setNotification] = useState("");
 
   // Validate OTP length and content
   const handleChange = (e) => {
@@ -49,25 +42,42 @@ const RegistrationStage3 = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Check if the entered OTP matches the generated confirmation code
-    if (otp === confirmationCode) {
+
+    try {
+      const response = await axios.post(
+        `${apiUrl}/api/otp/verify`,
+        {
+          otp: otp,
+          // check: formData.email,
+          check: "singhisabhaypratap@gmail.com",
+        },
+        { withCredentials: true }
+      );
+
+      console.log("response.data --handleSubmit is :", response.data);
       registerUser();
-    } else {
-      // Show an error if the OTP doesn't match
+    } catch (error) {
+      console.log("error --handleSubmit is :", error);
       setErrors({
         ...errors,
-        otp: "Invalid confirmation code. Please try again.",
+        otp:
+          error.response?.data?.message ||
+          "OTP verification failed. Please try again.",
       });
-      setIsValid(false);
     }
   };
 
   const sendConfirmationCode = async () => {
     try {
-      const response = await axios.post(`${apiUrl}/api/auth/verify-email`, {
-        email: formData.email,
-      });
-      setConfirmationCode(response.data.confirmationCode);
+      const response = await axios.post(
+        `${apiUrl}/api/otp/send-email`,
+        {
+          // email: formData.email,
+          email: "singhisabhaypratap@gmail.com",
+          type: "2FA",
+        },
+        { withCredentials: true }
+      );
       console.log("response.data --sendConfirmationCode is : ", response.data);
     } catch (error) {
       console.log("error --sendConfirmationCode is :", error);
@@ -89,8 +99,7 @@ const RegistrationStage3 = ({
 
   return (
     <form className="auth-form-container" onSubmit={handleSubmit}>
-      {/* {notification && <Notification message={notification} />} */}
-      <img src="/mail.png" alt="mail" className="mail-icon" />
+      <img src="/secure.png" alt="secure" className="secure-icon" />
       <div className="title-container">
         <span className="title">Enter confirmation code</span>
         <span className="subtitle">
@@ -130,14 +139,7 @@ RegistrationStage3.propTypes = {
   formData: PropTypes.shape({
     email: PropTypes.string.isRequired,
   }).isRequired,
-  confirmationCode: PropTypes.string.isRequired,
-  setConfirmationCode: PropTypes.func.isRequired,
   onBack: PropTypes.func.isRequired,
 };
 
 export default RegistrationStage3;
-
-// 1. generalise the notification component
-// 2. animation for notification
-// 3. loader once a button is clicked
-// 4. display notification once the confirmation code is sent again

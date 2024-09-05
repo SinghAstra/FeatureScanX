@@ -5,14 +5,13 @@ import RegistrationStage3 from "../../components/Auth/RegistrationStage3";
 import useTitle from "../../hooks/useTitle";
 
 const RegisterPage = () => {
-  const [currentStage, setCurrentStage] = useState(1);
+  const [currentStage, setCurrentStage] = useState(3);
   const [formData, setFormData] = useState({
     email: "",
     fullName: "",
     username: "",
     password: "",
   });
-  const [confirmationCode, setConfirmationCode] = useState("");
 
   const handleNext = () => {
     setCurrentStage(currentStage + 1);
@@ -41,12 +40,7 @@ const RegisterPage = () => {
         />
       )}
       {currentStage === 3 && (
-        <RegistrationStage3
-          confirmationCode={confirmationCode}
-          setConfirmationCode={setConfirmationCode}
-          formData={formData}
-          onBack={handleBack}
-        />
+        <RegistrationStage3 formData={formData} onBack={handleBack} />
       )}
     </div>
   );
