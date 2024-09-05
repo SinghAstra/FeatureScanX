@@ -6,7 +6,7 @@ import UserInfo from "../../components/Auth/UserInfo";
 import useTitle from "../../hooks/useTitle";
 
 const RegisterPage = () => {
-  const [currentStage, setCurrentStage] = useState(2);
+  const [currentStage, setCurrentStage] = useState(1);
   const [formData, setFormData] = useState({
     email: "",
     fullName: "",

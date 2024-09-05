@@ -9,7 +9,7 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { fetchCurrentUser } = useContext(AuthContext);
   const [formData, setFormData] = useState({
-    email: "",
+    identifier: "",
     password: "",
   });
   const [errors, setErrors] = useState({});
@@ -26,8 +26,8 @@ const LoginPage = () => {
   const handleBlur = async (e) => {
     const { name, value } = e.target;
     let error = "";
-    if (name === "email") {
-      error = await validateEmail(value);
+    if (name === "identifier") {
+      error = await validateIdentifier(value);
     } else if (name === "password") {
       error = validatePassword(value);
     }
@@ -39,12 +39,12 @@ const LoginPage = () => {
     setErrors({ ...errors, [name]: "" });
   };
 
-  const validateEmail = async (value) => {
+  const validateIdentifier = async (value) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (value.trim() === "") {
-      return "Email Address is required.";
-    } else if (!emailRegex.test(value)) {
-      return "Please enter a valid email address.";
+      return "Email or Username is required.";
+    } else if (!emailRegex.test(value) && value.trim().length < 3) {
+      return "Please enter a valid username or email.";
     }
   };
 
@@ -72,11 +72,11 @@ const LoginPage = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    const emailError = await validateEmail(formData.email);
+    const identifierError = await validateIdentifier(formData.identifier);
     const passwordError = validatePassword(formData.password);
-    if (emailError || passwordError) {
+    if (identifierError || passwordError) {
       setErrors({
-        email: emailError,
+        identifier: identifierError,
         password: passwordError,
       });
       return;
@@ -101,31 +101,32 @@ const LoginPage = () => {
         </div>
         <div className="input-container">
           <label
-            className={`input-label ${errors.email ? "error" : ""}`}
-            htmlFor="email"
+            className={`input-label ${errors.identifier ? "error" : ""}`}
+            htmlFor="identifier"
           >
-            Email
+            Email or Username
           </label>
           <i
-            className={`uil uil-envelope-alt icon-left ${
-              errors.email ? "error" : ""
+            className={`uil uil-user icon-left ${
+              errors.identifier ? "error" : ""
             }`}
           ></i>
           <input
-            placeholder="name@mail.com"
-            id="email"
-            type="email"
-            name="email"
+            placeholder="Email or Username"
+            id="identifier"
+            name="identifier"
             className={`input-field-with-icon-left ${
-              errors.email ? "error" : ""
+              errors.identifier ? "error" : ""
             }`}
-            value={formData.email}
+            value={formData.identifier}
             onChange={handleChange}
             onBlur={handleBlur}
             onFocus={handleFocus}
             autoComplete="off"
           />
-          {errors.email && <p className="error-message">{errors.email}</p>}
+          {errors.identifier && (
+            <p className="error-message">{errors.identifier}</p>
+          )}
         </div>
         <div className="input-container">
           <label
