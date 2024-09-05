@@ -1,4 +1,4 @@
-import { encode } from "../middleware/crypt.js";
+import { decode, encode } from "../middleware/crypt.js";
 import OTP from "../models/OTP.js";
 import sendEmail from "../utils/sendEmail.js";
 
@@ -49,8 +49,14 @@ export const sendEmailController = async (req, res, next) => {
 
     await sendEmail(email, email_subject, email_message);
 
-    res.json({ message: "Email sent successfully", Details: encoded });
+    res.cookie("verification_key", encoded, {
+      httpOnly: true,
+      maxAge: 10 * 3600 * 1000,
+    });
+
+    res.json({ message: "Email sent successfully" });
   } catch (err) {
+    console.log("err is ", err);
     return res.status(500).json({ message: err.message });
   }
 };
@@ -58,7 +64,9 @@ export const sendEmailController = async (req, res, next) => {
 export const verifyOTP = async (req, res) => {
   try {
     const currentDate = new Date();
-    const { verification_key, otp, check } = req.body;
+    const { otp, check } = req.body;
+
+    const verification_key = req.cookies?.verification_key;
 
     if (!verification_key || !otp || !check) {
       return res.status(400).json({ message: "Missing Credentials." });
@@ -82,6 +90,7 @@ export const verifyOTP = async (req, res) => {
           if (otp === otp_instance.otp) {
             otp_instance.verified = true;
             await otp_instance.save();
+            res.clearCookie("verification_key");
             return res.status(200).json({
               message: "OTP Matched",
               Check: check,

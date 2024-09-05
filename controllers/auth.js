@@ -42,43 +42,6 @@ export const checkAvailabilityController = async (req, res) => {
   }
 };
 
-export const verifyEmailController = async (req, res) => {
-  const { email } = req.body;
-
-  if (!email) {
-    return res.status(400).json({ message: "Email is required" });
-  }
-
-  try {
-    // Generate 6-digit OTP
-    const confirmationCode = Math.floor(
-      100000 + Math.random() * 900000
-    ).toString();
-
-    const templatePath = path.resolve(
-      __dirname,
-      "../email-templates/confirmation-code.html"
-    );
-    let html = fs.readFileSync(templatePath, "utf8");
-
-    html = html.replace(/{{email}}/g, email);
-    html = html.replace(/{{confirmationCode}}/g, confirmationCode);
-
-    // Send email
-    await sendEmail({
-      email: email,
-      subject: `${confirmationCode} is your Social code`,
-      html: html,
-    });
-
-    res.status(200).json({ message: "Email sent", confirmationCode });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: error.message, controller: verifyEmailController });
-  }
-};
-
 export const registerUserController = async (req, res) => {
   try {
     const { fullName, username, email, password, dateOfBirth } = req.body;

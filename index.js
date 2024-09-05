@@ -62,14 +62,11 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/messages", messagesRoutes);
 app.use("/api/otp", OTPRoutes);
 
-app.get("/testing/clear-cookies", (req, res) => {
-  const cookies = req.cookies;
-
-  for (const cookieName in cookies) {
-    if (cookies.hasOwnProperty(cookieName)) {
-      res.clearCookie(cookieName);
-    }
-  }
+app.get("/testing/set-cookies", (req, res) => {
+  res.cookie("verification_key", "updated new value", {
+    httpOnly: true,
+    maxAge: 10 * 60 * 1000,
+  });
 
   res.status(200).json({ message: "All cookies cleared." });
 });
