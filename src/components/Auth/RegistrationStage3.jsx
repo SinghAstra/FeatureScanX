@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 
 const RegistrationStage3 = ({ formData, onBack }) => {
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState(new Array(6).fill(""));
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
   const { fetchCurrentUser } = useContext(AuthContext);
@@ -100,14 +100,12 @@ const RegistrationStage3 = ({ formData, onBack }) => {
   return (
     <form className="auth-form-container" onSubmit={handleSubmit}>
       <img src="/secure.png" alt="secure" className="secure-icon" />
-      <div className="title-container">
-        <span className="title">Enter confirmation code</span>
-        <span className="subtitle">
-          Enter the confirmation code that we sent to {formData.email}.
-          <br />
-          <Link onClick={handleResendConfirmationCode}>Resend Code</Link>
-        </span>
-      </div>
+      <span className="title">2 Factor Authentication</span>
+      <span className="title-dialog">
+        Enter the 6 digit OTP sent to {formData.email}.
+        <br />
+        <Link onClick={handleResendConfirmationCode}>Resend Code</Link>
+      </span>
       <div className="input-container">
         <input
           className={`input-field ${errors.otp ? "error" : ""}`}
@@ -121,13 +119,37 @@ const RegistrationStage3 = ({ formData, onBack }) => {
         />
         {errors.otp && <p className="error-message">{errors.otp}</p>}
       </div>
-      <button
+      {/* <div className="otp-digits">
+        {otp.map((digit, index) => (
+          <input
+             key={index}
+            value={digit}
+            maxLength={1}
+            onChange={(e) => handleChange(e.target.value, index)}
+            onKeyUp={(e) => handleBackspaceAndEnter(e, index)}
+            ref={(reference) => (otpBoxReference.current[index] = reference)}
+            className={`otp-digit ${otpError ? "error-show" : ""}`}
+            className="otp-digit"
+          />
+         ))}
+      </div> */}
+      <div className="otp-digits">
+        {otp.map((digit, index) => (
+          <input
+            key={index}
+            className={`otp-digit ${errors.otp ? "error" : ""}`}
+            maxLength={1}
+          ></input>
+        ))}
+      </div>
+      {/* <p className={`otp-error ${otpError ? "error-show" : ""}`}>{otpError}</p> */}
+      {/* <button
         type="submit"
         className={`register-next-button ${isValid ? "" : "disabled"}`}
         disabled={!isValid}
       >
         Next
-      </button>
+      </button> */}
       <button className="back-button" onClick={onBack}>
         <i className="uil uil-angle-left"></i>
       </button>
