@@ -7,7 +7,7 @@ import useTitle from "../../hooks/useTitle";
 const RegisterPage = () => {
   const [currentStage, setCurrentStage] = useState(3);
   const [formData, setFormData] = useState({
-    email: "",
+    email: "singhisabhaypratap@gmail.com",
     fullName: "",
     username: "",
     password: "",

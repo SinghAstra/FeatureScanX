@@ -1,29 +1,29 @@
 import axios from "axios";
 import PropTypes from "prop-types";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 
 const RegistrationStage3 = ({ formData, onBack }) => {
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const [errors, setErrors] = useState({});
-  const [isValid, setIsValid] = useState(false);
   const { fetchCurrentUser } = useContext(AuthContext);
   const apiUrl = import.meta.env.VITE_API_URL;
+  const otpBoxReference = useRef([]);
 
   // Validate OTP length and content
-  const handleChange = (e) => {
-    setOtp(e.target.value);
-    if (e.target.value.length === 6 && /^\d+$/.test(e.target.value)) {
-      setIsValid(true);
-    } else {
-      setIsValid(false);
+  const handleChange = (value, index) => {
+    let newArr = [...otp];
+    newArr[index] = value;
+    setOtp(newArr);
+
+    if (value && index < 5) {
+      otpBoxReference.current[index + 1].focus();
     }
   };
 
-  const handleFocus = (e) => {
-    const { name } = e.target;
-    setErrors({ ...errors, [name]: "" });
+  const handleFocus = () => {
+    setErrors({ ...errors, otp: "" });
   };
 
   const registerUser = async () => {
@@ -40,24 +40,36 @@ const RegistrationStage3 = ({ formData, onBack }) => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const verifyOTP = async () => {
     try {
+      let otpString = "";
+      for (let i = 0; i < otp.length; i++) {
+        console.log("otp[i] is ", otp[i]);
+        otpString += otp[i].toString();
+      }
+
+      console.log("otpString is ", otpString);
+
       const response = await axios.post(
         `${apiUrl}/api/otp/verify`,
         {
-          otp: otp,
-          // check: formData.email,
-          check: "singhisabhaypratap@gmail.com",
+          otp: otpString,
+          check: formData.email,
         },
         { withCredentials: true }
       );
 
-      console.log("response.data --handleSubmit is :", response.data);
-      registerUser();
+      otpBoxReference.current.forEach((input) => {
+        input.classList.add("valid");
+      });
+
+      setTimeout(() => {
+        registerUser();
+      }, 1000);
+
+      console.log("response.data --verifyOTP is :", response.data);
     } catch (error) {
-      console.log("error --handleSubmit is :", error);
+      console.log("error --verifyOTP is :", error);
       setErrors({
         ...errors,
         otp:
@@ -72,8 +84,7 @@ const RegistrationStage3 = ({ formData, onBack }) => {
       const response = await axios.post(
         `${apiUrl}/api/otp/send-email`,
         {
-          // email: formData.email,
-          email: "singhisabhaypratap@gmail.com",
+          email: formData.email,
           type: "2FA",
         },
         { withCredentials: true }
@@ -92,68 +103,55 @@ const RegistrationStage3 = ({ formData, onBack }) => {
     document.getElementById("otp").focus();
   };
 
+  function handleBackspaceAndEnter(e, index) {
+    if (e.key === "Backspace" && !e.target.value && index > 0) {
+      otpBoxReference.current[index - 1].focus();
+    }
+    if (e.key === "Enter" && e.target.value && index < 5) {
+      otpBoxReference.current[index + 1].focus();
+    }
+  }
+
   useEffect(() => {
     sendConfirmationCode();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.email]);
 
+  useEffect(() => {
+    for (let i = 0; i < otp.length; i++) {
+      console.log("otp[i]: ", otp[i]);
+    }
+  }, [otp]);
+
   return (
-    <form className="auth-form-container" onSubmit={handleSubmit}>
+    <div className="auth-form-container">
       <img src="/secure.png" alt="secure" className="secure-icon" />
       <span className="title">2 Factor Authentication</span>
       <span className="title-dialog">
-        Enter the 6 digit OTP sent to {formData.email}.
+        OTP sent to <span className="check">{formData.email}</span>.
         <br />
         <Link onClick={handleResendConfirmationCode}>Resend Code</Link>
       </span>
-      <div className="input-container">
-        <input
-          className={`input-field ${errors.otp ? "error" : ""}`}
-          id="otp"
-          name="otp"
-          onChange={handleChange}
-          onFocus={handleFocus}
-          placeholder="OTP"
-          type="text"
-          value={otp}
-        />
-        {errors.otp && <p className="error-message">{errors.otp}</p>}
-      </div>
-      {/* <div className="otp-digits">
-        {otp.map((digit, index) => (
-          <input
-             key={index}
-            value={digit}
-            maxLength={1}
-            onChange={(e) => handleChange(e.target.value, index)}
-            onKeyUp={(e) => handleBackspaceAndEnter(e, index)}
-            ref={(reference) => (otpBoxReference.current[index] = reference)}
-            className={`otp-digit ${otpError ? "error-show" : ""}`}
-            className="otp-digit"
-          />
-         ))}
-      </div> */}
       <div className="otp-digits">
         {otp.map((digit, index) => (
           <input
             key={index}
-            className={`otp-digit ${errors.otp ? "error" : ""}`}
+            className={`otp-digit delay-${index + 1} ${
+              errors.otp ? "error" : ""
+            }`}
             maxLength={1}
+            onFocus={handleFocus}
+            onChange={(e) => handleChange(e.target.value, index)}
+            onKeyUp={(e) => handleBackspaceAndEnter(e, index)}
+            ref={(reference) => (otpBoxReference.current[index] = reference)}
           ></input>
         ))}
       </div>
-      {/* <p className={`otp-error ${otpError ? "error-show" : ""}`}>{otpError}</p> */}
-      {/* <button
-        type="submit"
-        className={`register-next-button ${isValid ? "" : "disabled"}`}
-        disabled={!isValid}
-      >
-        Next
-      </button> */}
+      {errors.otp && <p className="error-message">{errors.otp}</p>}
       <button className="back-button" onClick={onBack}>
         <i className="uil uil-angle-left"></i>
       </button>
-    </form>
+    </div>
   );
 };
 

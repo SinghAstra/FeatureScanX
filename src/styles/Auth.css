@@ -84,6 +84,10 @@
   color: var(--button-primary-color);
 }
 
+.title-dialog span {
+  font-weight: 600;
+}
+
 .subtitle {
   font-size: var(--font-size-xs);
   text-align: center;
@@ -106,6 +110,7 @@
   border: 1px solid var(--color-light-gray);
   box-shadow: var(--shadow-light);
   transition: all 0.3s ease;
+  text-align: center;
   &:focus {
     border: 1px solid black;
     outline: 2px solid transparent;
@@ -115,6 +120,36 @@
 
 .otp-digit.error {
   border: 1px solid var(--color-danger);
+  color: var(--color-danger);
+}
+
+.otp-digit.valid {
+  border: 1px solid var(--color-green);
+  color: var(--color-green);
+}
+
+.otp-digit.delay-1 {
+  transition-delay: 0s;
+}
+
+.otp-digit.delay-2 {
+  transition-delay: 0.3s;
+}
+
+.otp-digit.delay-3 {
+  transition-delay: 0.4s;
+}
+
+.otp-digit.delay-4 {
+  transition-delay: 0.5s;
+}
+
+.otp-digit.delay-5 {
+  transition-delay: 0.6s;
+}
+
+.otp-digit.delay-6 {
+  transition-delay: 0.7s;
 }
 
 .input-container {

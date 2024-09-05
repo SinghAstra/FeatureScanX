@@ -24,6 +24,7 @@
   --text-color: #ececec;
 
   --color-primary: hsl(252, 75%, 60%);
+  --color-green: rgb(61, 214, 94);
   --color-danger: hsl(0, 95%, 65%);
 
   --color-logo-bg-gradient-start: hsla(240, 6%, 97%, 0);
