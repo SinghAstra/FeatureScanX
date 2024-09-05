@@ -110,18 +110,27 @@ export const registerUserController = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { identifier, password } = req.body;
 
-    if (!email || !password) {
-      return res
-        .status(400)
-        .json({ message: "Email and password are required." });
+    if (!identifier || !password) {
+      return res.status(400).json({
+        message: "Identifier (email or username) and password are required.",
+      });
     }
 
-    const user = await User.findOne({ email: email });
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identifier);
+
+    let user;
+    if (isEmail) {
+      user = await User.findOne({ email: identifier });
+    } else {
+      user = await User.findOne({ userName: identifier });
+    }
 
     if (!user) {
-      return res.status(400).json({ message: "Email Not Registered." });
+      return res
+        .status(400)
+        .json({ message: "Identifier (email or username) not registered." });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);

@@ -66,6 +66,8 @@ export const verifyOTP = async (req, res) => {
     const currentDate = new Date();
     const { otp, check } = req.body;
 
+    console.log("otp is ", otp);
+
     const verification_key = req.cookies?.verification_key;
 
     if (!verification_key || !otp || !check) {
@@ -96,7 +98,7 @@ export const verifyOTP = async (req, res) => {
               Check: check,
             });
           } else {
-            return res.status(400).json({ message: "OTP NOT Matched" });
+            return res.status(400).json({ message: "OTP Not Matched" });
           }
         } else {
           return res.status(400).json({ message: "OTP Expired" });
