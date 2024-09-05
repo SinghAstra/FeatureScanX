@@ -4,7 +4,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 
-const RegistrationStage3 = ({ formData, onBack }) => {
+const TwoFactorAuth = ({ formData, onBack }) => {
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const [errors, setErrors] = useState({});
   const { fetchCurrentUser } = useContext(AuthContext);
@@ -40,16 +40,8 @@ const RegistrationStage3 = ({ formData, onBack }) => {
     }
   };
 
-  const verifyOTP = async () => {
+  const verifyOTP = async (otpString) => {
     try {
-      let otpString = "";
-      for (let i = 0; i < otp.length; i++) {
-        console.log("otp[i] is ", otp[i]);
-        otpString += otp[i].toString();
-      }
-
-      console.log("otpString is ", otpString);
-
       const response = await axios.post(
         `${apiUrl}/api/otp/verify`,
         {
@@ -118,8 +110,12 @@ const RegistrationStage3 = ({ formData, onBack }) => {
   }, [formData.email]);
 
   useEffect(() => {
+    let otpString = "";
     for (let i = 0; i < otp.length; i++) {
-      console.log("otp[i]: ", otp[i]);
+      otpString += otp[i].toString();
+    }
+    if (otpString.length === 6) {
+      verifyOTP(otpString);
     }
   }, [otp]);
 
@@ -155,11 +151,11 @@ const RegistrationStage3 = ({ formData, onBack }) => {
   );
 };
 
-RegistrationStage3.propTypes = {
+TwoFactorAuth.propTypes = {
   formData: PropTypes.shape({
     email: PropTypes.string.isRequired,
   }).isRequired,
   onBack: PropTypes.func.isRequired,
 };
 
-export default RegistrationStage3;
+export default TwoFactorAuth;

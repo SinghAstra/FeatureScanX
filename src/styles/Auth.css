@@ -22,6 +22,17 @@
   box-shadow: var(--shadow-strong);
 }
 
+.auth-form-container .password-logo {
+  background: yellow;
+  width: 200px;
+}
+
+.password-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .back-button {
   position: absolute;
   top: var(--position-offset-md);
@@ -209,6 +220,11 @@
   background: transparent;
   color: inherit;
   border: 1px solid var(--color-light-gray);
+  transition: all 0.2s ease-in;
+  &:focus {
+    border: 1px solid black;
+    color: black;
+  }
 }
 
 .input-field {

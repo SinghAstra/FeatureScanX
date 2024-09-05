@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 
-const RegistrationStage2 = ({ onNext, onBack, setFormData }) => {
+const DateOfBirth = ({ onNext, onBack, setFormData }) => {
   const [months] = useState([
     "January",
     "February",
@@ -159,10 +159,10 @@ const RegistrationStage2 = ({ onNext, onBack, setFormData }) => {
   );
 };
 
-RegistrationStage2.propTypes = {
+DateOfBirth.propTypes = {
   onNext: PropTypes.func.isRequired,
   onBack: PropTypes.func.isRequired,
   setFormData: PropTypes.func.isRequired,
 };
 
-export default RegistrationStage2;
+export default DateOfBirth;

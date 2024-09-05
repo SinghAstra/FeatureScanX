@@ -1,16 +1,18 @@
 import { useState } from "react";
-import RegistrationStage1 from "../../components/Auth/RegistrationStage1";
-import RegistrationStage2 from "../../components/Auth/RegistrationStage2";
-import RegistrationStage3 from "../../components/Auth/RegistrationStage3";
+import DateOfBirth from "../../components/Auth/DateOfBirth";
+import Password from "../../components/Auth/Password";
+import TwoFactorAuth from "../../components/Auth/TwoFactorAuth";
+import UserInfo from "../../components/Auth/UserInfo";
 import useTitle from "../../hooks/useTitle";
 
 const RegisterPage = () => {
-  const [currentStage, setCurrentStage] = useState(3);
+  const [currentStage, setCurrentStage] = useState(2);
   const [formData, setFormData] = useState({
-    email: "singhisabhaypratap@gmail.com",
+    email: "",
     fullName: "",
     username: "",
     password: "",
+    confirmPassword: "",
   });
 
   const handleNext = () => {
@@ -26,21 +28,24 @@ const RegisterPage = () => {
   return (
     <div className="auth-form-wrapper">
       {currentStage === 1 && (
-        <RegistrationStage1
+        <UserInfo
           formData={formData}
           setFormData={setFormData}
           onNext={handleNext}
         />
       )}
       {currentStage === 2 && (
-        <RegistrationStage2
+        <Password formData={formData} setFormData={setFormData} />
+      )}
+      {currentStage === 3 && (
+        <DateOfBirth
           onNext={handleNext}
           onBack={handleBack}
           setFormData={setFormData}
         />
       )}
-      {currentStage === 3 && (
-        <RegistrationStage3 formData={formData} onBack={handleBack} />
+      {currentStage === 4 && (
+        <TwoFactorAuth formData={formData} onBack={handleBack} />
       )}
     </div>
   );

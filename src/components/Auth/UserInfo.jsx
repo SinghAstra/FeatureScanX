@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-const RegistrationStage1 = ({ formData, setFormData, onNext }) => {
-  const [showPassword, setShowPassword] = useState(false);
+const UserInfo = ({ formData, setFormData, onNext }) => {
   const [errors, setErrors] = useState({});
   const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -25,8 +24,6 @@ const RegistrationStage1 = ({ formData, setFormData, onNext }) => {
       error = validateFullName(value);
     } else if (name === "username") {
       error = await validateUsername(value);
-    } else if (name === "password") {
-      error = validatePassword(value);
     }
     setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
   };
@@ -34,10 +31,6 @@ const RegistrationStage1 = ({ formData, setFormData, onNext }) => {
   const handleFocus = (e) => {
     const { name } = e.target;
     setErrors({ ...errors, [name]: "" });
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
   const checkEmailAvailability = async (value) => {
@@ -106,30 +99,16 @@ const RegistrationStage1 = ({ formData, setFormData, onNext }) => {
     }
   };
 
-  const validatePassword = (value) => {
-    const passwordRegex =
-      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,20}$/;
-    if (value.trim() === "") {
-      return "Password is required.";
-    } else if (passwordRegex.test(value)) {
-      return "";
-    } else {
-      return "Password must be 6-20 characters long and include at least one letter, one number, and one special character.";
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const emailError = await validateEmail(formData.email);
     const nameError = validateFullName(formData.fullName);
     const usernameError = await validateUsername(formData.username);
-    const passwordError = validatePassword(formData.password);
-    if (emailError || nameError || usernameError || passwordError) {
+    if (emailError || nameError || usernameError) {
       setErrors({
         email: emailError,
         fullName: nameError,
         username: usernameError,
-        password: passwordError,
       });
       return;
     }
@@ -229,46 +208,6 @@ const RegistrationStage1 = ({ formData, setFormData, onNext }) => {
             <p className="error-message">{errors.username}</p>
           )}
         </div>
-        <div className="input-container">
-          <label
-            className={`input-label ${errors.password ? "error" : ""}`}
-            htmlFor="password"
-          >
-            Password
-          </label>
-          {showPassword ? (
-            <i
-              className={`uil uil-eye icon-right ${
-                errors.password ? "error" : ""
-              }`}
-              onClick={togglePasswordVisibility}
-            ></i>
-          ) : (
-            <i
-              className={`uil uil-eye-slash icon-right ${
-                errors.password ? "error" : ""
-              }`}
-              onClick={togglePasswordVisibility}
-            ></i>
-          )}
-          <input
-            className={`input-field-with-icon-right ${
-              errors.password ? "error" : ""
-            }`}
-            id="password"
-            name="password"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            onFocus={handleFocus}
-            placeholder="Password"
-            type={showPassword ? "text" : "password"}
-            value={formData.password}
-            autoComplete="off"
-          />
-          {errors.password && (
-            <p className="error-message">{errors.password}</p>
-          )}
-        </div>
         <button type="submit" className="register-next-button">
           Next
         </button>
@@ -282,7 +221,7 @@ const RegistrationStage1 = ({ formData, setFormData, onNext }) => {
   );
 };
 
-RegistrationStage1.propTypes = {
+UserInfo.propTypes = {
   formData: PropTypes.shape({
     email: PropTypes.string.isRequired,
     fullName: PropTypes.string.isRequired,
@@ -293,4 +232,4 @@ RegistrationStage1.propTypes = {
   onNext: PropTypes.func.isRequired,
 };
 
-export default RegistrationStage1;
+export default UserInfo;
