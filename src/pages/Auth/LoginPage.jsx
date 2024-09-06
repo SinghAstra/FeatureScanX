@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 import useTitle from "../../hooks/useTitle";
-import "../../styles/Auth.css";
+import "../../styles/Auth/Auth.css";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -186,7 +186,9 @@ const LoginPage = () => {
           <img src="/github.png" alt="github" />
           <span>Sign In with Github</span>
         </button>
-        <p className="note">Terms of use &amp; Conditions</p>
+        <Link className="reset-password-link" to="/accounts/password/reset">
+          Forgotten Your Password ?
+        </Link>
       </form>
       <div className="auth-form-footer-container">
         <p>

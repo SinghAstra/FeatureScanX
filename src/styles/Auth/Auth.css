@@ -269,7 +269,8 @@
 .sign-in-button,
 .sign-in-with-google,
 .sign-in-with-github,
-.register-next-button {
+.register-next-button,
+.send-otp-button {
   width: var(--container-width-full);
   height: var(--height-md);
   border-radius: var(--border-radius-lg);
@@ -289,12 +290,14 @@
 .sign-in-button:active,
 .sign-in-with-google:active,
 .sign-in-with-github:active,
-.register-next-button:active {
+.register-next-button:active,
+.send-otp-button:active {
   transform: scale(var(--button-active-scale));
 }
 
 .sign-in-button,
-.register-next-button {
+.register-next-button,
+.send-otp-button {
   background: var(--button-primary-color);
   margin-top: var(--margin-md);
 }
@@ -336,12 +339,6 @@
   height: 1px;
   border: 0;
   background-color: #e8e8e8;
-}
-
-.note {
-  font-size: 0.75rem;
-  color: #8b8e98;
-  text-decoration: underline;
 }
 
 .auth-form-footer-container {
@@ -422,6 +419,13 @@
 .error-message {
   font-size: 1rem;
   font-weight: 500;
+}
+
+.reset-password-link {
+  color: var(--button-primary-color);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 @media screen and (max-width: 768px) {

@@ -18,6 +18,7 @@ import ProtectedLayout from "./Layouts/ProtectedLayout.jsx";
 import PublicLayout from "./Layouts/PublicLayout.jsx";
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
+import ResetPasswordPage from "./pages/Auth/ResetPasswordPage.jsx";
 import BookmarksPage from "./pages/BookmarksPage.jsx";
 import ExplorePage from "./pages/ExplorePage.jsx";
 import HomePage from "./pages/HomePage";
@@ -37,6 +38,10 @@ const router = createBrowserRouter(
         <Route element={<PublicLayout />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/accounts/signup" element={<RegisterPage />} />
+          <Route
+            path="/accounts/password/reset"
+            element={<ResetPasswordPage />}
+          />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Route>
       </Route>

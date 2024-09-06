@@ -36,13 +36,13 @@ const UserInfo = ({ formData, setFormData, onNext }) => {
   const checkEmailAvailability = async (value) => {
     try {
       const response = await axios.post(
-        `${apiUrl}/api/auth/check-availability`,
+        `${apiUrl}/api/auth/check-user-exists`,
         {
-          email: value,
+          identifier: value,
         }
       );
       console.log("response.data --checkEmailAvailability is ", response.data);
-      return response.data.isAvailable ? "" : "Email is already taken.";
+      return !response.data.exists ? "" : "Email is already taken.";
     } catch (error) {
       console.log("error --checkEmailAvailability is :", error);
     }
@@ -51,16 +51,16 @@ const UserInfo = ({ formData, setFormData, onNext }) => {
   const checkUsernameAvailability = async (value) => {
     try {
       const response = await axios.post(
-        `${apiUrl}/api/auth/check-availability`,
+        `${apiUrl}/api/auth/check-user-exists`,
         {
-          username: value,
+          identifier: value,
         }
       );
       console.log(
         "response.data --checkUsernameAvailability is ",
         response.data
       );
-      return response.data.isAvailable ? "" : "Username is already taken.";
+      return !response.data.exists ? "" : "Username is already taken.";
     } catch (error) {
       console.log("error --checkUsernameAvailability is :", error);
     }
