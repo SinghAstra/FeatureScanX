@@ -7,37 +7,29 @@ import User from "../models/User.js";
 import sendEmail from "../utils/sendEmail.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-// Check if email or username is taken
-export const checkAvailabilityController = async (req, res) => {
-  const { email, username } = req.body;
-
+export const checkUserExists = async (req, res) => {
   try {
-    if (!email && !username) {
-      return res
-        .status(400)
-        .json({ error: "Either email or username is required" });
+    const { identifier } = req.body;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let query = {};
+
+    if (emailRegex.test(identifier)) {
+      query = { email: identifier };
+    } else {
+      query = { username: identifier };
     }
 
-    let user;
-    if (email) {
-      user = await User.findOne({
-        email,
-      });
-    }
-    if (username) {
-      user = await User.findOne({ userName: username });
-    }
+    const user = await User.findOne(query);
 
     if (user) {
-      return res.status(200).json({ isAvailable: false });
-    } else {
-      return res.status(200).json({ isAvailable: true });
+      return res.json({ exists: true });
     }
+
+    return res.json({ exists: false });
   } catch (error) {
     return res.status(500).json({
       message: error.message,
-      controller: checkAvailabilityController,
+      controller: checkUserExists,
     });
   }
 };

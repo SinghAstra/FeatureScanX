@@ -1,7 +1,7 @@
 import express from "express";
 import upload from "../config/multer.js";
 import {
-  checkAvailabilityController,
+  checkUserExists,
   fetchUserInfoUsingJWTTokenInCookies,
   loginUser,
   registerUserController,
@@ -14,7 +14,7 @@ const router = express.Router();
 // Authentication and registration routes
 
 // Check if username and email is available
-router.post("/check-availability", checkAvailabilityController);
+router.post("/check-user-exists", checkUserExists);
 router.post("/register", registerUserController);
 router.post("/login", loginUser);
 router.post("/me", authMiddleware, fetchUserInfoUsingJWTTokenInCookies);
