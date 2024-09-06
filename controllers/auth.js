@@ -1,12 +1,11 @@
 import bcrypt from "bcrypt";
-import fs from "fs";
 import jwt from "jsonwebtoken";
 import path from "path";
 import { fileURLToPath } from "url";
 import User from "../models/User.js";
+import { html_mail, subject_mail } from "../templates/email/email_forget.js";
 import sendEmail from "../utils/sendEmail.js";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const checkUserExists = async (req, res) => {
   try {
     const { identifier } = req.body;
@@ -16,7 +15,7 @@ export const checkUserExists = async (req, res) => {
     if (emailRegex.test(identifier)) {
       query = { email: identifier };
     } else {
-      query = { username: identifier };
+      query = { userName: identifier };
     }
 
     const user = await User.findOne(query);
@@ -154,6 +153,45 @@ export const fetchUserInfoUsingJWTTokenInCookies = async (req, res) => {
   const { password, ...userInfo } = user._doc;
   res.status(200).json({ isAuthenticated: true, user: userInfo });
 };
+
+export const forgetPassword = async (req, res) => {
+  try {
+    const { identifier } = req.body;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let query = {};
+
+    if (emailRegex.test(identifier)) {
+      query = { email: identifier };
+    } else {
+      query = { userName: identifier };
+    }
+
+    const user = await User.findOne(query);
+
+    if (!user) {
+      return res.json({ exists: false });
+    }
+
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "10m",
+    });
+
+    await sendEmail(user.email, subject_mail, html_mail(token));
+
+    res.json({
+      message: "Email sent successfully",
+      token: token,
+      exists: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+      controller: forgetPassword,
+    });
+  }
+};
+
+export const resetPassword = async (req, res) => {};
 
 // Uploading Profile Picture to cloudinary
 

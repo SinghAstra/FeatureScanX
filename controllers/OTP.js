@@ -44,7 +44,7 @@ export const sendEmailController = async (req, res, next) => {
       return res.status(400).json({ message: "Incorrect type provided." });
     }
 
-    email_message = emailModule.message(otp);
+    email_message = emailModule.html_mail(otp);
     email_subject = emailModule.subject_mail;
 
     await sendEmail(email, email_subject, email_message);
