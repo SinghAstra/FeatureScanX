@@ -1,9 +1,11 @@
+import axios from "axios";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import path from "path";
 import { fileURLToPath } from "url";
 import User from "../models/User.js";
 import { html_mail, subject_mail } from "../templates/email/email_forget.js";
+import { oauth2Client } from "../utils/oauth2client.js";
 import sendEmail from "../utils/sendEmail.js";
 
 export const checkUserExists = async (req, res) => {
@@ -255,6 +257,45 @@ export const resetPassword = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ message: error.message, controller: resetPassword });
+  }
+};
+
+export const googleAuth = async (req, res) => {
+  try {
+    const code = req.query.code;
+    console.log("USER CREDENTIAL -> ", code);
+
+    const googleRes = await oauth2Client.getToken(code);
+
+    oauth2Client.setCredentials(googleRes.tokens);
+
+    console.log(
+      "googleRes.tokens.access_token is ",
+      googleRes.tokens.access_token
+    );
+
+    const userRes = await axios.get(
+      `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleRes.tokens.access_token}`
+    );
+
+    console.log("User data is ", userRes.data);
+
+    let user = await User.findOne({ email: userRes.data.email });
+    // 1. if the user with this email already exists then just log him in
+
+    if (!user) {
+      console.log("New User found");
+      // 1. send user data as response since we need more user information like username and password
+      // or should i assign random username and keep password undefined but in that case
+      // user will not be able to login with email and password right ?
+      // what do you suggest how to handle this ?
+    }
+
+    res.json({ user: userRes.data });
+
+    // createSendToken(user, 201, res);
+  } catch (error) {
+    res.status(500).json({ message: error.message, controller: googleAuth });
   }
 };
 

@@ -5,6 +5,7 @@ import {
   fetchUserInfoUsingForgotPasswordJWTToken,
   fetchUserInfoUsingJWTTokenInCookies,
   forgetPassword,
+  googleAuth,
   loginUser,
   registerUserController,
   resetPassword,
@@ -27,5 +28,6 @@ router.get(
   "/user-info-using-forget-password-token/:token",
   fetchUserInfoUsingForgotPasswordJWTToken
 );
+router.get("/google", googleAuth);
 
 export default router;
