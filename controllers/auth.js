@@ -199,7 +199,7 @@ export const fetchUserInfoUsingForgotPasswordJWTToken = async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     const user = await User.findById(decoded.userId).select(
-      "userName profilePicture"
+      "userName profilePicture fullName"
     );
 
     if (!user) {
@@ -209,13 +209,54 @@ export const fetchUserInfoUsingForgotPasswordJWTToken = async (req, res) => {
     res.json({
       userName: user.userName,
       profilePicture: user.profilePicture,
+      fullName: user.fullName,
     });
   } catch (error) {
     res.status(500).json({ message: "Invalid token or error fetching user" });
   }
 };
 
-export const resetPassword = async (req, res) => {};
+export const resetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (password.length < 8) {
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 8 characters long" });
+    }
+
+    const user = await User.findById(decoded.userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    const loginToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "72h",
+    });
+
+    res.cookie("token", loginToken, {
+      httpOnly: true,
+      maxAge: 72 * 3600 * 1000,
+    });
+
+    res.json({
+      message:
+        "Password reset successful. Please log in with your new password.",
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message, controller: resetPassword });
+  }
+};
 
 // Uploading Profile Picture to cloudinary
 
