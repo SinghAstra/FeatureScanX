@@ -182,12 +182,36 @@ export const forgetPassword = async (req, res) => {
       message: "Email sent successfully",
       token: token,
       exists: true,
+      email: user.email,
     });
   } catch (error) {
     return res.status(500).json({
       message: error.message,
       controller: forgetPassword,
     });
+  }
+};
+
+export const fetchUserInfoUsingForgotPasswordJWTToken = async (req, res) => {
+  try {
+    const { token } = req.params;
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = await User.findById(decoded.userId).select(
+      "userName profilePicture"
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({
+      userName: user.userName,
+      profilePicture: user.profilePicture,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Invalid token or error fetching user" });
   }
 };
 
