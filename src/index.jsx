@@ -16,6 +16,7 @@ import AppProvider from "./context/AppProvider.jsx";
 import "./index.css";
 import ProtectedLayout from "./Layouts/ProtectedLayout.jsx";
 import PublicLayout from "./Layouts/PublicLayout.jsx";
+import ChangePasswordPage from "./pages/Auth/ChangePasswordPage.jsx";
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
 import ResetPasswordPage from "./pages/Auth/ResetPasswordPage.jsx";
@@ -41,6 +42,10 @@ const router = createBrowserRouter(
           <Route
             path="/accounts/password/reset"
             element={<ResetPasswordPage />}
+          />
+          <Route
+            path="/accounts/password/reset/confirm/:token"
+            element={<ChangePasswordPage />}
           />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Route>

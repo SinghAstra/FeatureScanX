@@ -1,9 +1,22 @@
-import PropTypes from "prop-types";
-import { useState } from "react";
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import AuthContext from "../../context/AuthContext.jsx";
 import CorrectIcon from "../../icons/CorrectIcon";
 import WrongIcon from "../../icons/WrongIcon";
+import SplashScreen from "../../Skeleton/SplashScreen.jsx";
+import "../../styles/Auth/ChangePasswordPage.css";
 
-const Password = ({ formData, setFormData, onNext }) => {
+const ChangePasswordPage = () => {
+  const { token } = useParams();
+  const [user, setUser] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const [formData, setFormData] = useState({
+    password: "",
+    confirmPassword: "",
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({
@@ -13,6 +26,7 @@ const Password = ({ formData, setFormData, onNext }) => {
     specialCharacterValidation: false,
   });
   const [passwordsMatchError, setPasswordsMatchError] = useState(false);
+  const { fetchCurrentUser } = useContext(AuthContext);
 
   const isPasswordValid =
     errors.minValueValidation &&
@@ -69,25 +83,72 @@ const Password = ({ formData, setFormData, onNext }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     validatePasswordMatch();
     if (isPasswordValid && passwordsMatchError === "") {
-      onNext();
+      try {
+        const response = await axios.post(
+          `${apiUrl}/api/auth/reset-password/${token}`,
+          {
+            password: formData.password,
+          },
+          {
+            withCredentials: true,
+          }
+        );
+        fetchCurrentUser();
+        console.log("response.data --handleSubmit is ", response.data);
+      } catch (error) {
+        console.log("error --handleSubmit is :", error);
+      }
     }
   };
 
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.get(
+          `${apiUrl}/api/auth/user-info-using-forget-password-token/${token}`
+        );
+        setUser(response.data);
+      } catch (err) {
+        console.log("error --fetchUserInfo:", err);
+        setError("Invalid token or user not found");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserInfo();
+  }, [apiUrl, token]);
+
+  if (loading) {
+    return <SplashScreen />;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
     <form className="auth-form-container" onSubmit={handleSubmit}>
-      <div className="logo-container">
-        <img src="/social.png" alt="logo" />
-      </div>
+      {user.profilePicture ? (
+        <img
+          src={user.profilePicture}
+          alt={user.userName}
+          className="user-avatar"
+        />
+      ) : (
+        <span className="user-avatar">{user.fullName[0]}</span>
+      )}
+      <span className="title">{user.userName}</span>
       <div className="input-container">
         <label
           className={`input-label ${errors.password ? "error" : ""}`}
           htmlFor="password"
         >
-          Password
+          New Password
         </label>
         {showPassword ? (
           <i
@@ -111,7 +172,7 @@ const Password = ({ formData, setFormData, onNext }) => {
           id="password"
           name="password"
           onChange={handleChange}
-          placeholder="Password"
+          placeholder="New Password"
           type={showPassword ? "text" : "password"}
           value={formData.password}
           autoComplete="off"
@@ -150,7 +211,7 @@ const Password = ({ formData, setFormData, onNext }) => {
             className={`input-label ${passwordsMatchError ? "error" : ""}`}
             htmlFor="confirmPassword"
           >
-            Confirm Password
+            Confirm New Password
           </label>
           {showConfirmPassword ? (
             <i
@@ -176,7 +237,7 @@ const Password = ({ formData, setFormData, onNext }) => {
             onChange={handleChange}
             onBlur={handleBlur}
             onFocus={handleFocus}
-            placeholder="Confirm Password"
+            placeholder="Confirm New Password"
             type={showConfirmPassword ? "text" : "password"}
             value={formData.confirmPassword}
             autoComplete="off"
@@ -186,22 +247,11 @@ const Password = ({ formData, setFormData, onNext }) => {
           )}
         </div>
       )}
-      {isPasswordValid && (
-        <button type="submit" className="register-next-button">
-          Next
-        </button>
-      )}
+      <button type="submit" className="change-password-button">
+        Change Password
+      </button>
     </form>
   );
 };
 
-Password.propTypes = {
-  formData: PropTypes.shape({
-    password: PropTypes.string.isRequired,
-    confirmPassword: PropTypes.string.isRequired,
-  }).isRequired,
-  setFormData: PropTypes.func.isRequired,
-  onNext: PropTypes.func.isRequired,
-};
-
-export default Password;
+export default ChangePasswordPage;
