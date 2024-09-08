@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import { ToastContext } from "../../context/ToastContext";
 import useTitle from "../../hooks/useTitle";
 import "../../styles/Auth/ResetPasswordPage.css";
@@ -79,46 +80,61 @@ const ResetPasswordPage = () => {
   useTitle("Reset Password • Social UI");
 
   return (
-    <form className="auth-form-container" onSubmit={handleSubmit}>
-      <img src="/secure.png" alt="secure" className="secure-icon" />
-      <span className="title">Trouble with logging in ?</span>
-      <span className="subtitle">
-        Enter your email address or username, and we&apos;ll send you a OTP to
-        get back into your account.
-      </span>
-      <div className="input-container">
-        <label
-          className={`input-label ${errors.identifier ? "error" : ""}`}
-          htmlFor="identifier"
-        >
-          Email or Username
-        </label>
-        <i
-          className={`uil uil-user icon-left ${
-            errors.identifier ? "error" : ""
-          }`}
-        ></i>
-        <input
-          placeholder="Email or Username"
-          id="identifier"
-          name="identifier"
-          className={`input-field-with-icon-left ${
-            errors.identifier ? "error" : ""
-          }`}
-          value={formData.identifier}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          onFocus={handleFocus}
-          autoComplete="off"
-        />
-        {errors.identifier && (
-          <p className="error-message">{errors.identifier}</p>
-        )}
+    <div className="auth-form-wrapper">
+      <form className="auth-form-container" onSubmit={handleSubmit}>
+        <img src="/secure.png" alt="secure" className="secure-icon" />
+        <span className="title">Trouble with logging in ?</span>
+        <span className="subtitle">
+          Enter your email address or username, and we&apos;ll send you a OTP to
+          get back into your account.
+        </span>
+        <div className="input-container">
+          <label
+            className={`input-label ${errors.identifier ? "error" : ""}`}
+            htmlFor="identifier"
+          >
+            Email or Username
+          </label>
+          <i
+            className={`uil uil-user icon-left ${
+              errors.identifier ? "error" : ""
+            }`}
+          ></i>
+          <input
+            placeholder="Email or Username"
+            id="identifier"
+            name="identifier"
+            className={`input-field-with-icon-left ${
+              errors.identifier ? "error" : ""
+            }`}
+            value={formData.identifier}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            onFocus={handleFocus}
+            autoComplete="off"
+          />
+          {errors.identifier && (
+            <p className="error-message">{errors.identifier}</p>
+          )}
+        </div>
+        <button type="submit" className="send-otp-button">
+          Send Login Link
+        </button>
+        <div className="separator">
+          <hr className="line" />
+          <span>Or</span>
+          <hr className="line" />
+        </div>
+        <Link className="create-new-account-link" to="/accounts/signup">
+          Create New Account
+        </Link>
+      </form>
+      <div className="auth-form-footer-container">
+        <p>
+          <Link to={"/login"}>Back to Login</Link>
+        </p>
       </div>
-      <button type="submit" className="send-otp-button">
-        Send Login Link
-      </button>
-    </form>
+    </div>
   );
 };
 
