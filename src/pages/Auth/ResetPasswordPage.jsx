@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useState } from "react";
-import Toast from "../../components/Toast/Toast";
+import { useContext, useState } from "react";
+import { ToastContext } from "../../context/ToastContext";
 import useTitle from "../../hooks/useTitle";
 import "../../styles/Auth/ResetPasswordPage.css";
 
@@ -9,7 +9,7 @@ const ResetPasswordPage = () => {
     identifier: "",
   });
   const apiUrl = import.meta.env.VITE_API_URL;
-
+  const { showToast } = useContext(ToastContext);
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -61,15 +61,18 @@ const ResetPasswordPage = () => {
         identifier: formData.identifier,
       });
 
+      console.log("response.data --sendRecoverAccountOTP is ", response.data);
+
       if (response.data.exists) {
-        console.log("User exists, proceed with OTP sending");
-        // i want to show the toast when the mail is sent
+        showToast(
+          `We've sent an email to ${response.data.email} with a link to get back into your account.`
+        );
       } else {
-        setErrors({ identifier: "User does not exist." });
+        setErrors({ identifier: "No User Found." });
       }
     } catch (error) {
       setErrors({ identifier: "An error occurred. Please try again." });
-      console.log("Error checking if user exists: ", error);
+      console.log("error --sendRecoverAccountOTP is ", error);
     }
   };
 
@@ -77,7 +80,6 @@ const ResetPasswordPage = () => {
 
   return (
     <form className="auth-form-container" onSubmit={handleSubmit}>
-      <Toast />
       <img src="/secure.png" alt="secure" className="secure-icon" />
       <span className="title">Trouble with logging in ?</span>
       <span className="subtitle">
