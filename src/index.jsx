@@ -1,3 +1,4 @@
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { createRoot } from "react-dom/client";
 import {
   createBrowserRouter,
@@ -17,6 +18,7 @@ import "./index.css";
 import ProtectedLayout from "./Layouts/ProtectedLayout.jsx";
 import PublicLayout from "./Layouts/PublicLayout.jsx";
 import ChangePasswordPage from "./pages/Auth/ChangePasswordPage.jsx";
+import CompleteRegistrationPage from "./pages/Auth/CompleteRegistrationPage.jsx";
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
 import ResetPasswordPage from "./pages/Auth/ResetPasswordPage.jsx";
@@ -31,6 +33,7 @@ import ProfilePage from "./pages/ProfilePage";
 import ReelsPage from "./pages/ReelsPage.jsx";
 import SearchPage from "./pages/SearchPage.jsx";
 import StartChat from "./placeholders/Messages/StartChat.jsx";
+const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -39,6 +42,10 @@ const router = createBrowserRouter(
         <Route element={<PublicLayout />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/accounts/signup" element={<RegisterPage />} />
+          <Route
+            path="/accounts/complete-registration"
+            element={<CompleteRegistrationPage />}
+          />
           <Route
             path="/accounts/password/reset"
             element={<ResetPasswordPage />}
@@ -76,7 +83,9 @@ const router = createBrowserRouter(
 );
 
 createRoot(document.getElementById("root")).render(
-  <AppProvider>
-    <RouterProvider router={router} />
-  </AppProvider>
+  <GoogleOAuthProvider clientId={googleClientId}>
+    <AppProvider>
+      <RouterProvider router={router} />
+    </AppProvider>
+  </GoogleOAuthProvider>
 );

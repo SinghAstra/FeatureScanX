@@ -1,6 +1,7 @@
+import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 import useTitle from "../../hooks/useTitle";
 import "../../styles/Auth/Auth.css";
@@ -14,6 +15,7 @@ const LoginPage = () => {
   });
   const [errors, setErrors] = useState({});
   const apiUrl = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -83,6 +85,37 @@ const LoginPage = () => {
     }
     handleLogin();
   };
+
+  const responseGoogle = async (authResult) => {
+    try {
+      if (authResult["code"]) {
+        const response = await axios.get(
+          `${apiUrl}/api/auth/google?code=${authResult.code}`,
+          { withCredentials: true }
+        );
+        console.log("response.data --responseGoogle is ", response.data);
+        const userExists = response.data.userExists;
+
+        if (userExists) {
+          fetchCurrentUser();
+        } else {
+          navigate("/accounts/complete-registration", {
+            state: { userData: response.data.userData },
+          });
+        }
+      } else {
+        throw new Error(authResult);
+      }
+    } catch (error) {
+      console.log("error --responseGoogle is ", error);
+    }
+  };
+
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: responseGoogle,
+    onError: responseGoogle,
+    flow: "auth-code",
+  });
 
   useTitle("Log In • Social UI");
 
@@ -175,10 +208,7 @@ const LoginPage = () => {
           <span>Or</span>
           <hr className="line" />
         </div>
-        <button
-          className="sign-in-with-google"
-          onClick={() => console.log("Hey")}
-        >
+        <button className="sign-in-with-google" onClick={handleGoogleLogin}>
           <img src="/google.png" alt="google" />
           <span>Sign In with Google</span>
         </button>
