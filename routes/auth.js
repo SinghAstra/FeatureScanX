@@ -1,3 +1,5 @@
+import axios from "axios";
+import dotenv from "dotenv";
 import express from "express";
 import upload from "../config/multer.js";
 import {
@@ -5,6 +7,7 @@ import {
   fetchUserInfoUsingForgotPasswordJWTToken,
   fetchUserInfoUsingJWTTokenInCookies,
   forgetPassword,
+  githubAuth,
   googleAuth,
   loginUser,
   registerUserController,
@@ -14,7 +17,7 @@ import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
 
-// Authentication and registration routes
+dotenv.config();
 
 // Check if username and email is available
 router.post("/check-user-exists", checkUserExists);
@@ -29,5 +32,6 @@ router.get(
   fetchUserInfoUsingForgotPasswordJWTToken
 );
 router.get("/google", googleAuth);
+router.get("/github", githubAuth);
 
 export default router;

@@ -1,8 +1,6 @@
 import axios from "axios";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import path from "path";
-import { fileURLToPath } from "url";
 import User from "../models/User.js";
 import { html_mail, subject_mail } from "../templates/email/email_forget.js";
 import { oauth2Client } from "../utils/oauth2client.js";
@@ -37,10 +35,26 @@ export const checkUserExists = async (req, res) => {
 
 export const registerUserController = async (req, res) => {
   try {
-    const { fullName, username, email, password, dateOfBirth } = req.body;
+    let {
+      fullName,
+      username,
+      email,
+      password,
+      dateOfBirth,
+      profilePicture,
+      bio,
+    } = req.body;
 
-    if (!fullName || !username || !email || !password || !dateOfBirth) {
-      return res.status(400).json({ message: "All fields are required" });
+    if (!fullName || !username || !email || !password) {
+      return res.status(400).json({ message: "Missing fields" });
+    }
+
+    if (dateOfBirth) {
+      dateOfBirth = new Date(
+        dateOfBirth.year,
+        dateOfBirth.month - 1,
+        dateOfBirth.day
+      );
     }
 
     // Check if a user with the provided email already exists
@@ -64,13 +78,11 @@ export const registerUserController = async (req, res) => {
     const newUser = new User({
       fullName,
       userName: username,
-      email: email,
+      email,
       password: hashedPassword,
-      dateOfBirth: new Date(
-        dateOfBirth.year,
-        dateOfBirth.month - 1,
-        dateOfBirth.day
-      ),
+      dateOfBirth,
+      profilePicture,
+      bio,
     });
 
     // Save the user to the database
@@ -138,7 +150,7 @@ export const loginUser = async (req, res) => {
       httpOnly: true,
       maxAge: 72 * 3600 * 1000,
     });
-    console.log("Logged in successfully");
+
     res.status(200).json({ message: "Logged In Successfully." });
   } catch (err) {
     res.status(500).json({ message: "Internal Server Error - LogIn User." });
@@ -263,39 +275,94 @@ export const resetPassword = async (req, res) => {
 export const googleAuth = async (req, res) => {
   try {
     const code = req.query.code;
-    console.log("USER CREDENTIAL -> ", code);
+    const googleResponse = await oauth2Client.getToken(code);
 
-    const googleRes = await oauth2Client.getToken(code);
+    oauth2Client.setCredentials(googleResponse.tokens);
 
-    oauth2Client.setCredentials(googleRes.tokens);
-
-    console.log(
-      "googleRes.tokens.access_token is ",
-      googleRes.tokens.access_token
+    const userResponse = await axios.get(
+      `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleResponse.tokens.access_token}`
     );
 
-    const userRes = await axios.get(
-      `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleRes.tokens.access_token}`
-    );
-
-    console.log("User data is ", userRes.data);
-
-    let user = await User.findOne({ email: userRes.data.email });
-    // 1. if the user with this email already exists then just log him in
+    let user = await User.findOne({ email: userResponse.data.email });
 
     if (!user) {
-      console.log("New User found");
-      // 1. send user data as response since we need more user information like username and password
-      // or should i assign random username and keep password undefined but in that case
-      // user will not be able to login with email and password right ?
-      // what do you suggest how to handle this ?
+      return res.json({ userData: userResponse.data, userExists: false });
     }
 
-    res.json({ user: userRes.data });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "72h",
+    });
 
-    // createSendToken(user, 201, res);
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 72 * 3600 * 1000,
+    });
+
+    return res.json({ userExists: true });
   } catch (error) {
     res.status(500).json({ message: error.message, controller: googleAuth });
+  }
+};
+
+export const githubAuth = async (req, res) => {
+  const code = req.query.code;
+  const clientSecret = process.env.GITHUB_CLIENT_SECRET;
+  const clientID = process.env.GITHUB_CLIENT_ID;
+  const redirectURI = process.env.GITHUB_REDIRECT_URI;
+
+  try {
+    const githubResponse = await axios.post(
+      "https://github.com/login/oauth/access_token",
+      {
+        client_id: clientID,
+        client_secret: clientSecret,
+        code: code,
+        redirect_uri: redirectURI,
+      },
+      {
+        headers: {
+          accept: "application/json",
+        },
+      }
+    );
+
+    const accessToken = githubResponse.data.access_token;
+
+    const userResponse = await axios.get("https://api.github.com/user", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const userData = userResponse.data;
+
+    let user = await User.findOne({ email: userData.email });
+
+    if (!user) {
+      return res.json({
+        userData: {
+          email: userData.email,
+          profilePicture: userData.avatar_url,
+          bio: userData.bio,
+          fullName: userData.name,
+          userName: userData.login,
+        },
+        userExists: false,
+      });
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "72h",
+    });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 72 * 3600 * 1000,
+    });
+
+    return res.json({ userExists: true });
+  } catch (error) {
+    res.status(500).json({ message: error.message, controller: githubAuth });
   }
 };
 
