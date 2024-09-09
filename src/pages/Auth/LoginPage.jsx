@@ -93,8 +93,10 @@ const LoginPage = () => {
           `${apiUrl}/api/auth/google?code=${authResult.code}`,
           { withCredentials: true }
         );
-        console.log("response.data --responseGoogle is ", response.data);
+        console.log("response --responseGoogle is ", response);
         const userExists = response.data.userExists;
+
+        console.log("response.data.userData is ", response.data.userData);
 
         if (userExists) {
           fetchCurrentUser();
@@ -121,7 +123,7 @@ const LoginPage = () => {
 
   return (
     <div className="auth-form-wrapper">
-      <form className="auth-form-container" onSubmit={handleFormSubmit}>
+      <div className="auth-form-container">
         <div className="logo-container">
           <img src="/social.png" alt="logo" />
         </div>
@@ -132,77 +134,79 @@ const LoginPage = () => {
             friends, explore new content, and stay updated.
           </span>
         </div>
-        <div className="input-container">
-          <label
-            className={`input-label ${errors.identifier ? "error" : ""}`}
-            htmlFor="identifier"
-          >
-            Email or Username
-          </label>
-          <i
-            className={`uil uil-user icon-left ${
-              errors.identifier ? "error" : ""
-            }`}
-          ></i>
-          <input
-            placeholder="Email or Username"
-            id="identifier"
-            name="identifier"
-            className={`input-field-with-icon-left ${
-              errors.identifier ? "error" : ""
-            }`}
-            value={formData.identifier}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            onFocus={handleFocus}
-            autoComplete="off"
-          />
-          {errors.identifier && (
-            <p className="error-message">{errors.identifier}</p>
-          )}
-        </div>
-        <div className="input-container">
-          <label
-            className={`input-label ${errors.password ? "error" : ""}`}
-            htmlFor="password"
-          >
-            Password
-          </label>
-          {showPassword ? (
+        <form className="login-form" onSubmit={handleFormSubmit}>
+          <div className="input-container">
+            <label
+              className={`input-label ${errors.identifier ? "error" : ""}`}
+              htmlFor="identifier"
+            >
+              Email or Username
+            </label>
             <i
-              className={`uil uil-eye icon-right ${
+              className={`uil uil-user icon-left ${
+                errors.identifier ? "error" : ""
+              }`}
+            ></i>
+            <input
+              placeholder="Email or Username"
+              id="identifier"
+              name="identifier"
+              className={`input-field-with-icon-left ${
+                errors.identifier ? "error" : ""
+              }`}
+              value={formData.identifier}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              onFocus={handleFocus}
+              autoComplete="off"
+            />
+            {errors.identifier && (
+              <p className="error-message">{errors.identifier}</p>
+            )}
+          </div>
+          <div className="input-container">
+            <label
+              className={`input-label ${errors.password ? "error" : ""}`}
+              htmlFor="password"
+            >
+              Password
+            </label>
+            {showPassword ? (
+              <i
+                className={`uil uil-eye icon-right ${
+                  errors.password ? "error" : ""
+                }`}
+                onClick={togglePasswordVisibility}
+              ></i>
+            ) : (
+              <i
+                className={`uil uil-eye-slash icon-right ${
+                  errors.password ? "error" : ""
+                }`}
+                onClick={togglePasswordVisibility}
+              ></i>
+            )}
+            <input
+              placeholder="Password"
+              id="password"
+              name="password"
+              type={showPassword ? "text" : "password"}
+              className={`input-field input-field-with-icon-right ${
                 errors.password ? "error" : ""
               }`}
-              onClick={togglePasswordVisibility}
-            ></i>
-          ) : (
-            <i
-              className={`uil uil-eye-slash icon-right ${
-                errors.password ? "error" : ""
-              }`}
-              onClick={togglePasswordVisibility}
-            ></i>
-          )}
-          <input
-            placeholder="Password"
-            id="password"
-            name="password"
-            type={showPassword ? "text" : "password"}
-            className={`input-field input-field-with-icon-right ${
-              errors.password ? "error" : ""
-            }`}
-            value={formData.password}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            onFocus={handleFocus}
-          />
-          {errors.password && (
-            <p className="error-message">{errors.password}</p>
-          )}
-        </div>
-        <button type="submit" className="sign-in-button">
-          <span>Sign In</span>
-        </button>
+              value={formData.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              onFocus={handleFocus}
+            />
+            {errors.password && (
+              <p className="error-message">{errors.password}</p>
+            )}
+          </div>
+          <button type="submit" className="sign-in-button">
+            <span>Sign In</span>
+          </button>
+        </form>
         <div className="separator">
           <hr className="line" />
           <span>Or</span>
@@ -219,7 +223,7 @@ const LoginPage = () => {
         <Link className="reset-password-link" to="/accounts/password/reset">
           Forgotten Your Password ?
         </Link>
-      </form>
+      </div>
       <div className="auth-form-footer-container">
         <p>
           Don&#039; t have an account ?{" "}

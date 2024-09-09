@@ -3,7 +3,7 @@ import { useState } from "react";
 import CorrectIcon from "../../icons/CorrectIcon";
 import WrongIcon from "../../icons/WrongIcon";
 
-const Password = ({ formData, setFormData, onNext }) => {
+const Password = ({ formData, setFormData, onBack, onNext }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({
@@ -191,6 +191,9 @@ const Password = ({ formData, setFormData, onNext }) => {
           Next
         </button>
       )}
+      <button className="back-button" onClick={onBack}>
+        <i className="uil uil-angle-left"></i>
+      </button>
     </form>
   );
 };

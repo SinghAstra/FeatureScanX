@@ -38,6 +38,7 @@ const RegisterPage = () => {
         <Password
           formData={formData}
           setFormData={setFormData}
+          onBack={handleBack}
           onNext={handleNext}
         />
       )}
