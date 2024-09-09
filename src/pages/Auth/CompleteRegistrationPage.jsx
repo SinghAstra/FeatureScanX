@@ -9,12 +9,13 @@ const CompleteRegistrationPage = () => {
   const navigate = useNavigate();
   const { userData } = location.state;
   const [formData, setFormData] = useState({
-    username: "",
+    username: userData?.userName,
     password: "",
     email: userData?.email,
-    fullName: userData?.name,
-    profilePicture: userData?.picture,
+    fullName: userData?.fullName,
+    profilePicture: userData?.profilePicture,
     confirmPassword: "",
+    bio: userData?.bio,
   });
 
   const handleNext = () => {

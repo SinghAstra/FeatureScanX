@@ -2,6 +2,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import GithubOAuth from "../../components/Auth/GithubOAuth";
 import AuthContext from "../../context/AuthContext";
 import useTitle from "../../hooks/useTitle";
 import "../../styles/Auth/Auth.css";
@@ -16,6 +17,9 @@ const LoginPage = () => {
   const [errors, setErrors] = useState({});
   const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
+  const urlParams = new URLSearchParams(window.location.search);
+  const code = urlParams.get("code");
+  console.log("code is ", code);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -93,10 +97,8 @@ const LoginPage = () => {
           `${apiUrl}/api/auth/google?code=${authResult.code}`,
           { withCredentials: true }
         );
-        console.log("response --responseGoogle is ", response);
+        console.log("response.data --responseGoogle is ", response.data);
         const userExists = response.data.userExists;
-
-        console.log("response.data.userData is ", response.data.userData);
 
         if (userExists) {
           fetchCurrentUser();
@@ -216,10 +218,7 @@ const LoginPage = () => {
           <img src="/google.png" alt="google" />
           <span>Sign In with Google</span>
         </button>
-        <button className="sign-in-with-github">
-          <img src="/github.png" alt="github" />
-          <span>Sign In with Github</span>
-        </button>
+        <GithubOAuth />
         <Link className="reset-password-link" to="/accounts/password/reset">
           Forgotten Your Password ?
         </Link>
