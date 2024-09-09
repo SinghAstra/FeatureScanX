@@ -14,9 +14,8 @@ const CompleteRegistrationPage = () => {
     email: userData?.email,
     fullName: userData?.name,
     profilePicture: userData?.picture,
+    confirmPassword: "",
   });
-
-  console.log("formData is ", formData);
 
   const handleNext = () => {
     setCurrentStage(currentStage + 1);
@@ -46,7 +45,6 @@ const CompleteRegistrationPage = () => {
           formData={formData}
           setFormData={setFormData}
           onBack={handleBack}
-          onNext={handleNext}
         />
       )}
     </div>

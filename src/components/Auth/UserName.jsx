@@ -1,11 +1,10 @@
 import axios from "axios";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
+import { useState } from "react";
 
 const UserName = ({ formData, setFormData, onNext }) => {
   const [errors, setErrors] = useState({});
   const apiUrl = import.meta.env.VITE_API_URL;
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -60,6 +59,14 @@ const UserName = ({ formData, setFormData, onNext }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const usernameError = await validateUsername(formData.username);
+    if (usernameError) {
+      setErrors({
+        username: usernameError,
+      });
+      return;
+    }
+    onNext();
   };
 
   return (
@@ -104,6 +111,16 @@ const UserName = ({ formData, setFormData, onNext }) => {
       </button>
     </form>
   );
+};
+
+UserName.propTypes = {
+  formData: PropTypes.shape({
+    username: PropTypes.string,
+    fullName: PropTypes.string,
+    profilePicture: PropTypes.string,
+  }).isRequired,
+  setFormData: PropTypes.func.isRequired,
+  onNext: PropTypes.func.isRequired,
 };
 
 export default UserName;
