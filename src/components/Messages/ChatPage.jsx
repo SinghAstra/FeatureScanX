@@ -64,6 +64,8 @@ const ChatPage = () => {
       );
 
       console.log("response.data --handleSendMessage is :", response.data);
+      setMessages([...messages, response.data.message]);
+      console.log("messages is ", messages);
       setMessage("");
     } catch (error) {
       console.log("error --handleSendMessage is :", error);
@@ -107,8 +109,3 @@ const ChatPage = () => {
 };
 
 export default ChatPage;
-
-// messages should be maintained in this component
-// so that we can add a message when a new message is added
-// and also we can add a new message when a new message is received from socket
-// right ?

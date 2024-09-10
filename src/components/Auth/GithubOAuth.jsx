@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthContext from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 
 const GITHUB_CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID;
 const GITHUB_REDIRECT_URI = import.meta.env.VITE_GITHUB_REDIRECT_URI;

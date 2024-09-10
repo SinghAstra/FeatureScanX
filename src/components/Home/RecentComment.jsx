@@ -2,7 +2,7 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import AuthContext from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 
 const RecentComment = ({ comment }) => {
   const { currentUser } = useContext(AuthContext);

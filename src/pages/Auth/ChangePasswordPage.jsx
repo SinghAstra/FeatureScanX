@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import AuthContext from "../../context/AuthContext.jsx";
+import { AuthContext } from "../../context/AuthContext.jsx";
 import CorrectIcon from "../../icons/CorrectIcon";
 import WrongIcon from "../../icons/WrongIcon";
 import SplashScreen from "../../Skeleton/SplashScreen.jsx";

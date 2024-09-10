@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import AuthContext from "../../context/AuthContext";
 import SplashScreen from "../../Skeleton/SplashScreen";
+import { AuthContext } from "../../context/AuthContext";
 
 const ProtectedRoute = () => {
   const { isAuthenticated, isAuthenticating } = useContext(AuthContext);

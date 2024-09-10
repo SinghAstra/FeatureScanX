@@ -2,7 +2,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate, useParams } from "react-router-dom";
 import FollowersFollowingHashTagModal from "../components/FollowersFollowingHashTag/FollowersFollowingHashTagModal";
-import AuthContext from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import ProfilePageSkeleton from "../Skeleton/ProfilePageSkeleton";
 import "../styles/ProfilePage.css";
 import PageNotFound from "./PageNotFound";

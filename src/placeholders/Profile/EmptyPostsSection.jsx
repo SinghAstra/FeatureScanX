@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import CreatePostModal from "../../components/CreatePost/CreatePostModal";
-import AuthContext from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import "../../styles/EmptySectionPosts.css";
 const EmptyPostsSection = ({ username }) => {
   const { currentUser } = useContext(AuthContext);

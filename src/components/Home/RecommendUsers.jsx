@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import AuthContext from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import RecommendUsersSkeleton from "../../Skeleton/Home/RecommendUsersSkeleton";
 import UserItem from "./UserItem";
 

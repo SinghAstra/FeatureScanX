@@ -1,7 +1,7 @@
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useContext, useState } from "react";
-import AuthContext from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import CorrectIcon from "../../icons/CorrectIcon";
 import WrongIcon from "../../icons/WrongIcon";
 

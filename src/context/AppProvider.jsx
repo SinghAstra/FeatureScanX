@@ -1,15 +1,18 @@
 import PropTypes from "prop-types";
 import { AuthProvider } from "./AuthContext";
+import { SocketProvider } from "./SocketContext";
 import { ThemeProvider } from "./ThemeContext";
 import { ToastProvider } from "./ToastContext";
 
 const AppProvider = ({ children }) => {
   return (
-    <AuthProvider>
-      <ThemeProvider>
-        <ToastProvider>{children}</ToastProvider>
-      </ThemeProvider>
-    </AuthProvider>
+    <SocketProvider>
+      <AuthProvider>
+        <ThemeProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </ThemeProvider>
+      </AuthProvider>
+    </SocketProvider>
   );
 };
 

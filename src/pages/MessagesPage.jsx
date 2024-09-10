@@ -1,26 +1,20 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import { io } from "socket.io-client";
 import MessageList from "../components/Messages/MessageList";
-import AuthContext from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
+import { SocketContext } from "../context/SocketContext";
 import "../styles/Messages/MessagePage.css";
 
 const MessagePage = () => {
-  const socket = useRef(null);
-  const SOCKET_ENDPOINT = import.meta.env.VITE_SOCKET_ENDPOINT;
   const { currentUser } = useContext(AuthContext);
+  const { socket } = useContext(SocketContext);
 
   useEffect(() => {
-    socket.current = io(SOCKET_ENDPOINT);
-    socket.current.emit("addOnlineUser", currentUser._id);
-    socket.current.on("getOnlineUsers", (onlineUsers) => {
+    socket.emit("addOnlineUser", currentUser._id);
+    socket.on("getOnlineUsers", (onlineUsers) => {
       console.log("onlineUsers are", JSON.stringify(onlineUsers));
     });
-
-    return () => {
-      socket.current.disconnect();
-    };
-  }, []);
+  }, [currentUser._id, socket]);
 
   return (
     <div className="messages-page-container">

@@ -1,14 +1,15 @@
 import axios from "axios";
 import PropTypes from "prop-types";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import AuthContext from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import ChatSectionSkeleton from "../../Skeleton/Messages/ChatSectionSkeleton";
 import "../../styles/Messages/ChatSection.css";
 
 const ChatSection = ({ receiver, chatId, messages, setMessages }) => {
   const { currentUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
+  const scrollRef = useRef(null);
   const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
@@ -30,9 +31,9 @@ const ChatSection = ({ receiver, chatId, messages, setMessages }) => {
     }
   }, [chatId, apiUrl, setMessages]);
 
-  // useEffect(() => {
-  //   scrollToBottom();
-  // }, [messages]);
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   if (loading) {
     return <ChatSectionSkeleton />;
@@ -102,6 +103,7 @@ const ChatSection = ({ receiver, chatId, messages, setMessages }) => {
           );
         })}
       </div>
+      <div ref={scrollRef}></div>
     </div>
   );
 };

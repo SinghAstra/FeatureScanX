@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import AuthContext from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import "../styles/Sidebar.css";
 import CreatePostModal from "./CreatePost/CreatePostModal";
 
