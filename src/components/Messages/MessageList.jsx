@@ -11,12 +11,9 @@ const MessageList = () => {
   useEffect(() => {
     const fetchChats = async () => {
       try {
-        const response = await axios.get(
-          `${apiUrl}/api/chat/get-all-user-chats`,
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await axios.get(`${apiUrl}/api/chat/chatList`, {
+          withCredentials: true,
+        });
         setChats(response.data.chats);
         console.log("response.data --fetchChats is ", response.data);
       } catch (error) {
@@ -34,7 +31,7 @@ const MessageList = () => {
       <div className="message-list">
         <div className="message-list-header">
           <h2>Messages</h2>
-          <p>Requests</p>
+          {/* <p>Requests</p> */}
         </div>
       </div>
     );
@@ -45,7 +42,7 @@ const MessageList = () => {
       <div className="message-list">
         <div className="message-list-header">
           <h2>Messages</h2>
-          <p>Requests</p>
+          {/* <p>Requests</p> */}
         </div>
         <div className="message-empty-list">
           <img src="/chat.png" alt="chat" />
@@ -59,7 +56,7 @@ const MessageList = () => {
     <div className="message-list">
       <div className="message-list-header">
         <h2>Messages</h2>
-        <p>Requests</p>
+        {/* <p>Requests</p> */}
       </div>
       <div className="message-list-content">
         {chats.map((chat) => (

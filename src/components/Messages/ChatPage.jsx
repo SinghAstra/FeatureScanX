@@ -12,6 +12,7 @@ const ChatPage = () => {
   const [loadingChat, setLoadingChat] = useState(true);
   const apiUrl = import.meta.env.VITE_API_URL;
   const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     const receiverName = chatSlug.substring(1);
@@ -75,7 +76,12 @@ const ChatPage = () => {
         <div className="avatar">{receiver.fullName[0]}</div>
         <span className="username">{receiver.fullName}</span>
       </Link>
-      <ChatSection receiver={receiver} chatId={chat._id} />
+      <ChatSection
+        receiver={receiver}
+        chatId={chat._id}
+        messages={messages}
+        setMessages={setMessages}
+      />
       <div className="send-message-section">
         <div className="send-message-input-container">
           <input
@@ -101,3 +107,8 @@ const ChatPage = () => {
 };
 
 export default ChatPage;
+
+// messages should be maintained in this component
+// so that we can add a message when a new message is added
+// and also we can add a new message when a new message is received from socket
+// right ?

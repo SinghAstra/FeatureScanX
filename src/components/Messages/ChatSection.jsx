@@ -1,27 +1,15 @@
 import axios from "axios";
 import PropTypes from "prop-types";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 import ChatSectionSkeleton from "../../Skeleton/Messages/ChatSectionSkeleton";
 import "../../styles/Messages/ChatSection.css";
 
-const ChatSection = ({ receiver, chatId }) => {
+const ChatSection = ({ receiver, chatId, messages, setMessages }) => {
   const { currentUser } = useContext(AuthContext);
-  const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const apiUrl = import.meta.env.VITE_API_URL;
-  const messagesEndRef = useRef(null);
-
-  const scrollToBottom = () => {
-    if (messagesEndRef.current) {
-      console.log(
-        "messagesEndRef.current.scrollHeight is ",
-        messagesEndRef.current.scrollHeight
-      );
-      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
-    }
-  };
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -40,18 +28,18 @@ const ChatSection = ({ receiver, chatId }) => {
     if (chatId) {
       fetchMessages();
     }
-  }, [chatId, apiUrl]);
+  }, [chatId, apiUrl, setMessages]);
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+  // useEffect(() => {
+  //   scrollToBottom();
+  // }, [messages]);
 
   if (loading) {
     return <ChatSectionSkeleton />;
   }
 
   return (
-    <div className="chat-section" ref={messagesEndRef}>
+    <div className="chat-section">
       <div className="avatar">{receiver.fullName[0]}</div>
       <p className="username">{receiver.userName}</p>
       <Link to={`/${receiver.userName}`} className="view-replies">
@@ -125,6 +113,19 @@ ChatSection.propTypes = {
     profilePicture: PropTypes.string,
   }).isRequired,
   chatId: PropTypes.string.isRequired,
+  messages: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      content: PropTypes.string.isRequired,
+      sender: PropTypes.shape({
+        _id: PropTypes.string.isRequired,
+        fullName: PropTypes.string.isRequired,
+        userName: PropTypes.string.isRequired,
+        profilePicture: PropTypes.string,
+      }).isRequired,
+    })
+  ).isRequired,
+  setMessages: PropTypes.func.isRequired,
 };
 
 export default ChatSection;
