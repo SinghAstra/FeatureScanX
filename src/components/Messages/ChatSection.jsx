@@ -39,6 +39,12 @@ const ChatSection = ({ receiver, chatId, messages, setMessages }) => {
     return <ChatSectionSkeleton />;
   }
 
+  // {
+  //   messages.map((message) => {
+  //     console.log("message.sender is ", message.sender);
+  //   });
+  // }
+
   return (
     <div className="chat-section">
       <div className="avatar">{receiver.fullName[0]}</div>

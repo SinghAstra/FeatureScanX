@@ -1,6 +1,7 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { SocketContext } from "../../context/SocketContext";
 import ChatPageSkeleton from "../../Skeleton/Messages/ChatPageSkeleton";
 import "../../styles/Messages/ChatPage.css";
 import ChatSection from "./ChatSection";
@@ -13,6 +14,9 @@ const ChatPage = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const { socket } = useContext(SocketContext);
+
+  console.log("socket is ", socket);
 
   useEffect(() => {
     const receiverName = chatSlug.substring(1);
@@ -40,6 +44,24 @@ const ChatPage = () => {
     accessChat();
   }, [apiUrl, chatSlug]);
 
+  useEffect(() => {
+    if (socket) {
+      const handleNewMessage = (newMessage) => {
+        if (newMessage.chat === chat?._id) {
+          setMessages((prevMessages) => [...prevMessages, newMessage]);
+        }
+      };
+
+      socket.on("new-message", handleNewMessage);
+
+      return () => {
+        if (socket) {
+          socket.off("new-message", handleNewMessage);
+        }
+      };
+    }
+  }, [socket, chat?._id]);
+
   if (loadingChat) {
     return <ChatPageSkeleton />;
   }
@@ -64,7 +86,7 @@ const ChatPage = () => {
       );
 
       console.log("response.data --handleSendMessage is :", response.data);
-      setMessages([...messages, response.data.message]);
+      socket.emit("new-message", response.data.message);
       console.log("messages is ", messages);
       setMessage("");
     } catch (error) {

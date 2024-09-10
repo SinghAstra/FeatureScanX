@@ -74,6 +74,7 @@
 
 .send-message-section {
   padding: var(--padding-sm) var(--padding-md);
+  margin-bottom: 20px;
 }
 
 .send-message-input-container {
