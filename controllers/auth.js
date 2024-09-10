@@ -283,10 +283,21 @@ export const googleAuth = async (req, res) => {
       `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleResponse.tokens.access_token}`
     );
 
-    let user = await User.findOne({ email: userResponse.data.email });
+    const userData = userResponse.data;
+
+    console.log("userData is ", userData);
+
+    let user = await User.findOne({ email: userData.email });
 
     if (!user) {
-      return res.json({ userData: userResponse.data, userExists: false });
+      return res.json({
+        userData: {
+          email: userData.email,
+          fullName: userData.name,
+          profilePicture: userData.picture.replace("=s96-c", ""),
+        },
+        userExists: false,
+      });
     }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {

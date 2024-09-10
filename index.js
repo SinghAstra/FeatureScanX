@@ -4,12 +4,13 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import helmet from "helmet";
-import http from "http";
+// import http from "http";
 import { default as mongoose } from "mongoose";
 import morgan from "morgan";
 import { Server } from "socket.io";
 import Comment from "./models/Comment.js";
 import Post from "./models/Post.js";
+import User from "./models/User.js";
 import authRoutes from "./routes/auth.js";
 import chatRoutes from "./routes/chat.js";
 import commentsRoutes from "./routes/comments.js";
@@ -22,27 +23,9 @@ import usersRoutes from "./routes/users.js";
 
 dotenv.config();
 
-const allowedOrigins = ["http://localhost:3000", "http://localhost:3001"];
-
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-};
-
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-  },
-});
+const PORT = process.env.PORT;
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(helmet());
@@ -50,7 +33,6 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-// app.use(cors(corsOptions));
 app.use(cors({ credentials: true, origin: process.env.REMOTE }));
 
 app.use("/api/auth", authRoutes);
@@ -63,6 +45,9 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/messages", messagesRoutes);
 app.use("/api/otp", OTPRoutes);
 
+app.get("/", (req, res) => {
+  res.json({ message: "🚀 Server is running successfully." });
+});
 app.get("/testing/set-cookies", (req, res) => {
   res.cookie("verification_key", "updated new value", {
     httpOnly: true,
@@ -107,6 +92,13 @@ app.get("/testing/delete-all-comments", async (req, res) => {
   }
 });
 
+app.get("/delete-me", async (req, res) => {
+  const response = await User.findOneAndDelete({
+    email: "singhisabhaypratap@gmail.com",
+  });
+  return res.status(200).json({ message: "deleted", response: response });
+});
+
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => {
@@ -116,51 +108,57 @@ mongoose
     console.log("Error connecting to MongoDB Database");
   });
 
-io.on("connection", (socket) => {
-  // A new client has connected, and socket.id represents the unique ID of this connection.
-  console.log("New client connected: ", socket.id);
-
-  // This event is triggered when a user is "set up" (like logging in or connecting to the app).
-  // The user joins a room based on their user ID, allowing for targeted messaging.
-  socket.on("setup", (userData) => {
-    socket.join(userData.id); // The user joins a room named after their user ID.
-    socket.emit("connected"); // Notify the client that they have successfully connected.
-  });
-
-  // This event allows the user to join a chat room based on the chat ID (either group or one-to-one).
-  // Rooms are created dynamically for each chat, identified by chatId.
-  socket.on("join room", (chatId) => {
-    socket.join(chatId); // The user joins a room specific to the chat.
-    console.log(`User joined Room : ${chatId}`);
-  });
-
-  // When a user is typing a message, notify everyone else in the same chat room.
-  socket.on("typing", (room) => socket.in(room).emit("typing"));
-
-  // When a user stops typing, notify everyone else in the same chat room.
-  socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
-
-  // When a new message is sent, this event is triggered.
-  // The message contains information about the participants and the sender.
-  socket.on("new message", (message) => {
-    const { participants } = message; // Get all participants in the chat.
-
-    // Loop through all the participants except the sender and emit the message to their individual rooms.
-    participants.forEach((user) => {
-      if (user._id == message.sender._id) return; // Skip the sender.
-
-      // Send the message to the user's room (each user is in a room named after their user ID).
-      socket.in(user._id).emit("message received", message);
-    });
-  });
-
-  // Cleanup when the user disconnects.
-  socket.off("setup", () => {
-    console.log("User Disconnected");
-    socket.leave(userData._id); // The user leaves their personal room when they disconnect.
-  });
+const server = app.listen(PORT, () => {
+  console.log(`Server Running on http://localhost:${PORT}`);
 });
 
-server.listen(5000, () => {
-  console.log("Server is running on port 5000");
+// ============= socket.io ==============
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
+
+let onlineUsers = [];
+
+const addOnlineUser = (userId, socketId) => {
+  if (!onlineUsers.some((user) => user.userId === userId)) {
+    onlineUsers.push({ userId, socketId });
+    console.log(`✅ User added: userId=${userId}, socketId=${socketId}`);
+  }
+};
+
+const removeOnlineUser = (socketId) => {
+  onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId);
+  console.log(`⚠️ User removed: socketId=${socketId}`);
+};
+
+const getOnlineUser = (userId) => {
+  return onlineUsers.find((user) => user.userId === userId);
+};
+
+io.on("connection", (socket) => {
+  console.log(`🔗 User connected: socketId=${socket.id}`);
+
+  socket.on("addOnlineUser", (userId) => {
+    addOnlineUser(userId, socket.id);
+    console.log(
+      `🔔 User added event: userId=${userId}, all users=${JSON.stringify(
+        onlineUsers
+      )}`
+    );
+    io.emit("getOnlineUsers", onlineUsers);
+  });
+
+  socket.on("disconnect", () => {
+    console.log(`❌ User disconnected: socketId=${socket.id}`);
+    removeOnlineUser(socket.id);
+    io.emit("getOnlineUsers", onlineUsers);
+    console.log(
+      `📤 Updated user list after disconnect: ${JSON.stringify(onlineUsers)}`
+    );
+  });
 });
