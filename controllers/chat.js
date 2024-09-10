@@ -26,6 +26,7 @@ export const accessChat = async (req, res) => {
       return res.json({
         chat,
         receiver: {
+          _id: receiver._id,
           userName: receiver.userName,
           fullName: receiver.fullName,
           profilePicture: receiver.profilePicture,
@@ -42,6 +43,7 @@ export const accessChat = async (req, res) => {
     return res.status(201).json({
       chat: newChat,
       receiver: {
+        _id: receiver._id,
         userName: receiver.userName,
         fullName: receiver.fullName,
         profilePicture: receiver.profilePicture,
@@ -53,7 +55,7 @@ export const accessChat = async (req, res) => {
   }
 };
 
-export const getAllUserChats = async (req, res) => {
+export const getChatList = async (req, res) => {
   try {
     const userId = req.user.id;
 

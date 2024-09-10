@@ -11,11 +11,18 @@ export const sendMessage = async (req, res) => {
   }
 
   try {
-    const newMessage = await Message.create({
+    // populate the sender _id userName profilePicture fullName
+
+    let newMessage = await Message.create({
       chat: chatId,
       sender: req.user.id,
       content,
     });
+
+    newMessage = await newMessage.populate(
+      "sender",
+      "userName fullName profilePicture"
+    );
 
     const updatedChat = await Chat.findByIdAndUpdate(
       chatId,
