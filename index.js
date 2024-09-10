@@ -8,6 +8,7 @@ import helmet from "helmet";
 import { default as mongoose } from "mongoose";
 import morgan from "morgan";
 import { Server } from "socket.io";
+import Chat from "./models/Chat.js";
 import Comment from "./models/Comment.js";
 import Post from "./models/Post.js";
 import User from "./models/User.js";
@@ -151,6 +152,33 @@ io.on("connection", (socket) => {
       )}`
     );
     io.emit("getOnlineUsers", onlineUsers);
+  });
+
+  socket.on("new-message", async (message) => {
+    try {
+      const chat = await Chat.findById(message.chat).populate("participants");
+      console.log("chat is ", chat);
+
+      if (!chat) {
+        console.log(`❗Chat not found: chatId=${message.chat}`);
+        return;
+      }
+
+      chat.participants.forEach((participant) => {
+        const user = getOnlineUser(participant._id.toString());
+
+        if (user) {
+          io.to(user.socketId).emit("new-message", message);
+          console.log(
+            `✉️  Message sent to: userId=${
+              participant._id
+            }, message=${JSON.stringify(message)}`
+          );
+        }
+      });
+    } catch (error) {
+      console.log(`❗Error finding chat or sending message: ${error.message}`);
+    }
   });
 
   socket.on("disconnect", () => {
