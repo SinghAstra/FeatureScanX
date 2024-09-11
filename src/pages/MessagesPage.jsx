@@ -1,24 +1,28 @@
 import { useContext, useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import MessageList from "../components/Messages/MessageList";
+import ChatList from "../components/Messages/ChatList";
 import { AuthContext } from "../context/AuthContext";
-import { SocketContext } from "../context/SocketContext";
+import { socket } from "../index";
 import "../styles/Messages/MessagePage.css";
 
 const MessagePage = () => {
   const { currentUser } = useContext(AuthContext);
-  const { socket } = useContext(SocketContext);
 
   useEffect(() => {
-    socket.emit("addOnlineUser", currentUser._id);
-    socket.on("getOnlineUsers", (onlineUsers) => {
-      console.log("onlineUsers are", JSON.stringify(onlineUsers));
+    socket.emit("new-online-user", currentUser._id);
+
+    socket.on("new-online-user", (onlineUsers) => {
+      console.log("Online users:", onlineUsers);
     });
-  }, [currentUser._id, socket]);
+
+    return () => {
+      socket.off("new-online-user");
+    };
+  }, [currentUser._id]);
 
   return (
     <div className="messages-page-container">
-      <MessageList />
+      <ChatList />
       <Outlet />
     </div>
   );

@@ -1,7 +1,8 @@
-import { Link, NavLink } from "react-router-dom";
-import "../../styles/Messages/MessageListItem.css";
+import PropTypes from "prop-types";
+import { NavLink } from "react-router-dom";
+import "../../styles/Messages/ChatListItem.css";
 
-const MessageListItem = ({ chat }) => {
+const ChatListItem = ({ chat }) => {
   const formatTimeAgo = (messageDate) => {
     const now = new Date();
     const timeDifference = (now - new Date(messageDate)) / 1000; // in seconds
@@ -47,4 +48,20 @@ const MessageListItem = ({ chat }) => {
   );
 };
 
-export default MessageListItem;
+ChatListItem.propTypes = {
+  chat: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    isGroupChat: PropTypes.bool.isRequired,
+    receiver: PropTypes.shape({
+      userName: PropTypes.string.isRequired,
+      fullName: PropTypes.string.isRequired,
+      profilePicture: PropTypes.string,
+    }).isRequired,
+    lastMessage: PropTypes.shape({
+      content: PropTypes.string.isRequired,
+    }),
+    updatedAt: PropTypes.string.isRequired,
+  }).isRequired,
+};
+
+export default ChatListItem;

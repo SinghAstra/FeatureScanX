@@ -1,27 +1,27 @@
-.message-list {
+.chat-list {
   width: 30%;
   background: white;
   display: flex;
   flex-direction: column;
 }
 
-.message-list-header {
+.chat-list-header {
   padding: var(--padding-md);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.message-list-header h2 {
+.chat-list-header h2 {
   font-size: 20px;
 }
 
-.message-list-header p {
+.chat-list-header p {
   font-weight: 500;
   color: var(--color-primary);
 }
 
-.message-empty-list {
+.chat-empty-list {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -30,12 +30,12 @@
   gap: 0.75rem;
 }
 
-.message-empty-list img {
+.chat-empty-list img {
   width: 120px;
   height: 120px;
 }
 
-.message-list-content {
+.chat-list-content {
   display: flex;
   flex-direction: column;
 }

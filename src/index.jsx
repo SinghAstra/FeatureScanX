@@ -7,6 +7,7 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+import { io } from "socket.io-client";
 import ChatPage from "./components/Messages/ChatPage.jsx";
 import PostsSection from "./components/Profile/PostsSection.jsx";
 import SavedSection from "./components/Profile/SavedSection.jsx";
@@ -34,6 +35,9 @@ import ReelsPage from "./pages/ReelsPage.jsx";
 import SearchPage from "./pages/SearchPage.jsx";
 import StartChat from "./placeholders/Messages/StartChat.jsx";
 const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+const SOCKET_ENDPOINT = import.meta.env.VITE_SOCKET_ENDPOINT;
+
+export const socket = io(SOCKET_ENDPOINT);
 
 const router = createBrowserRouter(
   createRoutesFromElements(

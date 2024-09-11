@@ -1,7 +1,7 @@
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { SocketContext } from "../../context/SocketContext";
+import { socket } from "../../index";
 import ChatPageSkeleton from "../../Skeleton/Messages/ChatPageSkeleton";
 import "../../styles/Messages/ChatPage.css";
 import ChatSection from "./ChatSection";
@@ -14,9 +14,6 @@ const ChatPage = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const { socket } = useContext(SocketContext);
-
-  console.log("socket is ", socket);
 
   useEffect(() => {
     const receiverName = chatSlug.substring(1);
