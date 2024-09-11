@@ -4,7 +4,7 @@ import sharp from "sharp";
 import { PassThrough } from "stream";
 import cloudinary from "../config/cloudinary.js";
 import Comment from "../models/Comment.js";
-import Hashtag from "../models/Hashtag.js";
+import Hashtag from "../models/HashTag.js";
 import Like from "../models/Like.js";
 import Post from "../models/Post.js";
 import User from "../models/User.js";
