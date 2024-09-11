@@ -271,6 +271,7 @@
   text-align: right;
   font-size: var(--font-size-xs);
   color: var(--color-danger);
+  animation: shake 0.3s linear;
 }
 
 .sign-in-button,
@@ -424,7 +425,7 @@
 }
 
 .error-message {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
 }
 

@@ -9,7 +9,7 @@ const CompleteRegistrationPage = () => {
   const navigate = useNavigate();
   const { userData } = location.state;
   const [formData, setFormData] = useState({
-    username: userData?.userName,
+    username: userData?.userName ? userData.userName : "",
     password: "",
     email: userData?.email,
     fullName: userData?.fullName,
