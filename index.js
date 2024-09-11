@@ -144,14 +144,14 @@ const getOnlineUser = (userId) => {
 io.on("connection", (socket) => {
   console.log(`🔗 User connected: socketId=${socket.id}`);
 
-  socket.on("addOnlineUser", (userId) => {
+  socket.on("new-online-user", (userId) => {
     addOnlineUser(userId, socket.id);
     console.log(
       `🔔 User added event: userId=${userId}, all users=${JSON.stringify(
         onlineUsers
       )}`
     );
-    io.emit("getOnlineUsers", onlineUsers);
+    io.emit("new-online-user", onlineUsers);
   });
 
   socket.on("new-message", async (message) => {
