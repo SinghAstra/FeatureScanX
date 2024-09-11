@@ -44,6 +44,8 @@ const ChatPage = () => {
   useEffect(() => {
     if (socket) {
       const handleNewMessage = (newMessage) => {
+        console.log("newMessage.chat is ", newMessage.chat);
+        console.log("chat._id is ", chat._id);
         if (newMessage.chat === chat?._id) {
           setMessages((prevMessages) => [...prevMessages, newMessage]);
         }
@@ -57,7 +59,7 @@ const ChatPage = () => {
         }
       };
     }
-  }, [socket, chat?._id]);
+  }, [chat?._id]);
 
   if (loadingChat) {
     return <ChatPageSkeleton />;
