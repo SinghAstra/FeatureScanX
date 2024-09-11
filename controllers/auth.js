@@ -287,8 +287,6 @@ export const googleAuth = async (req, res) => {
 
     const userData = userResponse.data;
 
-    console.log("userData is ", userData);
-
     let user = await User.findOne({ email: userData.email });
 
     if (!user) {
@@ -296,7 +294,6 @@ export const googleAuth = async (req, res) => {
         userData: {
           email: userData.email,
           fullName: userData.name,
-          profilePicture: userData.picture.replace("=s96-c", ""),
         },
         userExists: false,
       });
