@@ -1,9 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { socket } from "../../index";
+import { socket } from "../../App";
 import ChatPageSkeleton from "../../Skeleton/Messages/ChatPageSkeleton";
-import "../../styles/Messages/ChatPage.css";
 import ChatSection from "./ChatSection";
 
 const ChatPage = () => {

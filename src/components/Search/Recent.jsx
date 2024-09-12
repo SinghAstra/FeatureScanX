@@ -1,5 +1,3 @@
-import "../../styles/Search/Recent.css";
-
 const Recent = () => {
   return (
     <div className="recent-interactions-container">

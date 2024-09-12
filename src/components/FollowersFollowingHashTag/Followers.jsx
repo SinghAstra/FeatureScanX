@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
 import UserItemSkeleton from "../../Skeleton/UserItemSkeleton";
 import EmptyFollowers from "../../placeholders/FollowersFollowingHashtag/EmptyFollowers";
-import "../../styles/Followers.css";
 import UserItem from "./UserItem";
 
 let timer;

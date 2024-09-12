@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import { useEffect } from "react";
-import "../../styles/Toast/Toast.css";
 
 const Toast = ({ message, setToast }) => {
   useEffect(() => {

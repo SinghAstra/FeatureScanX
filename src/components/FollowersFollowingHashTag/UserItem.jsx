@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import "../../styles/UserItem.css";
 
 const UserItem = ({ user, setShowFFHModal }) => {
   const { currentUser, setCurrentUser } = useContext(AuthContext);

@@ -1,4 +1,3 @@
-import "../styles/NotificationPageSkeleton.css";
 import NotificationItemSkeleton from "./NotificationItemSkeleton";
 
 const NotificationPageSkeleton = () => {

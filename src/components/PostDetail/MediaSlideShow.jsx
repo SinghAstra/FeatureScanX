@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-import "../../styles/MediaSlideShow.css";
 
 const MediaSlideShow = ({ media }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

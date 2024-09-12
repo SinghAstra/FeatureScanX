@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import "../../styles/PostCaption.css";
 
 const PostCaption = ({ post }) => {
   if (post.caption === "") {

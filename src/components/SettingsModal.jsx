@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
-import "../styles/SettingsModal.css";
 
 const SettingsModal = ({ setModalShown }) => {
   const { toggleTheme } = useContext(ThemeContext);

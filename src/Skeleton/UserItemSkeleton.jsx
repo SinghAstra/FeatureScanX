@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import "../styles/UserItemSkeleton.css";
 
 const UserItem = ({ showFollowButton = true }) => {
   return (

@@ -1,6 +1,5 @@
 import RecommendUsers from "../components/Home/RecommendUsers";
 import Search from "../components/Search/Search";
-import "../styles/SearchPage.css";
 
 const SearchPage = () => {
   return (

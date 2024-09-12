@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import "../../styles/FollowersFollowingHashTagModal.css";
 import Followers from "./Followers";
 import Following from "./Following";
 import Hashtags from "./Hashtags";

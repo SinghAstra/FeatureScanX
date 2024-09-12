@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
-import "../../styles/Messages/ChatListItem.css";
 
 const ChatListItem = ({ chat }) => {
   const formatTimeAgo = (messageDate) => {

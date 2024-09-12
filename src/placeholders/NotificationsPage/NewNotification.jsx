@@ -1,5 +1,3 @@
-import "../../styles/NotificationsSkeleton.css";
-
 const NewNotification = () => {
   return (
     <div className="empty-notification">

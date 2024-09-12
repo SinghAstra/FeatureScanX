@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import EmptyPostsSection from "../../placeholders/Profile/EmptyPostsSection";
-import "../../styles/PostsSection.css";
 import ProgressivePostImage from "./ProgressivePostImage";
 
 const PostsSection = () => {

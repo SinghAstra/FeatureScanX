@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import MediaSlideShow from "../components/PostDetail/MediaSlideShow.jsx";
 import PostInfo from "../components/PostDetail/PostInfo.jsx";
 import PostDetailsSkeleton from "../Skeleton/PostDetailsSkeleton.jsx";
-import "../styles/PostDetails.css";
 import PageNotFound from "./PageNotFound.jsx";
 
 const PostDetails = () => {
