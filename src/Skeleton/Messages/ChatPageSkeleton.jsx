@@ -1,4 +1,3 @@
-import "../../styles/Skeleton/Messages/ChatPageSkeleton.css";
 import ChatSectionSkeleton from "./ChatSectionSkeleton";
 
 const ChatPageSkeleton = () => {

@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import "../styles/PostDetailsSkeleton.css";
 import PostCommentsSkeleton from "./PostCommentsSkeleton";
 
 const PostDetailsSkeleton = () => {

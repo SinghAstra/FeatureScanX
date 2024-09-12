@@ -2,7 +2,6 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import useTitle from "../../hooks/useTitle";
-import "../../styles/CreatePostModal.css";
 import AddCaptionModal from "./AddCaptionModal";
 import SelectMediaModal from "./SelectMediaModal";
 

@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import GithubOAuth from "../../components/Auth/GithubOAuth";
 import { AuthContext } from "../../context/AuthContext";
 import useTitle from "../../hooks/useTitle";
-import "../../styles/Auth/Auth.css";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);

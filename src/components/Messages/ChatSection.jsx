@@ -4,7 +4,6 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import ChatSectionSkeleton from "../../Skeleton/Messages/ChatSectionSkeleton";
-import "../../styles/Messages/ChatSection.css";
 
 const ChatSection = ({ receiver, chatId, messages, setMessages }) => {
   const { currentUser } = useContext(AuthContext);

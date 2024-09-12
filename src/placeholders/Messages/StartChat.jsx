@@ -1,5 +1,3 @@
-import "../../styles/Messages/StartChat.css";
-
 const StartChat = () => {
   return (
     <div className="start-chat">

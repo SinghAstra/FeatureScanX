@@ -1,7 +1,6 @@
 // import { useContext } from "react";
 import { Outlet } from "react-router-dom";
 // import { ThemeContext } from "../context/ThemeContext";
-import "../styles/PublicLayout.css";
 
 const PublicLayout = () => {
   // const { theme, toggleTheme } = useContext(ThemeContext);

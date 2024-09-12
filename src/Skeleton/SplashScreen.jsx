@@ -1,5 +1,3 @@
-import "../styles/SplashScreen.css";
-
 const SplashScreen = () => {
   return (
     <div className="splash-screen">

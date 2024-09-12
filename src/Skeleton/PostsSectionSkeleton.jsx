@@ -1,5 +1,3 @@
-import "../styles/PostsSectionSkeleton.css";
-
 const PostsSkeleton = () => {
   return (
     <div className="posts-skeleton">

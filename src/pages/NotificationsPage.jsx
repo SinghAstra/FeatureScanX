@@ -5,7 +5,6 @@ import EarlierNotification from "../placeholders/NotificationsPage/EarlierNotifi
 import NewNotification from "../placeholders/NotificationsPage/NewNotification";
 import TodayNotification from "../placeholders/NotificationsPage/TodayNotification";
 import NotificationPageSkeleton from "../Skeleton/NotificationPageSkeleton";
-import "../styles/NotificationPage.css";
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState({

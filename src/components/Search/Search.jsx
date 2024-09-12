@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import UserItemSkeleton from "../../Skeleton/UserItemSkeleton";
-import "../../styles/Search.css";
 import Recent from "./Recent";
 import UserItem from "./UserItem";
 

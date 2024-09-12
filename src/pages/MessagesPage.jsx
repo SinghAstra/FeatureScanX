@@ -1,9 +1,8 @@
 import { useContext, useEffect } from "react";
 import { Outlet } from "react-router-dom";
+import { socket } from "../App";
 import ChatList from "../components/Messages/ChatList";
 import { AuthContext } from "../context/AuthContext";
-import { socket } from "../index";
-import "../styles/Messages/MessagePage.css";
 
 const MessagePage = () => {
   const { currentUser } = useContext(AuthContext);

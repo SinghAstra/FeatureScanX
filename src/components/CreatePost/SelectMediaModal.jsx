@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import { useRef } from "react";
-import "../../styles/SelectMediaModal.css";
 
 const SelectMediaModal = ({ handleMediaChange, onNext, setModalShown }) => {
   const fileInputRef = useRef(null);

@@ -1,5 +1,3 @@
-import "../styles/PostCommentsSkeleton.css";
-
 const PostCommentsSkeleton = () => {
   return (
     <div className="post-comments-container-skeleton">

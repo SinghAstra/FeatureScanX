@@ -5,7 +5,6 @@ import { AuthContext } from "../../context/AuthContext.jsx";
 import CorrectIcon from "../../icons/CorrectIcon";
 import WrongIcon from "../../icons/WrongIcon";
 import SplashScreen from "../../Skeleton/SplashScreen.jsx";
-import "../../styles/Auth/ChangePasswordPage.css";
 
 const ChangePasswordPage = () => {
   const { token } = useParams();

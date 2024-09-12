@@ -4,7 +4,6 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import EmptyComments from "../../placeholders/PostDetails/EmptyComments";
 import PostCommentsSkeleton from "../../Skeleton/PostCommentsSkeleton";
-import "../../styles/PostInfo.css";
 import PostAuthorProfile from "./PostAuthorProfile";
 import PostCaption from "./PostCaption";
 import PostComment from "./PostComment";

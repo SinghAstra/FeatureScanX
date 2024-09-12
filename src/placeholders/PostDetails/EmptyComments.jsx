@@ -1,5 +1,3 @@
-import "../../styles/EmptyComments.css";
-
 const EmptyComments = () => {
   return (
     <div className="empty-comments-container">

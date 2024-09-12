@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-import "../styles/ProtectedLayout.css";
 
 const ProtectedLayout = () => {
   return (

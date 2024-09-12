@@ -3,7 +3,6 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { ToastContext } from "../../context/ToastContext";
 import useTitle from "../../hooks/useTitle";
-import "../../styles/Auth/ResetPasswordPage.css";
 
 const ResetPasswordPage = () => {
   const [formData, setFormData] = useState({

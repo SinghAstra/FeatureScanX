@@ -1,5 +1,3 @@
-import "../../styles/FeedPostSkeleton.css";
-
 const FeedPostSkeleton = () => {
   return (
     <div className="feed-post">

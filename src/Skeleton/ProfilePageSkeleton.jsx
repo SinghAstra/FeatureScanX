@@ -1,4 +1,3 @@
-import "../styles/ProfilePageSkeleton.css";
 import PostsSectionSkeleton from "./PostsSectionSkeleton";
 
 const ProfilePageSkelton = () => {

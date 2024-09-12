@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import "../../styles/ProgressivePostImage.css";
 
 const ProgressivePostImage = ({
   lowResUrl,

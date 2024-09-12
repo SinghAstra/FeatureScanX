@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import "../styles/NotificationItem.css";
 
 const Notification = ({ notification }) => {
   const formatTimeAgo = (commentDate) => {

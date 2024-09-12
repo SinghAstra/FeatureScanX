@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import "../../styles/MediaPreviewSlide.css";
 
 const MediaPreviewSlide = ({ slides }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
