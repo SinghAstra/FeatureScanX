@@ -99,6 +99,12 @@ app.get("/delete-me", async (req, res) => {
   });
   return res.status(200).json({ message: "deleted", response: response });
 });
+app.get("/delete-me2", async (req, res) => {
+  const response = await User.findOneAndDelete({
+    email: "contact.singhastra@gmail.com",
+  });
+  return res.status(200).json({ message: "deleted", response: response });
+});
 
 mongoose
   .connect(process.env.MONGODB_URI)
@@ -117,7 +123,7 @@ const server = app.listen(PORT, () => {
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env.REMOTE,
     methods: ["GET", "POST"],
     credentials: true,
   },
