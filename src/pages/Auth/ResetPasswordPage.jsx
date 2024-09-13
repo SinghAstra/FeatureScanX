@@ -76,7 +76,7 @@ const ResetPasswordPage = () => {
     }
   };
 
-  useTitle("Reset Password • Social UI");
+  useTitle("Reset Password • Social");
 
   return (
     <div className="auth-form-wrapper">

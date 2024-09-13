@@ -117,7 +117,7 @@ const LoginPage = () => {
     flow: "auth-code",
   });
 
-  useTitle("Log In • Social UI");
+  useTitle("Log In • Social");
 
   return (
     <div className="auth-form-wrapper">

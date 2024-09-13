@@ -23,7 +23,7 @@ const RegisterPage = () => {
     setCurrentStage(currentStage - 1);
   };
 
-  useTitle("Sign Up • Social UI");
+  useTitle("Sign Up • Social");
 
   return (
     <div className="auth-form-wrapper">
