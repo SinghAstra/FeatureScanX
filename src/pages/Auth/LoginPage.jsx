@@ -16,9 +16,6 @@ const LoginPage = () => {
   const [errors, setErrors] = useState({});
   const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
-  const urlParams = new URLSearchParams(window.location.search);
-  const code = urlParams.get("code");
-  console.log("code is ", code);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
