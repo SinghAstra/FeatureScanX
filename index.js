@@ -10,7 +10,7 @@ import morgan from "morgan";
 import { Server } from "socket.io";
 import Chat from "./models/Chat.js";
 import Comment from "./models/Comment.js";
-import Post from "./models/Post.js";
+import Message from "./models/Message.js";
 import User from "./models/User.js";
 import authRoutes from "./routes/auth.js";
 import chatRoutes from "./routes/chat.js";
@@ -48,62 +48,6 @@ app.use("/api/otp", OTPRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "🚀 Server is running successfully." });
-});
-app.get("/testing/set-cookies", (req, res) => {
-  res.cookie("verification_key", "updated new value", {
-    httpOnly: true,
-    maxAge: 10 * 60 * 1000,
-  });
-
-  res.status(200).json({ message: "All cookies cleared." });
-});
-app.get("/testing/view-cookies", (req, res) => {
-  res.json({ cookies: req.cookies });
-});
-app.get("/testing/drop-database", async (req, res) => {
-  try {
-    await mongoose.connection.dropDatabase();
-    res.json({ message: "Database dropped successfully" });
-  } catch (error) {
-    res.json({ message: "Database dropped successfully" });
-  }
-});
-app.get("/testing/posts", async (req, res) => {
-  try {
-    const posts = await Post.find({});
-    res.json(posts);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-app.get("/testing/comments", async (req, res) => {
-  try {
-    const comments = await Comment.find({});
-    res.json(comments);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-app.get("/testing/delete-all-comments", async (req, res) => {
-  try {
-    const comments = await Comment.deleteMany({});
-    res.json({ comments, message: "Deleted All Comments Successfully." });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-app.get("/delete-me", async (req, res) => {
-  const response = await User.findOneAndDelete({
-    email: "singhisabhaypratap@gmail.com",
-  });
-  return res.status(200).json({ message: "deleted", response: response });
-});
-app.get("/delete-me2", async (req, res) => {
-  const response = await User.findOneAndDelete({
-    email: "contact.singhastra@gmail.com",
-  });
-  return res.status(200).json({ message: "deleted", response: response });
 });
 
 mongoose
