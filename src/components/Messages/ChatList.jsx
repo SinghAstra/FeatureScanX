@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { socket } from "../../App";
+import { socket } from "../../index";
 import ChatListItem from "./ChatListItem";
 
 const ChatList = () => {
