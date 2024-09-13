@@ -1,6 +1,7 @@
 .home {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr;
+  gap: 20px;
 }
 
 .recommend-users {
@@ -10,10 +11,24 @@
   padding: var(--padding-sm) 0;
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-strong);
+  display: none;
+}
+
+.recommend-users.empty-feed {
+  display: block;
 }
 
 .recommend-users h1 {
   color: var(--color-medium-gray);
   font-size: 1rem;
   padding: var(--padding-sm) var(--padding-md);
+}
+
+@media screen and (min-width: 768px) {
+  .home {
+    grid-template-columns: 2fr 1fr;
+  }
+  .recommend-users {
+    display: block;
+  }
 }

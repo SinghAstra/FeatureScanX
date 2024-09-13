@@ -1,19 +1,21 @@
 import axios from "axios";
+import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
 import FeedSkeleton from "../../Skeleton/Home/FeedSkeleton";
 import FeedPost from "./FeedPost";
 
-const Feed = () => {
+const Feed = ({ setIsFeedEmpty }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const observerRef = useRef(null);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const fetchFeedPosts = async (page) => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:5000/api/posts/feed", {
+      const response = await axios.get(`${apiUrl}/api/posts/feed`, {
         params: { page, limit: 10 },
         withCredentials: true,
       });
@@ -24,6 +26,13 @@ const Feed = () => {
         setHasMore(false);
       } else {
         setHasMore(true);
+      }
+
+      if (page === 1 && posts.length === 0) {
+        setIsFeedEmpty(true);
+        return;
+      } else {
+        setIsFeedEmpty(false);
       }
 
       console.log("response.data --fetchFeedPosts is ", response.data);
@@ -37,6 +46,7 @@ const Feed = () => {
 
   useEffect(() => {
     fetchFeedPosts(page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   useEffect(() => {
@@ -83,6 +93,10 @@ const Feed = () => {
       </div>
     </div>
   );
+};
+
+Feed.propTypes = {
+  setIsFeedEmpty: PropTypes.func.isRequired,
 };
 
 export default Feed;
