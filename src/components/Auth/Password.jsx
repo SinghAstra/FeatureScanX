@@ -1,11 +1,9 @@
-import axios from "axios";
 import PropTypes from "prop-types";
-import { useContext, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { useState } from "react";
 import CorrectIcon from "../../icons/CorrectIcon";
 import WrongIcon from "../../icons/WrongIcon";
 
-const Password = ({ formData, setFormData, onBack }) => {
+const Password = ({ formData, setFormData, onBack, onNext }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({
@@ -15,13 +13,11 @@ const Password = ({ formData, setFormData, onBack }) => {
     specialCharacterValidation: false,
   });
   const [passwordsMatchError, setPasswordsMatchError] = useState(false);
-  const apiUrl = import.meta.env.VITE_API_URL;
   const isPasswordValid =
     errors.minValueValidation &&
     errors.numberValidation &&
     errors.capitalLetterValidation &&
     errors.specialCharacterValidation;
-  const { fetchCurrentUser } = useContext(AuthContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -72,25 +68,11 @@ const Password = ({ formData, setFormData, onBack }) => {
     });
   };
 
-  const registerUser = async () => {
-    try {
-      const response = await axios.post(
-        `${apiUrl}/api/auth/register`,
-        formData,
-        { withCredentials: true }
-      );
-      console.log("response.data --registerUser is :", response.data);
-      fetchCurrentUser();
-    } catch (error) {
-      console.log("error --registerUser is :", error);
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     validatePasswordMatch();
     if (isPasswordValid && passwordsMatchError === "") {
-      registerUser();
+      onNext();
     }
   };
 
@@ -222,6 +204,7 @@ Password.propTypes = {
   }).isRequired,
   setFormData: PropTypes.func.isRequired,
   onBack: PropTypes.func.isRequired,
+  onNext: PropTypes.func.isRequired,
 };
 
 export default Password;

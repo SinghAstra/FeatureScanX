@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { socket } from "../../App";
+import { socket } from "../../index";
 import ChatPageSkeleton from "../../Skeleton/Messages/ChatPageSkeleton";
 import ChatSection from "./ChatSection";
 
