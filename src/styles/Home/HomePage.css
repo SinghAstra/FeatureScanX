@@ -14,7 +14,7 @@
   display: none;
 }
 
-.home.recommend-users.empty-feed {
+.home .recommend-users.empty-feed {
   display: block;
 }
 
