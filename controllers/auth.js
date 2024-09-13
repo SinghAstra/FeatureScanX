@@ -306,6 +306,7 @@ export const googleAuth = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: 72 * 3600 * 1000,
+      sameSite: "None",
     });
 
     return res.json({ userExists: true });
