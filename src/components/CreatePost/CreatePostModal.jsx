@@ -83,7 +83,7 @@ const CreatePostModal = ({ modalShown, setModalShown }) => {
     resetPost();
   };
 
-  useTitle("Create New Post • Social UI");
+  useTitle("Create New Post • Social");
 
   return (
     <>
