@@ -76,9 +76,8 @@ const Feed = ({ setIsFeedEmpty }) => {
   }
 
   if (posts.length === 0) {
-    return;
+    return null;
   }
-
   return (
     <div className="feed">
       {posts.map((post) => (

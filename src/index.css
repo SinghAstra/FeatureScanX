@@ -41,8 +41,8 @@
 @import url("styles/ProgressivePostImage.css");
 @import url("styles/ProtectedLayout.css");
 @import url("styles/PublicLayout.css");
-@import url("styles/Search.css");
-@import url("styles/SearchPage.css");
+@import url("styles/Search/Search.css");
+@import url("styles/Search/SearchPage.css");
 @import url("styles/SelectMediaModal.css");
 @import url("styles/SettingsModal.css");
 @import url("styles/Sidebar.css");

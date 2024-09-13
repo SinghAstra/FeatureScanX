@@ -5,11 +5,12 @@ import { AuthContext } from "../../context/AuthContext";
 import RecommendUsersSkeleton from "../../Skeleton/Home/RecommendUsersSkeleton";
 import UserItem from "./UserItem";
 
-const RecommendUsers = ({ isFeedEmpty }) => {
+const RecommendUsers = ({ isFeedEmpty = false }) => {
   const { currentUser } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const apiUrl = import.meta.env.VITE_API_URL;
+  console.log("In recommend users isFeedEmpty ", isFeedEmpty);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -53,7 +54,7 @@ const RecommendUsers = ({ isFeedEmpty }) => {
 };
 
 RecommendUsers.propTypes = {
-  isFeedEmpty: PropTypes.bool.isRequired,
+  isFeedEmpty: PropTypes.bool,
 };
 
 export default RecommendUsers;

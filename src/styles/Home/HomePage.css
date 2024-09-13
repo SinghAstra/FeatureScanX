@@ -14,7 +14,7 @@
   display: none;
 }
 
-.recommend-users.empty-feed {
+.home.recommend-users.empty-feed {
   display: block;
 }
 
@@ -24,7 +24,7 @@
   padding: var(--padding-sm) var(--padding-md);
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1200px) {
   .home {
     grid-template-columns: 2fr 1fr;
   }
