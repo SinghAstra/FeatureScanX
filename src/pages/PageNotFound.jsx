@@ -1,7 +1,7 @@
 import useTitle from "../hooks/useTitle";
 
 const PageNotFound = () => {
-  useTitle("404 Page Not Found • Social UI");
+  useTitle("404 Page Not Found • Social");
 
   return (
     <div className="placeholder">
