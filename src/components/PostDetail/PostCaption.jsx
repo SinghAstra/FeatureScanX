@@ -2,6 +2,22 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 const PostCaption = ({ post }) => {
+  const renderCaptionWithLinks = (caption) => {
+    const parts = caption.split(/(@[a-zA-Z0-9_]+)/g);
+
+    return parts.map((part, index) => {
+      if (part.startsWith("@")) {
+        const username = part.slice(1);
+        return (
+          <Link key={index} to={`/${username}`} className="username-link">
+            {part}
+          </Link>
+        );
+      }
+      return part;
+    });
+  };
+
   if (post.caption === "") {
     return;
   }
@@ -21,7 +37,9 @@ const PostCaption = ({ post }) => {
             {post.userId.userName} &nbsp;&nbsp;
           </strong>
         </Link>
-        <span className="post-caption-text">{post.caption}</span>
+        <span className="post-caption-text">
+          {renderCaptionWithLinks(post.caption)}
+        </span>
       </div>
     </div>
   );
