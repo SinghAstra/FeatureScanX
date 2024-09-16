@@ -74,6 +74,6 @@
 - Middleware for authenticated routes
 - Scalable OTP Authentication Service
 
-## :boom: Miscellaneous
+### :boom: Miscellaneous
 
 - Lazy Loading and code splitting
