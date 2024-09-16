@@ -68,7 +68,7 @@ const server = app.listen(PORT, () => {
 
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: process.env.REMOTE,
     methods: ["GET", "POST"],
     credentials: true,
   },
