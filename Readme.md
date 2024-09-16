@@ -1,3 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Page Title</title>
+  <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+
 ## 🚀 Screenshots
 
 <style>
@@ -54,7 +64,6 @@
 
 <style>
   .features-list {
-    list-style-type: none;
     padding: 0;
   }
 
@@ -62,6 +71,7 @@
     margin-bottom: 10px;
     font-size: 16px;
     line-height: 1.5;
+    list-style:none;
   }
 
   .features-list li::before {
@@ -131,3 +141,6 @@
 <ul class="features-list">
   <li>Lazy Loading and code splitting</li>
 </ul>
+
+</body>
+</html>
