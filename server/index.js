@@ -47,7 +47,7 @@ app.use("/api/messages", messagesRoutes);
 app.use("/api/otp", OTPRoutes);
 
 app.get("/", (req, res) => {
-  res.json({ message: "🚀 Server is running successfully." });
+  res.json({ message: "🚀 Social API is running successfully." });
 });
 
 mongoose
