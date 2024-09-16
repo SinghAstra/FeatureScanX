@@ -6,7 +6,7 @@ const PageNotFound = () => {
   return (
     <div className="placeholder">
       <h1>404</h1>
-      <p>Page not Found</p>
+      <p>Page Not Found</p>
     </div>
   );
 };

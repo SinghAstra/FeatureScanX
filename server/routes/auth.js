@@ -24,12 +24,6 @@ router.post("/check-user-exists", checkUserExists);
 router.post("/register", registerUserController);
 router.post("/login", loginUser);
 router.post("/me", authMiddleware, fetchUserInfoUsingJWTTokenInCookies);
-router.get("/me", authMiddleware, () => {
-  return resetPassword.json({ message: "/me --authMiddleware" });
-});
-router.get("/me1", (req, res) => {
-  return res.json({ message: "/me1 --authMiddleware" });
-});
 router.post("/forget-password", forgetPassword);
 router.post("/reset-password/:token", resetPassword);
 
