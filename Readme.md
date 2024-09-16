@@ -7,6 +7,26 @@
 <tr><td><img src="./images/image4.png" alt="screenshot"/></td></tr>
 <tr><td><img src="./images/image5.png" alt="screenshot"/></td></tr>
 <tr><td><img src="./images/image6.png" alt="screenshot"/></td></tr>
+<tr><td><img src="./images/image7.png" alt="screenshot"/></td></tr>
+<tr><td><img src="./images/image8.png" alt="screenshot"/></td></tr>
+<tr><td><img src="./images/image9.png" alt="screenshot"/></td></tr>
+<tr><td><img src="./images/image10.png" alt="screenshot"/></td></tr>
+<tr><td><img src="./images/image11.png" alt="screenshot"/></td></tr>
+<tr><td><img src="./images/image12.png" alt="screenshot"/></td></tr>
+<tr><td><img src="./images/image13.png" alt="screenshot"/></td></tr>
+<tr><td><img src="./images/image14.png" alt="screenshot"/></td></tr>
+<tr><td><img src="./images/image15.png" alt="screenshot"/></td></tr>
+<tr><td><img src="./images/image16.png" alt="screenshot"/></td></tr>
+<tr><td><img src="./images/image17.png" alt="screenshot"/></td></tr>
+<tr><td><img src="./images/image18.png" alt="screenshot"/></td></tr>
+<tr><td><img src="./images/image19.png" alt="screenshot"/></td></tr>
+<tr><td><img src="./images/image20.png" alt="screenshot"/></td></tr>
+<tr><td><img src="./images/image21.png" alt="screenshot"/></td></tr>
+<tr><td><img src="./images/image22.png" alt="screenshot"/></td></tr>
+<tr><td><img src="./images/image23.png" alt="screenshot"/></td></tr>
+<tr><td><img src="./images/image24.png" alt="screenshot"/></td></tr>
+<tr><td><img src="./images/image25.png" alt="screenshot"/></td></tr>
+<tr><td><img src="./images/image26.png" alt="screenshot"/></td></tr>
 </table>
 
 ## 🚀 Features
