@@ -18,7 +18,12 @@ import postsRoutes from "./routes/posts.js";
 import savePostsRoutes from "./routes/savePosts.js";
 import usersRoutes from "./routes/users.js";
 
-dotenv.config();
+dotenv.config({
+  path:
+    process.env.NODE_ENV === "production"
+      ? ".env.production"
+      : ".env.development",
+});
 
 const app = express();
 const PORT = process.env.PORT;
@@ -43,6 +48,7 @@ app.use("/api/messages", messagesRoutes);
 app.use("/api/otp", OTPRoutes);
 
 app.get("/", (req, res) => {
+  console.log("process.env.REMOTE is ", process.env.REMOTE);
   res.json({ message: "🚀 Social API is running successfully." });
 });
 
