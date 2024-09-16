@@ -1,5 +1,26 @@
 ## 🚀 Screenshots
 
+<style>
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+
+  td {
+    padding: 10px;
+    text-align: center;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+</style>
+
 <table>
 <tr><td><img src="./images/image1.png" alt="screenshot"/></td></tr>
 <tr><td><img src="./images/image2.png" alt="screenshot"/></td></tr>
@@ -31,49 +52,82 @@
 
 ## 🚀 Features
 
+<style>
+  .features-list {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .features-list li {
+    margin-bottom: 10px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .features-list li::before {
+    content: '🔥';
+    color: #ff5722;
+    margin-right: 10px;
+  }
+</style>
+
 ### :boom: User Authentication
 
-- User registration
-- Login functionality
-- OTP verification for email
-- Password management (forget and reset password)
-- Integration with Google and GitHub for social authentication
-- Check availability of usernames and emails during registration
+<ul class="features-list">
+  <li>User registration</li>
+  <li>Login functionality</li>
+  <li>OTP verification for email</li>
+  <li>Password management (forget and reset password)</li>
+  <li>Integration with Google and GitHub for social authentication</li>
+  <li>Check availability of usernames and emails during registration</li>
+</ul>
 
 ### :boom: Real-time Communication
 
-- Real-time chat with Socket.io (one-to-one and group chats)
-- Real-time messaging with online status updates
-- Online users tracking
+<ul class="features-list">
+  <li>Real-time chat with Socket.io (one-to-one and group chats)</li>
+  <li>Real-time messaging with online status updates</li>
+  <li>Online users tracking</li>
+</ul>
 
 ### :boom: Posts and Comments
 
-- Posts creation, saving, and retrieval
-- Comment management (add, view, like, and delete comments)
-- Toggle like on posts
-- Get comments on a post
-- Upload media with posts
+<ul class="features-list">
+  <li>Posts creation, saving, and retrieval</li>
+  <li>Comment management (add, view, like, and delete comments)</li>
+  <li>Toggle like on posts</li>
+  <li>Get comments on a post</li>
+  <li>Upload media with posts</li>
+</ul>
 
 ### :boom: Notifications
 
-- Retrieve user notifications
-- Get count of unread notifications
-- Mark notifications as read
+<ul class="features-list">
+  <li>Retrieve user notifications</li>
+  <li>Get count of unread notifications</li>
+  <li>Mark notifications as read</li>
+</ul>
 
 ### :boom: User Management
 
-- View and search for all users
-- Fetch user profile information
-- Toggle follow/unfollow users
-- Get posts created by users
-- Get random and filtered users
+<ul class="features-list">
+  <li>View and search for all users</li>
+  <li>Fetch user profile information</li>
+  <li>Toggle follow/unfollow users</li>
+  <li>Get posts created by users</li>
+  <li>Get random and filtered users</li>
+</ul>
 
 ### :boom: Security and Middleware
 
-- Secure API with Helmet and CORS
-- Middleware for authenticated routes
-- Scalable OTP Authentication Service
+<ul class="features-list">
+  <li>Secure API with Helmet and CORS</li>
+  <li>Middleware for authenticated routes</li>
+  <li>Scalable OTP Authentication Service</li>
+</ul>
 
 ### :boom: Miscellaneous
 
-- Lazy Loading and code splitting
+<ul class="features-list">
+  <li>Lazy Loading and code splitting</li>
+</ul>
