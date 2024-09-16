@@ -277,6 +277,7 @@ export const resetPassword = async (req, res) => {
 export const googleAuth = async (req, res) => {
   try {
     const code = req.query.code;
+    console.log("code is ", code);
     const googleResponse = await oauth2Client.getToken(code);
 
     oauth2Client.setCredentials(googleResponse.tokens);
