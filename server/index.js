@@ -47,6 +47,7 @@ app.use("/api/messages", messagesRoutes);
 app.use("/api/otp", OTPRoutes);
 
 app.get("/", (req, res) => {
+  console.log("process.env.REMOTE is ", process.env.REMOTE);
   res.json({ message: "🚀 Social API is running successfully." });
 });
 
