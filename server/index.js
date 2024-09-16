@@ -4,14 +4,10 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import helmet from "helmet";
-// import http from "http";
 import { default as mongoose } from "mongoose";
 import morgan from "morgan";
 import { Server } from "socket.io";
 import Chat from "./models/Chat.js";
-import Comment from "./models/Comment.js";
-import Message from "./models/Message.js";
-import User from "./models/User.js";
 import authRoutes from "./routes/auth.js";
 import chatRoutes from "./routes/chat.js";
 import commentsRoutes from "./routes/comments.js";
@@ -47,7 +43,6 @@ app.use("/api/messages", messagesRoutes);
 app.use("/api/otp", OTPRoutes);
 
 app.get("/", (req, res) => {
-  console.log("process.env.REMOTE is ", process.env.REMOTE);
   res.json({ message: "🚀 Social API is running successfully." });
 });
 
