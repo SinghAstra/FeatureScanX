@@ -1,6 +1,6 @@
 ## 🚀 Contributing to [Social](https://social-one-liart.vercel.app)
 
-Thank you for considering contributing to Social! I appreciate your interest and efforts. This document provides guidelines on how you can contribute to this project.
+<!-- Thank you for considering contributing to Social! I appreciate your interest and efforts. This document provides guidelines on how you can contribute to this project. -->
 
 ## 🚀 How to Contribute
 
