@@ -83,7 +83,7 @@ To set up the project locally, follow these steps:
    VITE_GOOGLE_CLIENT_ID=dev-google-client-id
    VITE_GOOGLE_CLIENT_SECRET=dev-google-client-secret
    VITE_GITHUB_CLIENT_ID=dev-github-client-id
-   VITE_GITHUB_CLIENT_SECRET=dev-github-client-secret
+   VITE_GITHUB_CLIENT_SECRET=github-client-secret
    VITE_API_URL=http://localhost:3000/api
    VITE_SOCKET_ENDPOINT=http://localhost:3000/socket
    ```
