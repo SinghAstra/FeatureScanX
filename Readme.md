@@ -1,79 +1,118 @@
-## 🚀 Screenshots
+# FeatureScanX
 
-<table>
-<tr><td><img src="./images/image1.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image2.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image3.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image4.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image5.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image6.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image7.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image8.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image9.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image10.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image11.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image12.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image13.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image14.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image15.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image16.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image17.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image18.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image19.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image20.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image21.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image22.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image23.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image24.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image25.png" alt="screenshot"/></td></tr>
-<tr><td><img src="./images/image26.png" alt="screenshot"/></td></tr>
-</table>
+A command-line tool that automatically analyzes GitHub repositories to identify implemented features, saving developers time when exploring new codebases. The tool takes a GitHub repository URL as input and provides a comprehensive analysis of features and capabilities implemented in the project.
 
-## 🚀 Features
+## Features
 
-### :boom: User Authentication
+### Core Functionality
 
-- User registration
-- Login functionality
-- OTP verification for email
-- Password management (forget and reset password)
-- Integration with Google and GitHub for social authentication
-- Check availability of usernames and emails during registration
+- Automated feature detection from GitHub repositories
+- Command-line interface for easy integration
+- Confidence scoring for identified features
+- Structured output in multiple formats (JSON, Markdown)
+- Support for various project types (JavaScript, Python, Java, etc.)
 
-### :boom: Real-time Communication
+### Detection Capabilities
 
-- Real-time chat with Socket.io (one-to-one and group chats)
-- Real-time messaging with online status updates
-- Online users tracking
+- Documentation-based feature identification
+- Code structure analysis
+- Dependency analysis
+- Pattern recognition in codebase
+- Feature confidence scoring
 
-### :boom: Posts and Comments
+## How It Works
 
-- Posts creation, saving, and retrieval
-- Comment management (add, view, like, and delete comments)
-- Toggle like on posts
-- Get comments on a post
-- Upload media with posts
+The tool operates in multiple phases to ensure comprehensive feature detection:
 
-### :boom: Notifications
+### Phase 1: Documentation Analysis
 
-- Retrieve user notifications
-- Get count of unread notifications
-- Mark notifications as read
+- Parses README.md and documentation files
+- Identifies explicit feature listings
+- Extracts capability descriptions
+- Analyzes project introduction sections
 
-### :boom: User Management
+### Phase 2: Code Structure Analysis
 
-- View and search for all users
-- Fetch user profile information
-- Toggle follow/unfollow users
-- Get posts created by users
-- Get random and filtered users
+- Examines directory organization
+- Identifies feature-specific folders
+- Maps component relationships
+- Analyzes file naming patterns
+- Detects architectural patterns
 
-### :boom: Security and Middleware
+### Phase 3: Dependency Analysis
 
-- Secure API with Helmet and CORS
-- Middleware for authenticated routes
-- Scalable OTP Authentication Service
+- Processes package management files
+- Identifies framework capabilities
+- Maps third-party integrations
+- Recognizes common technology stacks
 
-### :boom: Miscellaneous
+### Phase 4: Pattern Recognition
 
-- Lazy Loading and code splitting
+- Analyzes code patterns
+- Identifies API endpoints
+- Detects UI components
+- Maps service architectures
+- Recognizes testing coverage
+
+### Phase 5: Feature Classification
+
+Categorizes features based on:
+
+- Core vs Supporting features
+- Frontend vs Backend capabilities
+- Infrastructure components
+- Integration points
+- Development tooling
+
+### Phase 6: Confidence Scoring
+
+Assigns confidence levels based on:
+
+- Documentation presence
+- Code implementation evidence
+- Multiple source validation
+- Pattern matching strength
+
+## Usage
+
+```bash
+FeatureScanX <repository-url> [options]
+```
+
+### Options
+
+- `--format`: Output format (json, markdown)
+- `--depth`: Analysis depth (quick, normal, deep)
+- `--confidence`: Minimum confidence level for reported features
+
+## Output Format
+
+The tool provides structured output including:
+
+```json
+{
+  "features": {
+    "core": [
+      {
+        "name": "User Authentication",
+        "confidence": "high",
+        "evidence": [
+          "Found in README",
+          "Detected auth middleware",
+          "JWT dependencies present"
+        ]
+      }
+    ],
+    "supporting": [
+      {
+        "name": "Database Integration",
+        "confidence": "medium",
+        "evidence": [
+          "ORM dependencies detected",
+          "Database config files present"
+        ]
+      }
+    ]
+  }
+}
+```
